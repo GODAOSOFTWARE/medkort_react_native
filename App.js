@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomNavigation, Provider as PaperProvider, MD3LightTheme as DefaultTheme } from 'react-native-paper';
@@ -14,25 +14,12 @@ const theme = {
   },
 };
 
-// WebView для загрузки страниц
-const WebViewScreen = ({ url }) => (
-  <WebView source={{ uri: url }} style={{ flex: 1 }} />
-);
-
-// Экран "Еще"
-const MoreScreen = ({ onOpenSheet }) => (
-  <View style={styles.container}>
-    <Text style={styles.text} onPress={onOpenSheet}>
-      Открыть меню
-    </Text>
-  </View>
-);
-
 export default function App() {
   const [index, setIndex] = useState(0);
-  const bottomSheetRef = useRef(null);
+  const [currentUrl, setCurrentUrl] = useState('https://medkort.ru/lk/profile');
+  const bottomSheetRef = React.useRef(null);
 
-  const [routes] = useState([
+  const routes = [
     {
       key: 'questionnaire',
       title: 'Анкета',
@@ -51,7 +38,7 @@ export default function App() {
       key: 'treatment',
       title: 'Лечение',
       focusedIcon: 'medical-bag',
-      unfocusedIcon: 'medical-bag',
+      unfocusedIcon: 'medical-bag-outline',
       url: 'https://medkort.ru/lk/profile?item=recommendations',
     },
     {
@@ -60,13 +47,33 @@ export default function App() {
       focusedIcon: 'dots-horizontal',
       unfocusedIcon: 'dots-horizontal',
     },
-  ]);
+  ];
 
-  const renderScene = ({ route }) => {
-    if (route.key === 'more') {
-      return <MoreScreen onOpenSheet={() => bottomSheetRef.current?.expand()} />;
+  const handleIndexChange = (newIndex) => {
+    setIndex(newIndex);
+    if (routes[newIndex].url) {
+      setCurrentUrl(routes[newIndex].url);
     }
-    return <WebViewScreen url={route.url} />;
+  };
+
+  const renderScene = () => {
+    if (routes[index].key === 'more') {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.text} onPress={() => bottomSheetRef.current?.expand()}>
+            Открыть меню
+          </Text>
+        </View>
+      );
+    }
+    return (
+      <WebView
+        source={{ uri: currentUrl }}
+        style={{ flex: 1 }}
+        sharedCookiesEnabled={true}
+        thirdPartyCookiesEnabled={true}
+      />
+    );
   };
 
   return (
@@ -74,12 +81,12 @@ export default function App() {
       <PaperProvider theme={theme}>
         <BottomNavigation
           navigationState={{ index, routes }}
-          onIndexChange={setIndex}
+          onIndexChange={handleIndexChange}
           renderScene={renderScene}
           barStyle={styles.barStyle}
-          activeColor="#FFFFFF" // Белый цвет активных элементов
-          inactiveColor="#A6A6A6" // Светло-серый для неактивных элементов
-          labeled={true} // Сохраняем видимые подписи
+          activeColor="#FFFFFF"
+          inactiveColor="#A6A6A6"
+          labeled={true}
         />
         {/* Bottom Sheet */}
         <BottomSheet
@@ -102,24 +109,24 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5F5F5', // Светлый фон для экранов
+    backgroundColor: '#F5F5F5',
   },
   text: {
     fontSize: 18,
-    color: '#000000', // Чёрный текст
+    color: '#000000',
   },
   barStyle: {
-    backgroundColor: '#000000', // Чёрный фон нижнего меню
+    backgroundColor: '#000000',
   },
   bottomSheetBackground: {
-    backgroundColor: '#1E1E1E', // Чёрный фон для Bottom Sheet
+    backgroundColor: '#1E1E1E',
   },
   bottomSheetContent: {
     padding: 16,
   },
   sheetOption: {
     fontSize: 16,
-    color: '#FFFFFF', // Белый текст для элементов Bottom Sheet
+    color: '#FFFFFF',
     marginVertical: 8,
   },
 });
