@@ -10,14 +10,16 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@react-navigation/native": "^7.0.13",
-    "@react-navigation/stack": "^7.0.18",
+    "@react-navigation/material-bottom-tabs": "^6.2.29",
+    "@react-navigation/native": "^6.1.18",
     "expo": "~52.0.17",
     "expo-status-bar": "~2.0.0",
     "react": "18.3.1",
     "react-native": "0.76.3",
     "react-native-gesture-handler": "^2.21.2",
     "react-native-get-random-values": "^1.11.0",
+    "react-native-material-kit": "^0.6.0-beta.1",
+    "react-native-paper": "^5.12.5",
     "react-native-reanimated": "^3.16.3",
     "react-native-safe-area-context": "^5.0.0",
     "react-native-screens": "^4.3.0",
