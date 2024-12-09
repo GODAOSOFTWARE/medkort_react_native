@@ -1,24 +1,33 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, StatusBar, Image } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, StatusBar, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { BottomNavigation, Provider as PaperProvider, MD3LightTheme as DefaultTheme, Appbar } from 'react-native-paper';
+import { BottomNavigation, Provider as PaperProvider, Appbar } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
 import BottomSheet from '@gorhom/bottom-sheet';
 
-// Настраиваем тему
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    secondaryContainer: '#A6A6A6', // Цвет полукруглого индикатора (серый)
-  },
+// Темы приложения
+const lightTheme = {
+  headerBackground: '#FFFFFF',
+  headerIconColor: '#000000',
+  bottomBarBackground: '#FFFFFF',
+  bottomBarActiveColor: '#000000',
+  bottomBarInactiveColor: '#A6A6A6',
+};
+
+const darkTheme = {
+  headerBackground: '#000000',
+  headerIconColor: '#FFFFFF',
+  bottomBarBackground: '#000000',
+  bottomBarActiveColor: '#FFFFFF',
+  bottomBarInactiveColor: '#A6A6A6',
 };
 
 export default function App() {
   const [index, setIndex] = useState(0);
-  const [currentUrl, setCurrentUrl] = useState('https://medkort.ru/lk/profile');
-  const [isLoading, setIsLoading] = useState(false); // Состояние загрузки
-  const bottomSheetRef = React.useRef(null);
+  const [currentUrl, setCurrentUrl] = useState('https://medkort.ru');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(true); // Переключение темы
+  const theme = isDarkTheme ? darkTheme : lightTheme;
 
   const routes = [
     {
@@ -50,8 +59,6 @@ export default function App() {
       url: 'https://medkort.ru/lk/profile?item=wallet',
     },
   ];
-  
-  
 
   const handleIndexChange = (newIndex) => {
     setIndex(newIndex);
@@ -61,71 +68,46 @@ export default function App() {
     }
   };
 
-  const renderScene = () => {
-    if (routes[index].key === 'more') {
-      return (
-        <View style={styles.container}>
-          <Text style={styles.text} onPress={() => bottomSheetRef.current?.expand()}>
-            Открыть меню
-          </Text>
+  const renderScene = () => (
+    <View style={{ flex: 1 }}>
+      {isLoading && (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color={theme.bottomBarActiveColor} />
         </View>
-      );
-    }
-    return (
-      <View style={{ flex: 1 }}>
-        {isLoading && (
-          <View style={styles.loader}>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
-        )}
-        <WebView
-          source={{ uri: currentUrl }}
-          style={{ flex: 1 }}
-          onLoadStart={() => setIsLoading(true)}
-          onLoadEnd={() => setIsLoading(false)}
-          sharedCookiesEnabled={true}
-          thirdPartyCookiesEnabled={true}
-        />
-      </View>
-    );
-  };
+      )}
+      <WebView
+        source={{ uri: currentUrl }}
+        style={{ flex: 1 }}
+        onLoadStart={() => setIsLoading(true)}
+        onLoadEnd={() => setIsLoading(false)}
+        sharedCookiesEnabled={true}
+        thirdPartyCookiesEnabled={true}
+      />
+    </View>
+  );
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <PaperProvider theme={theme}>
-        <StatusBar barStyle="light-content" backgroundColor="#0D161D" />
+      <PaperProvider>
+        <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} backgroundColor={theme.headerBackground} />
         {/* Шапка */}
-        <Appbar.Header style={styles.header}>
-          {/* Лого и текст Медкорт слева */}
-          <View style={styles.logoContainer}>
-            <Image 
-              source={{ uri: 'https://via.placeholder.com/36' }} 
-              style={styles.logo} 
-            />
-            <Text style={styles.appbarTitle}>Медкорт</Text>
-          </View>
-
-          {/* Иконки справа */}
-          <View style={styles.iconContainer}>
+        <Appbar.Header style={[styles.header, { backgroundColor: theme.headerBackground }]}>
+          {/* Логотип */}
+          <Appbar.Action
+            icon="account-circle"
+            onPress={() => console.log('Профиль')}
+            color={theme.headerIconColor}
+            size={28}
+          />
+          <Text style={[styles.title, { color: theme.headerIconColor }]}>Медкорт</Text>
+          {/* Переключение темы */}
+          <TouchableOpacity onPress={() => setIsDarkTheme(!isDarkTheme)}>
             <Appbar.Action
-              icon="bell-outline"
-              onPress={() => console.log('Уведомления')}
+              icon={isDarkTheme ? 'weather-sunny' : 'weather-night'}
+              color={theme.headerIconColor}
               size={28}
-              iconColor="#FFFFFF"
             />
-            <Appbar.Action
-              icon="theme-light-dark"
-              onPress={() => console.log('Тема интерфейса')}
-              size={28}
-              iconColor="#FFFFFF"
-            />
-            <Appbar.Action
-              icon="cog-outline"
-              onPress={() => console.log('Настройки')}
-              size={28}
-              iconColor="#FFFFFF"
-            />
-          </View>
+          </TouchableOpacity>
         </Appbar.Header>
 
         {/* Основной контент */}
@@ -133,22 +115,10 @@ export default function App() {
           navigationState={{ index, routes }}
           onIndexChange={handleIndexChange}
           renderScene={renderScene}
-          barStyle={styles.barStyle}
-          activeColor="#FFFFFF"
-          inactiveColor="#A6A6A6"
-          labeled={true}
+          barStyle={{ backgroundColor: theme.bottomBarBackground }}
+          activeColor={theme.bottomBarActiveColor}
+          inactiveColor={theme.bottomBarInactiveColor}
         />
-        {/* Bottom Sheet */}
-        <BottomSheet
-          ref={bottomSheetRef}
-          snapPoints={['25%', '50%']}
-          backgroundStyle={styles.bottomSheetBackground}
-        >
-          <View style={styles.bottomSheetContent}>
-            <Text style={styles.sheetOption}>Настройки безопасности</Text>
-            <Text style={styles.sheetOption}>Бонусная программа</Text>
-          </View>
-        </BottomSheet>
       </PaperProvider>
     </GestureHandlerRootView>
   );
@@ -156,56 +126,14 @@ export default function App() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#0D161D', // Цвет шапки
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 8, // Отступы для выравнивания
+    paddingHorizontal: 8,
   },
-  logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logo: {
-    width: 36,
-    height: 36,
-    borderRadius: 18, // Круглое лого
-    marginRight: 8, // Отступ между логотипом и текстом
-  },
-  appbarTitle: {
-    color: '#FFFFFF', // Белый текст
-    fontSize: 18,
+  title: {
+    fontSize: 20,
     fontWeight: 'bold',
-  },
-  iconContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end', // Значки прижаты к правому краю
-    gap: 12, // Расстояние между значками
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F5F5F5',
-  },
-  text: {
-    fontSize: 18,
-    color: '#000000',
-  },
-  barStyle: {
-    backgroundColor: '#000000',
-  },
-  bottomSheetBackground: {
-    backgroundColor: '#1E1E1E',
-  },
-  bottomSheetContent: {
-    padding: 16,
-  },
-  sheetOption: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    marginVertical: 8,
   },
   loader: {
     position: 'absolute',
@@ -215,7 +143,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)', // Полупрозрачный фон для лоадера
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
     zIndex: 10,
   },
 });
