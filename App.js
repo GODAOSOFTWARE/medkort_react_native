@@ -27,30 +27,30 @@ export default function App() {
   const routes = [
     {
       key: 'home', // Уникальный идентификатор кнопки
-      title: 'Главная', // Название вкладки (отображается в шапке)
+      title: 'Наши продукты', // Название вкладки (отображается в шапке)
       focusedIcon: 'home', // Иконка для активного состояния
       unfocusedIcon: 'home-outline', // Иконка для неактивного состояния
       url: 'https://medkort.ru', // Ссылка на сайт
     },
     {
       key: 'appointments',
-      title: 'Приемы',
+      title: 'Расписание приемов',
       focusedIcon: 'calendar',
       unfocusedIcon: 'calendar-outline',
       url: 'https://medkort.ru/lk/profile?item=appointments',
     },
     {
       key: 'treatment',
-      title: 'Лечение',
+      title: 'Лечение болезни',
       focusedIcon: 'medical-bag',
       unfocusedIcon: 'medical-bag',
       url: 'https://medkort.ru/lk/profile?item=recommendations',
     },
     {
       key: 'wallet',
-      title: 'Кошелек',
-      focusedIcon: 'wallet',
-      unfocusedIcon: 'wallet-outline',
+      title: 'Бонусная программа',
+      focusedIcon: 'gift',
+      unfocusedIcon: 'gift-outline',
       url: 'https://medkort.ru/lk/profile?item=wallet',
     },
   ];
