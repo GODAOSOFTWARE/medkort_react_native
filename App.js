@@ -16,7 +16,7 @@ const theme = {
 
 export default function App() {
   const [index, setIndex] = useState(0);
-  const [currentUrl, setCurrentUrl] = useState('https://medkort.ru/lk/profile');
+  const [currentUrl, setCurrentUrl] = useState('https://medkort.ru');
   const [isLoading, setIsLoading] = useState(false); // Состояние загрузки
   const bottomSheetRef = React.useRef(null);
 
