@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomNavigation, Provider as PaperProvider, MD3LightTheme as DefaultTheme } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
@@ -17,6 +17,7 @@ const theme = {
 export default function App() {
   const [index, setIndex] = useState(0);
   const [currentUrl, setCurrentUrl] = useState('https://medkort.ru/lk/profile');
+  const [isLoading, setIsLoading] = useState(false); // Состояние загрузки
   const bottomSheetRef = React.useRef(null);
 
   const routes = [
@@ -37,8 +38,8 @@ export default function App() {
     {
       key: 'treatment',
       title: 'Лечение',
-      focusedIcon: 'medical-bag',
-      unfocusedIcon: 'medical-bag-outline',
+      focusedIcon: 'medical-bag', // Один и тот же значок
+      unfocusedIcon: 'medical-bag', // Один и тот же значок
       url: 'https://medkort.ru/lk/profile?item=recommendations',
     },
     {
@@ -52,6 +53,8 @@ export default function App() {
   const handleIndexChange = (newIndex) => {
     setIndex(newIndex);
     if (routes[newIndex].url) {
+      console.log('Switching URL:', routes[newIndex].url); // Отладка
+      setIsLoading(true); // Показываем лоадер при изменении вкладки
       setCurrentUrl(routes[newIndex].url);
     }
   };
@@ -67,12 +70,27 @@ export default function App() {
       );
     }
     return (
-      <WebView
-        source={{ uri: currentUrl }}
-        style={{ flex: 1 }}
-        sharedCookiesEnabled={true}
-        thirdPartyCookiesEnabled={true}
-      />
+      <View style={{ flex: 1 }}>
+        {isLoading && ( // Показываем индикатор, если идет загрузка
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )}
+        <WebView
+          source={{ uri: currentUrl }}
+          style={{ flex: 1 }}
+          onLoadStart={() => {
+            console.log('Load started'); // Отладка
+            setIsLoading(true);
+          }}
+          onLoadEnd={() => {
+            console.log('Load ended'); // Отладка
+            setIsLoading(false);
+          }}
+          sharedCookiesEnabled={true}
+          thirdPartyCookiesEnabled={true}
+        />
+      </View>
     );
   };
 
@@ -128,5 +146,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFFFFF',
     marginVertical: 8,
+  },
+  loader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)', // Полупрозрачный фон для лоадера
+    zIndex: 10, // Убедимся, что лоадер поверх WebView
   },
 });
