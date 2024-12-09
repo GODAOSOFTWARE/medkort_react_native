@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { BottomNavigation, Provider as PaperProvider, MD3LightTheme as DefaultTheme } from 'react-native-paper';
+import { BottomNavigation, Provider as PaperProvider, MD3LightTheme as DefaultTheme, Appbar } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
 import BottomSheet from '@gorhom/bottom-sheet';
 
@@ -16,7 +16,7 @@ const theme = {
 
 export default function App() {
   const [index, setIndex] = useState(0);
-  const [currentUrl, setCurrentUrl] = useState('https://medkort.ru');
+  const [currentUrl, setCurrentUrl] = useState('https://medkort.ru/lk/profile');
   const [isLoading, setIsLoading] = useState(false); // Состояние загрузки
   const bottomSheetRef = React.useRef(null);
 
@@ -38,8 +38,8 @@ export default function App() {
     {
       key: 'treatment',
       title: 'Лечение',
-      focusedIcon: 'medical-bag', // Один и тот же значок
-      unfocusedIcon: 'medical-bag', // Один и тот же значок
+      focusedIcon: 'medical-bag',
+      unfocusedIcon: 'medical-bag',
       url: 'https://medkort.ru/lk/profile?item=recommendations',
     },
     {
@@ -79,14 +79,8 @@ export default function App() {
         <WebView
           source={{ uri: currentUrl }}
           style={{ flex: 1 }}
-          onLoadStart={() => {
-            console.log('Load started'); // Отладка
-            setIsLoading(true);
-          }}
-          onLoadEnd={() => {
-            console.log('Load ended'); // Отладка
-            setIsLoading(false);
-          }}
+          onLoadStart={() => setIsLoading(true)}
+          onLoadEnd={() => setIsLoading(false)}
           sharedCookiesEnabled={true}
           thirdPartyCookiesEnabled={true}
         />
@@ -97,6 +91,16 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PaperProvider theme={theme}>
+        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        {/* Шапка */}
+        <Appbar.Header style={styles.header}>
+          <Appbar.Action icon="account-circle" onPress={() => console.log('Аватар')} />
+          <Appbar.Content title={routes[index].title} titleStyle={styles.appbarTitle} />
+          <Appbar.Action icon="eye-outline" onPress={() => console.log('Глаз')} />
+          <Appbar.Action icon="bell-outline" onPress={() => console.log('Уведомления')} />
+        </Appbar.Header>
+
+        {/* Основной контент */}
         <BottomNavigation
           navigationState={{ index, routes }}
           onIndexChange={handleIndexChange}
@@ -123,6 +127,15 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#000000', // Цвет шапки
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  appbarTitle: {
+    color: '#FFFFFF', // Цвет текста в шапке
+  },
   container: {
     flex: 1,
     alignItems: 'center',
