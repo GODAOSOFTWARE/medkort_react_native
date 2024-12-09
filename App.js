@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, StatusBar } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomNavigation, Provider as PaperProvider, MD3LightTheme as DefaultTheme, Appbar } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
@@ -22,11 +22,11 @@ export default function App() {
 
   const routes = [
     {
-      key: 'questionnaire',
-      title: 'Анкета',
-      focusedIcon: 'account-circle',
-      unfocusedIcon: 'account-circle-outline',
-      url: 'https://medkort.ru/lk/profile',
+      key: 'home',
+      title: 'Главная',
+      focusedIcon: 'home',
+      unfocusedIcon: 'home-outline',
+      url: 'https://medkort.ru',
     },
     {
       key: 'appointments',
@@ -43,18 +43,20 @@ export default function App() {
       url: 'https://medkort.ru/lk/profile?item=recommendations',
     },
     {
-      key: 'more',
-      title: 'Еще',
-      focusedIcon: 'dots-horizontal',
-      unfocusedIcon: 'dots-horizontal',
+      key: 'wallet',
+      title: 'Кошелек',
+      focusedIcon: 'wallet',
+      unfocusedIcon: 'wallet-outline',
+      url: 'https://medkort.ru/lk/profile?item=wallet',
     },
   ];
+  
+  
 
   const handleIndexChange = (newIndex) => {
     setIndex(newIndex);
     if (routes[newIndex].url) {
-      console.log('Switching URL:', routes[newIndex].url); // Отладка
-      setIsLoading(true); // Показываем лоадер при изменении вкладки
+      setIsLoading(true);
       setCurrentUrl(routes[newIndex].url);
     }
   };
@@ -71,7 +73,7 @@ export default function App() {
     }
     return (
       <View style={{ flex: 1 }}>
-        {isLoading && ( // Показываем индикатор, если идет загрузка
+        {isLoading && (
           <View style={styles.loader}>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
@@ -91,13 +93,39 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PaperProvider theme={theme}>
-        <StatusBar barStyle="light-content" backgroundColor="#000000" />
+        <StatusBar barStyle="light-content" backgroundColor="#0D161D" />
         {/* Шапка */}
         <Appbar.Header style={styles.header}>
-          <Appbar.Action icon="account-circle" onPress={() => console.log('Аватар')} />
-          <Appbar.Content title={routes[index].title} titleStyle={styles.appbarTitle} />
-          <Appbar.Action icon="eye-outline" onPress={() => console.log('Глаз')} />
-          <Appbar.Action icon="bell-outline" onPress={() => console.log('Уведомления')} />
+          {/* Лого и текст Медкорт слева */}
+          <View style={styles.logoContainer}>
+            <Image 
+              source={{ uri: 'https://via.placeholder.com/36' }} 
+              style={styles.logo} 
+            />
+            <Text style={styles.appbarTitle}>Медкорт</Text>
+          </View>
+
+          {/* Иконки справа */}
+          <View style={styles.iconContainer}>
+            <Appbar.Action
+              icon="bell-outline"
+              onPress={() => console.log('Уведомления')}
+              size={28}
+              iconColor="#FFFFFF"
+            />
+            <Appbar.Action
+              icon="theme-light-dark"
+              onPress={() => console.log('Тема интерфейса')}
+              size={28}
+              iconColor="#FFFFFF"
+            />
+            <Appbar.Action
+              icon="cog-outline"
+              onPress={() => console.log('Настройки')}
+              size={28}
+              iconColor="#FFFFFF"
+            />
+          </View>
         </Appbar.Header>
 
         {/* Основной контент */}
@@ -128,13 +156,32 @@ export default function App() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#000000', // Цвет шапки
+    backgroundColor: '#0D161D', // Цвет шапки
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: 8, // Отступы для выравнивания
+  },
+  logoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  logo: {
+    width: 36,
+    height: 36,
+    borderRadius: 18, // Круглое лого
+    marginRight: 8, // Отступ между логотипом и текстом
   },
   appbarTitle: {
-    color: '#FFFFFF', // Цвет текста в шапке
+    color: '#FFFFFF', // Белый текст
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end', // Значки прижаты к правому краю
+    gap: 12, // Расстояние между значками
   },
   container: {
     flex: 1,
@@ -169,6 +216,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.7)', // Полупрозрачный фон для лоадера
-    zIndex: 10, // Убедимся, что лоадер поверх WebView
+    zIndex: 10,
   },
 });
