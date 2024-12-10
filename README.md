@@ -1,6 +1,6 @@
 # Medkort React Native Application
 
-Medkort — это мобильное приложение для медицинской платформы **Medkort**
+v.Alpha 1.1
 
 ## О приложении
 
