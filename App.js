@@ -27,6 +27,8 @@ export default function App() {
   // Название текущего раздела в шапке
   const [headerTitle, setHeaderTitle] = useState('Наши продукты');
 
+
+  
   // Массив маршрутов для нижней панели навигации
   const routes = [
     {
