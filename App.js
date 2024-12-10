@@ -23,14 +23,17 @@ export default function App() {
   // Показывать ли индикатор загрузки
   const [isLoading, setIsLoading] = useState(false);
 
+  // Название текущего раздела в шапке
+  const [headerTitle, setHeaderTitle] = useState('Наши продукты');
+
   // Массив маршрутов для нижней панели навигации
   const routes = [
     {
-      key: 'home', // Уникальный идентификатор кнопки
-      title: 'Наши продукты', // Название вкладки (отображается в шапке)
-      focusedIcon: 'home', // Иконка для активного состояния
-      unfocusedIcon: 'home-outline', // Иконка для неактивного состояния
-      url: 'https://medkort.ru', // Ссылка на сайт
+      key: 'home',
+      title: 'Наши продукты',
+      focusedIcon: 'home',
+      unfocusedIcon: 'home-outline',
+      url: 'https://medkort.ru',
     },
     {
       key: 'appointments',
@@ -57,28 +60,38 @@ export default function App() {
 
   // Обработчик переключения вкладок
   const handleIndexChange = (newIndex) => {
-    setIndex(newIndex); // Устанавливаем текущую вкладку
+    setIndex(newIndex);
+    setHeaderTitle(routes[newIndex].title); // Обновляем заголовок
     if (routes[newIndex].url) {
-      setIsLoading(true); // Показываем индикатор загрузки
-      setCurrentUrl(routes[newIndex].url); // Устанавливаем новый URL для вебвью
+      setIsLoading(true);
+      setCurrentUrl(routes[newIndex].url);
     }
+  };
+
+  // Обработчики для кнопок в шапке
+  const handleProfileClick = () => {
+    setCurrentUrl('https://medkort.ru/lk/profile'); // Устанавливаем URL профиля
+    setHeaderTitle('Профиль'); // Устанавливаем заголовок "Профиль"
+  };
+
+  const handleSettingsClick = () => {
+    setCurrentUrl('https://medkort.ru/lk/profile?item=settings'); // Устанавливаем URL настроек
+    setHeaderTitle('Настройки'); // Устанавливаем заголовок "Настройки"
   };
 
   // Компонент для отображения вебвью (сайт)
   const renderScene = () => (
     <View style={{ flex: 1 }}>
-      {/* Показываем индикатор загрузки, пока сайт загружается */}
       {isLoading && (
         <View style={styles.loader}>
           <ActivityIndicator size="large" color={lightTheme.bottomBarActiveColor} />
         </View>
       )}
-      {/* Само окно с сайтом */}
       <WebView
-        source={{ uri: currentUrl }} // URL текущей вкладки
+        source={{ uri: currentUrl }}
         style={{ flex: 1 }}
-        onLoadStart={() => setIsLoading(true)} // Начинаем загрузку
-        onLoadEnd={() => setIsLoading(false)} // Заканчиваем загрузку
+        onLoadStart={() => setIsLoading(true)}
+        onLoadEnd={() => setIsLoading(false)}
         sharedCookiesEnabled={true}
         thirdPartyCookiesEnabled={true}
       />
@@ -87,47 +100,44 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {/* Провайдер для стилей и тем */}
       <PaperProvider>
-        {/* Устанавливаем цвет панели статуса */}
         <StatusBar barStyle="dark-content" backgroundColor={lightTheme.headerBackground} />
 
         {/* Шапка приложения */}
         <Appbar.Header style={[styles.header, { backgroundColor: lightTheme.headerBackground }]}>
-          {/* Иконка профиля (слева) */}
+          {/* Иконка профиля */}
           <Appbar.Action
-            icon="account-circle" // Иконка профиля
-            onPress={() => setCurrentUrl('https://medkort.ru/lk/profile')} // Переход на страницу профиля
-            color={lightTheme.headerIconColor} // Цвет иконки черный
-            size={30} // Размер иконки
+            icon="account-circle"
+            onPress={handleProfileClick} // Открываем профиль
+            color={lightTheme.headerIconColor}
+            size={30}
           />
           {/* Название текущей вкладки */}
-          <Text style={[styles.title, { color: lightTheme.headerIconColor }]}>
-            {routes[index].title} {/* Название вкладки меняется в зависимости от выбора */}
-          </Text>
-          {/* Иконка настроек (справа) */}
-          <TouchableOpacity onPress={() => setCurrentUrl('https://medkort.ru/lk/profile?item=settings')}>
+          <Text style={[styles.title, { color: lightTheme.headerIconColor }]}>{headerTitle}</Text>
+          {/* Иконка настроек */}
+          <TouchableOpacity onPress={handleSettingsClick}>
             <Appbar.Action
-              icon="cog" // Иконка шестеренки
-              color={lightTheme.headerIconColor} // Цвет иконки черный
-              size={30} // Размер иконки
+              icon="cog"
+              color={lightTheme.headerIconColor}
+              size={30}
             />
           </TouchableOpacity>
         </Appbar.Header>
 
         {/* Нижняя панель навигации */}
         <BottomNavigation
-          navigationState={{ index, routes }} // Передаем текущую вкладку и маршруты
-          onIndexChange={handleIndexChange} // Обработчик переключения вкладок
-          renderScene={renderScene} // Отображаем вебвью
-          barStyle={{ backgroundColor: lightTheme.bottomBarBackground }} // Фон нижней панели
-          activeColor={lightTheme.bottomBarActiveColor} // Цвет активной кнопки
-          inactiveColor={lightTheme.bottomBarInactiveColor} // Цвет неактивных кнопок
+          navigationState={{ index, routes }}
+          onIndexChange={handleIndexChange}
+          renderScene={renderScene}
+          barStyle={{ backgroundColor: lightTheme.bottomBarBackground }}
+          activeColor={lightTheme.bottomBarActiveColor}
+          inactiveColor={lightTheme.bottomBarInactiveColor}
         />
       </PaperProvider>
     </GestureHandlerRootView>
   );
 }
+
 
 // Стили приложения
 const styles = StyleSheet.create({
