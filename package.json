@@ -23,8 +23,11 @@
     "react-native-material-kit": "^0.6.0-beta.1",
     "react-native-paper": "^5.12.5",
     "react-native-reanimated": "^3.16.3",
+    "react-native-responsive-dimensions": "^3.1.1",
+    "react-native-responsive-fontsize": "^0.5.1",
     "react-native-safe-area-context": "^5.0.0",
     "react-native-screens": "^4.3.0",
+    "react-native-size-matters": "^0.4.2",
     "react-native-vector-icons": "^10.2.0",
     "react-native-webview": "^13.12.5"
   },

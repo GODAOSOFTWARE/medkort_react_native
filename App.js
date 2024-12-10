@@ -18,7 +18,8 @@ export default function App() {
   const [index, setIndex] = useState(0);
 
   // URL сайта для текущей вкладки
-  const [currentUrl, setCurrentUrl] = useState('https://medkort.ru');
+  const [currentUrl, setCurrentUrl] = useState('https://medkort.ru/?view=app ');
+
 
   // Показывать ли индикатор загрузки
   const [isLoading, setIsLoading] = useState(false);
@@ -33,28 +34,28 @@ export default function App() {
       title: 'Наши продукты',
       focusedIcon: 'home',
       unfocusedIcon: 'home-outline',
-      url: 'https://medkort.ru',
+      url: 'https://medkort.ru/?view=app',
     },
     {
       key: 'appointments',
       title: 'Расписание приемов',
       focusedIcon: 'calendar',
       unfocusedIcon: 'calendar-outline',
-      url: 'https://medkort.ru/lk/profile?item=appointments',
+      url: 'https://medkort.ru/lk/profile?view=app&item=appointments',
     },
     {
       key: 'treatment',
       title: 'Планы лечения',
       focusedIcon: 'medical-bag',
       unfocusedIcon: 'medical-bag',
-      url: 'https://medkort.ru/lk/profile?item=recommendations',
+      url: 'https://medkort.ru/lk/profile?view=app&item=recommendations',
     },
     {
       key: 'wallet',
       title: 'Бонусная программа',
       focusedIcon: 'gift',
       unfocusedIcon: 'gift-outline',
-      url: 'https://medkort.ru/lk/profile?item=wallet',
+      url: 'https://medkort.ru/lk/profile?view=app&item=wallet',
     },
   ];
 
@@ -70,12 +71,12 @@ export default function App() {
 
   // Обработчики для кнопок в шапке
   const handleProfileClick = () => {
-    setCurrentUrl('https://medkort.ru/lk/profile'); // Устанавливаем URL профиля
+    setCurrentUrl('https://medkort.ru/lk/profile?view=app'); // Устанавливаем URL профиля
     setHeaderTitle('Профиль'); // Устанавливаем заголовок "Профиль"
   };
 
   const handleSettingsClick = () => {
-    setCurrentUrl('https://medkort.ru/lk/profile?item=settings'); // Устанавливаем URL настроек
+    setCurrentUrl('https://medkort.ru/lk/profile?view=app&item=settings'); // Устанавливаем URL настроек
     setHeaderTitle('Настройки'); // Устанавливаем заголовок "Настройки"
   };
 
