@@ -41,7 +41,7 @@ export default function App() {
     },
     {
       key: 'treatment',
-      title: 'Лечение болезни',
+      title: 'Планы лечения',
       focusedIcon: 'medical-bag',
       unfocusedIcon: 'medical-bag',
       url: 'https://medkort.ru/lk/profile?item=recommendations',
@@ -96,10 +96,10 @@ export default function App() {
         <Appbar.Header style={[styles.header, { backgroundColor: lightTheme.headerBackground }]}>
           {/* Иконка уведомлений (слева) */}
           <Appbar.Action
-            icon="bell" // Иконка колокольчика
-            onPress={() => console.log('Уведомления')} // Пока выводит сообщение в консоль
+            icon="account-circle" // Иконка колокольчика
+            onPress={() => console.log('Профиль')} // Пока выводит сообщение в консоль
             color={lightTheme.headerIconColor} // Цвет иконки черный
-            size={28} // Размер иконки
+            size={30} // Размер иконки
           />
           {/* Название текущей вкладки */}
           <Text style={[styles.title, { color: lightTheme.headerIconColor }]}>
@@ -110,7 +110,7 @@ export default function App() {
             <Appbar.Action
               icon="cog" // Иконка шестеренки
               color={lightTheme.headerIconColor} // Цвет иконки черный
-              size={28} // Размер иконки
+              size={30} // Размер иконки
             />
           </TouchableOpacity>
         </Appbar.Header>
