@@ -94,10 +94,10 @@ export default function App() {
 
         {/* Шапка приложения */}
         <Appbar.Header style={[styles.header, { backgroundColor: lightTheme.headerBackground }]}>
-          {/* Иконка уведомлений (слева) */}
+          {/* Иконка профиля (слева) */}
           <Appbar.Action
-            icon="account-circle" // Иконка колокольчика
-            onPress={() => console.log('Профиль')} // Пока выводит сообщение в консоль
+            icon="account-circle" // Иконка профиля
+            onPress={() => setCurrentUrl('https://medkort.ru/lk/profile')} // Переход на страницу профиля
             color={lightTheme.headerIconColor} // Цвет иконки черный
             size={30} // Размер иконки
           />
@@ -106,7 +106,7 @@ export default function App() {
             {routes[index].title} {/* Название вкладки меняется в зависимости от выбора */}
           </Text>
           {/* Иконка настроек (справа) */}
-          <TouchableOpacity onPress={() => console.log('Настройки')}>
+          <TouchableOpacity onPress={() => setCurrentUrl('https://medkort.ru/lk/profile?item=settings')}>
             <Appbar.Action
               icon="cog" // Иконка шестеренки
               color={lightTheme.headerIconColor} // Цвет иконки черный
