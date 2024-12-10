@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MyNewProject",
-    "slug": "MyNewProject",
+    "name": "Medkort Alpha",
+    "slug": "medkort-alpha",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,17 +14,22 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.MyNewProject"
+      "bundleIdentifier": "com.medkort.alpha"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.MyNewProject"
+      "package": "com.medkort.alpha"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7939688d-b059-47f4-9e33-15fa79ab0b10"
+      }
     }
   }
 }
