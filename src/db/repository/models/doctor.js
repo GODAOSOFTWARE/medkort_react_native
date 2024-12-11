@@ -11,4 +11,4 @@ class Doctor {
   }
   export default Doctor;
 
-  
+  //Методы для разработки продуктов
