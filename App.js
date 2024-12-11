@@ -18,7 +18,7 @@ export default function App() {
   const [index, setIndex] = useState(0);
 
   // URL сайта для текущей вкладки
-  const [currentUrl, setCurrentUrl] = useState('https://medkort.ru/?view=app ');
+  const [currentUrl, setCurrentUrl] = useState('https://github.com/GODAOSOFTWARE/medkort_react_native/blob/main/README.md ');
 
 
   // Показывать ли индикатор загрузки
@@ -33,10 +33,10 @@ export default function App() {
   const routes = [
     {
       key: 'home',
-      title: 'Наши продукты',
+      title: 'Медкорт AI Alpha 1.0',
       focusedIcon: 'home',
       unfocusedIcon: 'home-outline',
-      url: 'https://medkort.ru/?view=app',
+      url: 'https://github.com/GODAOSOFTWARE/medkort_react_native/blob/main/README.md',
     },
     {
       key: 'appointments',
