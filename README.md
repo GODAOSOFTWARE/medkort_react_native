@@ -1,4 +1,5 @@
 # Medkort Alpha 1.0  
+![Medkort Robot Doctor](https://cdn.leonardo.ai/users/af13a399-7d3c-474e-a05a-0fa56893b1a1/generations/acf3cf3b-78ab-4596-9d7c-9cf5d08819db/Leonardo_Kino_XL_Draw_a_cartoonstyle_robot_inspired_by_the_des_0.jpg?w=512)
 
 ## **Вы думали, что когда-нибудь роботы нас заменят?**
 
