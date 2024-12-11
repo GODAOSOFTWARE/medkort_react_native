@@ -1,0 +1,100 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Medkort API",
+      "version": "1.0.0",
+      "description": "API для регистрации и управления врачами"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/api/v1",
+        "description": "Local server"
+      }
+    ],
+    "paths": {
+      "/doctor": {
+        "post": {
+          "summary": "Создать врача",
+          "description": "Регистрирует нового врача, добавляя его в базу данных",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "login": {
+                      "type": "string",
+                      "description": "Уникальный логин врача",
+                      "example": "doctor123"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Пароль для доступа к системе",
+                      "example": "securePassword123"
+                    }
+                  },
+                  "required": ["login", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Врач успешно создан",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "Доктор успешно зарегистрирован."
+                      },
+                      "doctor": {
+                        "type": "object",
+                        "properties": {
+                          "login": {
+                            "type": "string",
+                            "example": "doctor123"
+                          },
+                          "id": {
+                            "type": "string",
+                            "example": "64b1f708-a6b5-11ed-afa1-0242ac120002"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Ошибка валидации данных",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "example": "Некорректные данные"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "Поле 'login' обязательно."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
