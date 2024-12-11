@@ -1,4 +1,4 @@
-# Medkort React Native Application  
+# Medkort Alpha 1.0  
 
 ## **Вы думали, что когда-нибудь роботы нас заменят?**
 
