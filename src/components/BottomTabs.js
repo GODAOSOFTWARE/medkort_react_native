@@ -1,8 +1,7 @@
 import React from 'react';
 import { BottomNavigation } from 'react-native-paper';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { globalStyles } from '../styles/globalStyles';
 
 export default function BottomTabs({ routes, index, onIndexChange, currentUrl, setCurrentUrl, setIsLoading, theme }) {
   const renderScene = () => (
@@ -21,9 +20,17 @@ export default function BottomTabs({ routes, index, onIndexChange, currentUrl, s
       navigationState={{ index, routes }}
       onIndexChange={onIndexChange}
       renderScene={renderScene}
-      barStyle={{ backgroundColor: theme.colors.background }}
+      // Добавляем тень согласно MD3
+      barStyle={{
+        backgroundColor: '#FFFFFF',
+        elevation: 3,
+        shadowColor: theme.colors.shadow,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+      }}
       activeColor={theme.colors.primary}
-      inactiveColor={theme.colors.text}
+      inactiveColor={theme.colors.onSurfaceVariant}
       labeled={false}
     />
   );

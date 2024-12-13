@@ -7,7 +7,7 @@ export const lightTheme = {
   colors: {
     ...MD3LightTheme.colors,
     background: '#FFFFFF',
-    primary: '#000000',
+    primary: '#FFFFFF',
     text: '#000000',
     secondaryContainer: 'transparent', // Убираем цвет "кляксы"
   },
