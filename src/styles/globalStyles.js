@@ -9,7 +9,7 @@ export const lightTheme = {
     background: '#FFFFFF',
     primary: '#FFFFFF',
     text: '#000000',
-    secondaryContainer: 'transparent', // Убираем цвет "кляксы"
+    secondaryContainer: '#3D54DA', // Убираем цвет "кляксы"
   },
 };
 
