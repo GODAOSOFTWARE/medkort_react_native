@@ -17,7 +17,7 @@ export default function App() {
   const routes = [
     { key: 'home', title: 'Медкорт AI Alpha 1.0', focusedIcon: 'home', unfocusedIcon: 'home-outline', url: 'https://github.com/GODAOSOFTWARE/medkort_react_native/blob/main/README.md' },
     { key: 'appointments', title: 'Расписание приемов', focusedIcon: 'calendar', unfocusedIcon: 'calendar-outline', url: 'https://medkort.ru/lk/profile?view=app&item=appointments' },
-    { key: 'treatment', title: 'Планы лечения', focusedIcon: 'medical-bag', unfocusedIcon: 'medical-bag-outline', url: 'https://medkort.ru/lk/profile?view=app&item=recommendations' },
+    { key: 'treatment', title: 'Планы лечения', focusedIcon: 'medical-bag', unfocusedIcon: 'medical-bag', url: 'https://medkort.ru/lk/profile?view=app&item=recommendations' },
     { key: 'wallet', title: 'Бонусная программа', focusedIcon: 'gift', unfocusedIcon: 'gift-outline', url: 'https://medkort.ru/lk/profile?view=app&item=wallet' },
   ];
 
