@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 
 export default function WelcomeScreen() {
@@ -9,20 +9,17 @@ export default function WelcomeScreen() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      // После "загрузки" или инициализации переходим на главный экран
       navigation.replace('HomeScreen');
     }, 2000);
-
     return () => clearTimeout(timeout);
   }, [navigation]);
 
   return (
     <LinearGradient
-      colors={['#4e9af1', '#187bcd']} // Цвета градиента
+      colors={['#4e9af1', '#187bcd']}
       style={styles.container}
     >
       <View style={styles.iconContainer}>
-        {/* Иконка с медицинским стилем, например медицинский крест */}
         <MaterialCommunityIcons name="medical-bag" size={100} color="#FFFFFF" />
       </View>
     </LinearGradient>
