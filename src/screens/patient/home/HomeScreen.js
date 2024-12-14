@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider as PaperProvider } from 'react-native-paper';
-import Header from '../../components/Header';
-import BottomTabs from '../../components/BottomTabs';
-import { globalStyles, lightTheme, darkTheme } from '../../styles/globalStyles';
+import Header from '../../../components/Header';
+import BottomTabs from '../../../components/BottomTabs';
+import { globalStyles, lightTheme, darkTheme } from '../../../styles/globalStyles';
 
 export default function HomeScreen() {
   const systemTheme = useColorScheme();
