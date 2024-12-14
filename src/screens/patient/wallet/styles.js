@@ -46,25 +46,25 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 12,
-    paddingVertical: isSmallScreen ? 10 : 12,
-    marginHorizontal: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 2,
+    backgroundColor: '#FFFFFF', // Белый фон кнопки
+    borderRadius: 16, // Закруглённые углы
+    paddingVertical: isSmallScreen ? 10 : 12, // Адаптивные отступы
+    marginHorizontal: 8, // Горизонтальные отступы между кнопками
+    shadowColor: '#000', // Чёрный цвет для тени
+    shadowOffset: { width: 0, height: 2 }, // Смещение тени вниз
+    shadowOpacity: 0.1, // Прозрачность тени
+    shadowRadius: 4, // Радиус размытия тени
+    elevation: 3, // Поднятие кнопки (объём)
   },
 
   actionIcon: {
-    fontSize: isSmallScreen ? 20 : 24,
-    color: '#3D54DA',
+    fontSize: isSmallScreen ? 20 : 24, // Размер иконки
+    color: '#3D54DA', // Цвет иконки
     marginBottom: 8,
   },
 
   actionText: {
-    fontSize: isSmallScreen ? 12 : 14,
+    fontSize: isSmallScreen ? 12 : 14, // Размер текста
     fontWeight: '600',
     color: '#3D54DA',
   },
@@ -89,18 +89,18 @@ const styles = StyleSheet.create({
   },
 
   transactionIcon: {
-    fontSize: isSmallScreen ? 20 : 24,
+    fontSize: isSmallScreen ? 20 : 24, // Размер иконки
     color: '#3D54DA',
     marginRight: 16,
   },
 
   transactionText: {
-    fontSize: isSmallScreen ? 14 : 16,
+    fontSize: isSmallScreen ? 14 : 16, // Размер текста
     color: '#000000',
   },
 
   transactionAmount: {
-    fontSize: isSmallScreen ? 14 : 16,
+    fontSize: isSmallScreen ? 14 : 16, // Размер суммы
     fontWeight: 'bold',
     color: '#3D54DA',
   },
