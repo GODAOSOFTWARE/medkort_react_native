@@ -14,13 +14,30 @@ const transactions = [
   },
   {
     id: '2',
-    title: 'Оплата услуги',
-    subtitle: 'Starbucks',
+    title: 'Скидка на услугу',
+    subtitle: 'Рентген носовых пазух',
     amount: '-₽1,230',
     icon: 'cart-heart',
     type: 'Исходящая',
   },
+  {
+    id: '3',
+    title: 'Агентское вознаграждение',
+    subtitle: '20 декабря, 10:30',
+    amount: '+₽500',
+    icon: 'trophy-outline',
+    type: 'Входящая',
+  },
+  {
+    id: '4',
+    title: 'Оплата повторного приема',
+    subtitle: '21 декабря, 15:00',
+    amount: '-₽1,500',
+    icon: 'account-outline',
+    type: 'Исходящая',
+  },
 ];
+
 
 export default function TransactionList() {
   return (

@@ -70,10 +70,11 @@ const styles = StyleSheet.create({
 
   // Стили для заголовков разделов
   sectionHeader: {
-    fontSize: isSmallScreen ? 20 : 22, // Адаптивный размер шрифта
-    fontWeight: 'bold', // Жирность заголовка
-    color: '#0D161D',
-    marginBottom: 12,
+    fontSize: isSmallScreen ? 24 : 26, // Увеличенный адаптивный размер шрифта
+    fontWeight: 'black', // Более выраженная жирность
+    color: '#2C2C2C', // Более насыщенный оттенок текста
+    marginBottom: 16, // Увеличенный нижний отступ
+    marginTop: 8, // Верхний отступ для отделения от предыдущего элемента
   },
 
   // Стили для истории транзакций
