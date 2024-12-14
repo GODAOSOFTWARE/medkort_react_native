@@ -6,6 +6,8 @@ import Header from './src/components/Header';
 import BottomTabs from './src/components/BottomTabs';
 import { globalStyles, lightTheme, darkTheme } from './src/styles/globalStyles';
 
+
+
 export default function App() {
   const systemTheme = useColorScheme();
   const [currentTheme] = useState(systemTheme === 'dark' ? darkTheme : lightTheme);
