@@ -8,7 +8,7 @@ import styles from './styles';
 
 // Данные для списка транзакций
 const transactions = [
-  { id: '1', title: 'Прием врача терапевта', subtitle: '20 декабря, 10:00', amount: '+ ₽1,230', icon: 'cart-heart' },
+  { id: '1', title: 'Прием врача терапевта', subtitle: '20 декабря, 10:00', amount: '₽1000', icon: 'cart-heart' },
 ];
 
 export default function WalletScreen() {
@@ -21,7 +21,7 @@ export default function WalletScreen() {
       <ActionButtons />
 
       {/* Заголовок для раздела транзакций */}
-      <SectionHeader title="Транзакции" />
+      <SectionHeader title="Бонусные операции" />
 
       {/* Список транзакций */}
       <TransactionList transactions={transactions} />

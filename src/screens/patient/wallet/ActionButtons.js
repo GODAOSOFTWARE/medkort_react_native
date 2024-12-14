@@ -8,8 +8,8 @@ export default function ActionButtons() {
     
     { icon: 'cart-heart', text: 'Потратить' },
     { icon: 'gift-outline', text: 'Подарить' },
-    { icon: 'information-outline', text: 'Подробнее' },
-    { icon: 'information-outline', text: 'Еще' },
+    { icon: 'wallet-plus-outline', text: 'Получить' },
+    { icon: 'dots-horizontal-circle-outline', text: 'Подробнее' },
   ];
 
   return (

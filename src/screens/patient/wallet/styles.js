@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   actionText: {
-    fontSize: isSmallScreen ? 10 : 12, // Адаптивный размер шрифта
+    fontSize: isSmallScreen ? 8 : 10, // Адаптивный размер шрифта
     fontWeight: '500',
     color: '#0D161D',
     textAlign: 'center', // Центровка текста
