@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 export default function WalletScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Бонусный кошелек в разработке</Text>
+      <Text style={styles.text}>Кошелек в разработке</Text>
     </View>
   );
 }
