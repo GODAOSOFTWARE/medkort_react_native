@@ -9,8 +9,7 @@ export const lightTheme = {
     background: '#FFFFFF',
     primary: '#FFFFFF',
     text: '#000000',
-    secondaryContainer: '#3D54DA',
-    onSurfaceVariant: '#6E6E6E',
+    secondaryContainer: '#3D54DA', // Убираем цвет "кляксы"
   },
 };
 
@@ -22,11 +21,11 @@ export const darkTheme = {
     background: '#121212',
     primary: '#FFFFFF',
     text: '#FFFFFF',
-    secondaryContainer: 'transparent',
-    onSurfaceVariant: '#9E9E9E',
+    secondaryContainer: 'transparent', // Аналогично для темной темы
   },
 };
 
+// Глобальные стили
 export const globalStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',

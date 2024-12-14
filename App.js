@@ -18,7 +18,7 @@ export default function App() {
     { key: 'home', title: 'Продукты', focusedIcon: 'home', unfocusedIcon: 'home', url: 'https://github.com/GODAOSOFTWARE/medkort_react_native/blob/main/README.md' },
     { key: 'appointments', title: 'Расписание', focusedIcon: 'calendar', unfocusedIcon: 'calendar', url: 'https://medkort.ru/lk/profile?view=app&item=appointments' },
     { key: 'treatment', title: 'Лечение', focusedIcon: 'medical-bag', unfocusedIcon: 'medical-bag', url: 'https://medkort.ru/lk/profile?view=app&item=recommendations' },
-    { key: 'wallet', title: 'Кршелек', focusedIcon: 'gift', unfocusedIcon: 'gift', url: 'https://medkort.ru/lk/profile?view=app&item=wallet' },
+    { key: 'wallet', title: 'Кошелек', focusedIcon: 'gift', unfocusedIcon: 'gift',},
   ];
 
   const handleIndexChange = (newIndex) => {
