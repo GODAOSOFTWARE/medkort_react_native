@@ -14,7 +14,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { CallCenterRoutes } from './routes/CallCenterRoutes';
+import { Routes } from './Routes'; // Центральный файл маршрутов
 import { WebView } from 'react-native-webview';
 
 const Tab = createBottomTabNavigator();
@@ -22,12 +22,12 @@ const Stack = createStackNavigator();
 
 /**
  * Навигатор для шапки колл-центра
- * Использует маршруты из CallCenterRoutes.header
+ * Использует маршруты из Routes.callCenter.header
  */
 function CallCenterHeader() {
   return (
     <Stack.Navigator>
-      {CallCenterRoutes.header.map((route) => (
+      {Routes.callCenter.header.map((route) => (
         <Stack.Screen
           key={route.key}
           name={route.key}
@@ -36,7 +36,7 @@ function CallCenterHeader() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/callcenter/${route.component}`).default
+              require(`../screens/callcenter/${route.component}`).default
             )
           }
         />
@@ -47,12 +47,12 @@ function CallCenterHeader() {
 
 /**
  * Навигатор для нижнего меню колл-центра
- * Использует маршруты из CallCenterRoutes.bottom
+ * Использует маршруты из Routes.callCenter.main
  */
 function CallCenterBottom() {
   return (
     <Tab.Navigator>
-      {CallCenterRoutes.bottom.map((route) => (
+      {Routes.callCenter.main.map((route) => (
         <Tab.Screen
           key={route.key}
           name={route.key}
@@ -60,12 +60,12 @@ function CallCenterBottom() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/callcenter/${route.component}`).default
+              require(`../screens/callcenter/${route.component}`).default
             )
           }
           options={{
             title: route.title,
-            tabBarIcon: ({ focused, color, size }) => (
+            tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name={route.icon}
                 color={color}
@@ -84,5 +84,10 @@ function CallCenterBottom() {
  * Объединяет шапку (CallCenterHeader) и нижнее меню (CallCenterBottom)
  */
 export default function CallCenterNavigator() {
-  return <CallCenterBottom />; // Если шапка не нужна, рендерится только меню
+  return (
+    <>
+      <CallCenterHeader /> {/* Подключение шапки */}
+      <CallCenterBottom /> {/* Подключение нижнего меню */}
+    </>
+  );
 }

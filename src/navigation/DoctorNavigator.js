@@ -14,8 +14,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { DoctorRoutes } from './routes/DoctorRoutes';
-import WalletScreen from '../screens/doctor/WalletScreen';
+import { Routes } from './Routes'; // Центральный файл маршрутов
 import { WebView } from 'react-native-webview';
 
 const Tab = createBottomTabNavigator();
@@ -23,12 +22,12 @@ const Stack = createStackNavigator();
 
 /**
  * Навигатор для шапки врача
- * Использует маршруты из DoctorRoutes.header
+ * Использует маршруты из Routes.doctor.header
  */
 function DoctorHeader() {
   return (
     <Stack.Navigator>
-      {DoctorRoutes.header.map((route) => (
+      {Routes.doctor.header.map((route) => (
         <Stack.Screen
           key={route.key}
           name={route.key}
@@ -37,7 +36,7 @@ function DoctorHeader() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex:1 }} />
             ) : (
-              require(`../../screens/doctor/${route.component}`).default
+              require(`../screens/doctor/${route.component}`).default
             )
           }
         />
@@ -48,25 +47,25 @@ function DoctorHeader() {
 
 /**
  * Навигатор для нижнего меню врача
- * Использует маршруты из DoctorRoutes.bottom
+ * Использует маршруты из Routes.doctor.main
  */
 function DoctorBottom() {
   return (
     <Tab.Navigator>
-      {DoctorRoutes.bottom.map((route) => (
+      {Routes.doctor.main.map((route) => (
         <Tab.Screen
           key={route.key}
           name={route.key}
           component={() =>
             route.url ? (
-              <WebView source={{ uri: route.url }} style={{ flex:1 }} />
+              <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/doctor/${route.component}`).default
+              require(`../screens/doctor/${route.component}`).default
             )
           }
           options={{
             title: route.title,
-            tabBarIcon: ({ focused, color, size }) => (
+            tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name={route.icon}
                 color={color}
@@ -85,5 +84,10 @@ function DoctorBottom() {
  * Объединяет шапку (DoctorHeader) и нижнее меню (DoctorBottom)
  */
 export default function DoctorNavigator() {
-  return <DoctorBottom />; // Если нужна шапка, её можно подключить сюда
+  return (
+    <>
+      <DoctorHeader /> {/* Подключение шапки */}
+      <DoctorBottom /> {/* Подключение нижнего меню */}
+    </>
+  );
 }

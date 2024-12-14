@@ -14,7 +14,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { PatientRoutes } from './routes/PatientRoutes';
+import { Routes } from './Routes'; // Центральный файл маршрутов
 import WalletScreen from '../screens/patient/WalletScreen';
 import { WebView } from 'react-native-webview';
 
@@ -23,12 +23,12 @@ const Stack = createStackNavigator();
 
 /**
  * Навигатор для шапки пациента
- * Использует маршруты из PatientRoutes.header
+ * Использует маршруты из Routes.patient.header
  */
 function PatientHeader() {
   return (
     <Stack.Navigator>
-      {PatientRoutes.header.map((route) => (
+      {Routes.patient.header.map((route) => (
         <Stack.Screen
           key={route.key}
           name={route.key}
@@ -37,7 +37,7 @@ function PatientHeader() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/patient/${route.component}`).default
+              require(`../screens/patient/${route.component}`).default
             )
           }
         />
@@ -48,12 +48,12 @@ function PatientHeader() {
 
 /**
  * Навигатор для нижнего меню пациента
- * Использует маршруты из PatientRoutes.bottom
+ * Использует маршруты из Routes.patient.main
  */
 function PatientBottom() {
   return (
     <Tab.Navigator>
-      {PatientRoutes.bottom.map((route) => (
+      {Routes.patient.main.map((route) => (
         <Tab.Screen
           key={route.key}
           name={route.key}
@@ -61,12 +61,16 @@ function PatientBottom() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/patient/${route.component}`).default
+              route.component === 'WalletScreen' ? (
+                WalletScreen // Пример прямого вызова экрана
+              ) : (
+                require(`../screens/patient/${route.component}`).default
+              )
             )
           }
           options={{
             title: route.title,
-            tabBarIcon: ({ focused, color, size }) => (
+            tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name={route.icon}
                 color={color}
@@ -85,5 +89,10 @@ function PatientBottom() {
  * Объединяет шапку (PatientHeader) и нижнее меню (PatientBottom)
  */
 export default function PatientNavigator() {
-  return <PatientBottom />; // Если шапка не нужна, рендерится только меню
+  return (
+    <>
+      <PatientHeader /> {/* Подключение шапки */}
+      <PatientBottom /> {/* Подключение нижнего меню */}
+    </>
+  );
 }
