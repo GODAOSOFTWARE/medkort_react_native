@@ -7,7 +7,7 @@ import styles from './styles'; // Подключаем стили
 
 // Данные для списка транзакций (пример)
 const transactions = [
-  { id: '1', title: 'To Georgia Wallet', amount: '$1,230', icon: 'arrow-up' },
+  { id: '1', title: 'Прием врача терапевта', amount: '$1,230', icon: 'arrow-up' },
   { id: '2', title: 'Starbucks', amount: '$92', icon: 'coffee' },
   { id: '3', title: 'Payment received', amount: '$350', icon: 'arrow-down' },
 ];
