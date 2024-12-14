@@ -8,7 +8,7 @@ const transactions = [
     id: '1',
     title: 'Бонус за визит №100243',
     subtitle: '20 декабря, 10:00',
-    amount: '₽3,000',
+    amount: '+₽3,000',
     icon: 'wallet-plus-outline',
     type: 'Входящая',
   },
@@ -23,7 +23,7 @@ const transactions = [
   {
     id: '3',
     title: 'Агентское вознаграждение',
-    subtitle: '20 декабря, 10:30',
+    subtitle: 'Партнер: Сидоров И',
     amount: '+₽500',
     icon: 'trophy-outline',
     type: 'Входящая',

@@ -70,11 +70,10 @@ const styles = StyleSheet.create({
 
   // Стили для заголовков разделов
   sectionHeader: {
-    fontSize: isSmallScreen ? 24 : 26, // Увеличенный адаптивный размер шрифта
-    fontWeight: 'black', // Более выраженная жирность
-    color: '#2C2C2C', // Более насыщенный оттенок текста
-    marginBottom: 16, // Увеличенный нижний отступ
-    marginTop: 8, // Верхний отступ для отделения от предыдущего элемента
+    fontSize: isSmallScreen ? 20 : 22, // Адаптивный размер шрифта
+    fontWeight: 'bold', // Жирность заголовка
+    color: '#0D161D',
+    marginBottom: 12,
   },
 
   // Стили для истории транзакций
@@ -104,8 +103,9 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   transactionText: {
-    fontSize: isSmallScreen ? 14 : 16, // Размер текста
+    fontSize: isSmallScreen ? 12 : 14, // Размер текста
     fontWeight: '500', // Жирность текста
+    color: '#0D161D', // Черный цвет текста
   },
   transactionSubtitle: {
     fontSize: isSmallScreen ? 12 : 14, // Размер подзаголовка
@@ -119,15 +119,16 @@ const styles = StyleSheet.create({
 
   // Цвета для разных типов транзакций
   incomingStyle: {
-    color: '#28A745', // Зеленый цвет для входящих транзакций
+    color: '#28A745', // Зеленый цвет только для суммы входящих транзакций
   },
 
   outgoingStyle: {
-    color: '#FF6F61', // Красный цвет для исходящих транзакций
+    color: '#FF6F61', // Красный цвет только для суммы исходящих транзакций
   },
 
   transactionIcon: {
-    fontSize: isSmallScreen ? 20 : 24, // Размер иконки
+    fontSize: isSmallScreen ? 18 : 22, // Размер иконки
+    color: '#0D161D', // Черный цвет для иконки
   },
 });
 
