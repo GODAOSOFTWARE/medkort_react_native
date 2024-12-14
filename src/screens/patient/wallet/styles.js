@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
 
   // Стили для заголовков разделов
   sectionHeader: {
-    fontSize: isSmallScreen ? 20 : 22, // Адаптивный размер шрифта
-    fontWeight: 'bold', // Жирность заголовка
+    fontSize: isSmallScreen ? 24 : 26, // Адаптивный размер шрифта
+    fontWeight: '900', // Жирность заголовка
     color: '#0D161D',
     marginBottom: 12,
   },
