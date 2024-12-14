@@ -42,6 +42,8 @@ src/
   - `DoctorRoutes.js`: маршруты для врача.
   - `PatientRoutes.js`: маршруты для пациента.
 
+
+
 ---
 
 ### **2. navigators/**
