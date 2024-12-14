@@ -14,8 +14,8 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { DoctorRoutes } from '../routes/DoctorRoutes';
-import WalletScreen from '../../screens/doctor/WalletScreen';
+import { DoctorRoutes } from './routes/DoctorRoutes';
+import WalletScreen from '../screens/doctor/WalletScreen';
 import { WebView } from 'react-native-webview';
 
 const Tab = createBottomTabNavigator();

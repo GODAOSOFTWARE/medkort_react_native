@@ -1,12 +1,12 @@
 /**
- * Файл: PatientNavigator.js
+ * Файл: CallCenterNavigator.js
  *
  * Что содержит:
- * - Главный навигатор для пациента.
- * - Управляет шапкой (PatientHeader) и нижним меню (PatientBottom).
+ * - Главный навигатор для колл-центра.
+ * - Управляет шапкой (CallCenterHeader) и нижним меню (CallCenterBottom).
  *
  * За что отвечает:
- * - Объединяет шапку и нижнее меню пациента.
+ * - Объединяет шапку и нижнее меню колл-центра.
  * - Отображает WebView или экраны на основе маршрутов.
  */
 
@@ -14,21 +14,20 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { PatientRoutes } from '../routes/PatientRoutes';
-import WalletScreen from '../../screens/patient/WalletScreen';
+import { CallCenterRoutes } from './routes/CallCenterRoutes';
 import { WebView } from 'react-native-webview';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 /**
- * Навигатор для шапки пациента
- * Использует маршруты из PatientRoutes.header
+ * Навигатор для шапки колл-центра
+ * Использует маршруты из CallCenterRoutes.header
  */
-function PatientHeader() {
+function CallCenterHeader() {
   return (
     <Stack.Navigator>
-      {PatientRoutes.header.map((route) => (
+      {CallCenterRoutes.header.map((route) => (
         <Stack.Screen
           key={route.key}
           name={route.key}
@@ -37,7 +36,7 @@ function PatientHeader() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/patient/${route.component}`).default
+              require(`../../screens/callcenter/${route.component}`).default
             )
           }
         />
@@ -47,13 +46,13 @@ function PatientHeader() {
 }
 
 /**
- * Навигатор для нижнего меню пациента
- * Использует маршруты из PatientRoutes.bottom
+ * Навигатор для нижнего меню колл-центра
+ * Использует маршруты из CallCenterRoutes.bottom
  */
-function PatientBottom() {
+function CallCenterBottom() {
   return (
     <Tab.Navigator>
-      {PatientRoutes.bottom.map((route) => (
+      {CallCenterRoutes.bottom.map((route) => (
         <Tab.Screen
           key={route.key}
           name={route.key}
@@ -61,7 +60,7 @@ function PatientBottom() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/patient/${route.component}`).default
+              require(`../../screens/callcenter/${route.component}`).default
             )
           }
           options={{
@@ -81,9 +80,9 @@ function PatientBottom() {
 }
 
 /**
- * Главный навигатор для пациента
- * Объединяет шапку (PatientHeader) и нижнее меню (PatientBottom)
+ * Главный навигатор для колл-центра
+ * Объединяет шапку (CallCenterHeader) и нижнее меню (CallCenterBottom)
  */
-export default function PatientNavigator() {
-  return <PatientBottom />; // Если шапка не нужна, рендерится только меню
+export default function CallCenterNavigator() {
+  return <CallCenterBottom />; // Если шапка не нужна, рендерится только меню
 }

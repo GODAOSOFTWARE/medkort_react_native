@@ -1,12 +1,12 @@
 /**
- * Файл: CallCenterNavigator.js
+ * Файл: AdminNavigator.js
  *
  * Что содержит:
- * - Главный навигатор для колл-центра.
- * - Управляет шапкой (CallCenterHeader) и нижним меню (CallCenterBottom).
+ * - Главный навигатор для админа.
+ * - Управляет шапкой (AdminHeader) и нижним меню (AdminBottom).
  *
  * За что отвечает:
- * - Объединяет шапку и нижнее меню колл-центра.
+ * - Объединяет шапку и нижнее меню админа.
  * - Отображает WebView или экраны на основе маршрутов.
  */
 
@@ -14,20 +14,20 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { CallCenterRoutes } from '../routes/CallCenterRoutes';
+import { AdminRoutes } from './routes/AdminRoutes';
 import { WebView } from 'react-native-webview';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 /**
- * Навигатор для шапки колл-центра
- * Использует маршруты из CallCenterRoutes.header
+ * Навигатор для шапки админа
+ * Использует маршруты из AdminRoutes.header
  */
-function CallCenterHeader() {
+function AdminHeader() {
   return (
     <Stack.Navigator>
-      {CallCenterRoutes.header.map((route) => (
+      {AdminRoutes.header.map((route) => (
         <Stack.Screen
           key={route.key}
           name={route.key}
@@ -36,7 +36,7 @@ function CallCenterHeader() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/callcenter/${route.component}`).default
+              require(`../../screens/admin/${route.component}`).default
             )
           }
         />
@@ -46,13 +46,13 @@ function CallCenterHeader() {
 }
 
 /**
- * Навигатор для нижнего меню колл-центра
- * Использует маршруты из CallCenterRoutes.bottom
+ * Навигатор для нижнего меню админа
+ * Использует маршруты из AdminRoutes.bottom
  */
-function CallCenterBottom() {
+function AdminBottom() {
   return (
     <Tab.Navigator>
-      {CallCenterRoutes.bottom.map((route) => (
+      {AdminRoutes.bottom.map((route) => (
         <Tab.Screen
           key={route.key}
           name={route.key}
@@ -60,7 +60,7 @@ function CallCenterBottom() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/callcenter/${route.component}`).default
+              require(`../../screens/admin/${route.component}`).default
             )
           }
           options={{
@@ -80,9 +80,9 @@ function CallCenterBottom() {
 }
 
 /**
- * Главный навигатор для колл-центра
- * Объединяет шапку (CallCenterHeader) и нижнее меню (CallCenterBottom)
+ * Главный навигатор для админа
+ * Объединяет шапку (AdminHeader) и нижнее меню (AdminBottom)
  */
-export default function CallCenterNavigator() {
-  return <CallCenterBottom />; // Если шапка не нужна, рендерится только меню
+export default function AdminNavigator() {
+  return <AdminBottom />; // Если шапка не нужна, рендерится только меню
 }

@@ -1,12 +1,12 @@
 /**
- * Файл: AdminNavigator.js
+ * Файл: PatientNavigator.js
  *
  * Что содержит:
- * - Главный навигатор для админа.
- * - Управляет шапкой (AdminHeader) и нижним меню (AdminBottom).
+ * - Главный навигатор для пациента.
+ * - Управляет шапкой (PatientHeader) и нижним меню (PatientBottom).
  *
  * За что отвечает:
- * - Объединяет шапку и нижнее меню админа.
+ * - Объединяет шапку и нижнее меню пациента.
  * - Отображает WebView или экраны на основе маршрутов.
  */
 
@@ -14,20 +14,21 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AdminRoutes } from '../routes/AdminRoutes';
+import { PatientRoutes } from './routes/PatientRoutes';
+import WalletScreen from '../screens/patient/WalletScreen';
 import { WebView } from 'react-native-webview';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 /**
- * Навигатор для шапки админа
- * Использует маршруты из AdminRoutes.header
+ * Навигатор для шапки пациента
+ * Использует маршруты из PatientRoutes.header
  */
-function AdminHeader() {
+function PatientHeader() {
   return (
     <Stack.Navigator>
-      {AdminRoutes.header.map((route) => (
+      {PatientRoutes.header.map((route) => (
         <Stack.Screen
           key={route.key}
           name={route.key}
@@ -36,7 +37,7 @@ function AdminHeader() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/admin/${route.component}`).default
+              require(`../../screens/patient/${route.component}`).default
             )
           }
         />
@@ -46,13 +47,13 @@ function AdminHeader() {
 }
 
 /**
- * Навигатор для нижнего меню админа
- * Использует маршруты из AdminRoutes.bottom
+ * Навигатор для нижнего меню пациента
+ * Использует маршруты из PatientRoutes.bottom
  */
-function AdminBottom() {
+function PatientBottom() {
   return (
     <Tab.Navigator>
-      {AdminRoutes.bottom.map((route) => (
+      {PatientRoutes.bottom.map((route) => (
         <Tab.Screen
           key={route.key}
           name={route.key}
@@ -60,7 +61,7 @@ function AdminBottom() {
             route.url ? (
               <WebView source={{ uri: route.url }} style={{ flex: 1 }} />
             ) : (
-              require(`../../screens/admin/${route.component}`).default
+              require(`../../screens/patient/${route.component}`).default
             )
           }
           options={{
@@ -80,9 +81,9 @@ function AdminBottom() {
 }
 
 /**
- * Главный навигатор для админа
- * Объединяет шапку (AdminHeader) и нижнее меню (AdminBottom)
+ * Главный навигатор для пациента
+ * Объединяет шапку (PatientHeader) и нижнее меню (PatientBottom)
  */
-export default function AdminNavigator() {
-  return <AdminBottom />; // Если шапка не нужна, рендерится только меню
+export default function PatientNavigator() {
+  return <PatientBottom />; // Если шапка не нужна, рендерится только меню
 }
