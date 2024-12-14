@@ -2,7 +2,7 @@ import React from 'react';
 import { BottomNavigation } from 'react-native-paper';
 import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import WalletScreen from '../screens/patient/WalletScreen'; // Импортируем экран кошелька
+import WalletScreen from '../screens/patient/wallet/WalletScreen'; // Импортируем экран кошелька
 
 export default function BottomTabs({ routes, index, onIndexChange, currentUrl, setCurrentUrl, setIsLoading, theme }) {
   const renderScene = () => {
