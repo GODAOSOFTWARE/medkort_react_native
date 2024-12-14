@@ -58,15 +58,15 @@ const styles = StyleSheet.create({
   },
 
   actionIcon: {
-    fontSize: isSmallScreen ? 20 : 24, // Размер иконки
-    color: '#3D54DA', // Цвет иконки
+    fontSize: isSmallScreen ? 24 : 28, // Размер иконки
+    color: '#0D161D', // Цвет иконки
     marginBottom: 8,
   },
 
   actionText: {
     fontSize: isSmallScreen ? 12 : 14, // Размер текста
     fontWeight: '600',
-    color: '#3D54DA',
+    color: '#0D161D',
   },
 
   // Стили для истории транзакций
