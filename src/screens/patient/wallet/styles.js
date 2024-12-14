@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
   transactionText: {
     fontSize: isSmallScreen ? 14 : 16, // Размер текста
     fontWeight: '500', // Жирность текста
-    color: '#0D161D',
   },
   transactionSubtitle: {
     fontSize: isSmallScreen ? 12 : 14, // Размер подзаголовка
@@ -115,13 +114,19 @@ const styles = StyleSheet.create({
   transactionAmount: {
     fontSize: isSmallScreen ? 14 : 16, // Размер суммы
     fontWeight: '600',
-    color: '#3D54DA',
   },
 
-  // Стили для иконок транзакций
+  // Цвета для разных типов транзакций
+  incomingStyle: {
+    color: '#28A745', // Зеленый цвет для входящих транзакций
+  },
+
+  outgoingStyle: {
+    color: '#FF6F61', // Красный цвет для исходящих транзакций
+  },
+
   transactionIcon: {
     fontSize: isSmallScreen ? 20 : 24, // Размер иконки
-    color: '#3D54DA',
   },
 });
 
