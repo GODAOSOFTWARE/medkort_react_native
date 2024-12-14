@@ -5,8 +5,8 @@ import styles from './styles';
 export default function BalanceCard() {
   return (
     <View style={styles.balanceCard}>
-      <Text style={styles.balanceText}>$3,521</Text>
-      <Text style={styles.cardDetails}>VISA •••• 4527</Text>
+      <Text style={styles.balanceText}>₽ 3,521</Text>
+      <Text style={styles.cardDetails}>*Бонусный баланс</Text>
     </View>
   );
 }

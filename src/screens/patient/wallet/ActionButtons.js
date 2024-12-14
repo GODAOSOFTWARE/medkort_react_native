@@ -6,8 +6,10 @@ import styles from './styles';
 export default function ActionButtons() {
   const buttons = [
     
-    { icon: 'bank-transfer', text: 'Транзакции' },
-    { icon: 'dots-horizontal', text: 'Потратить' },
+    { icon: 'cart-heart', text: 'Потратить' },
+    { icon: 'gift-outline', text: 'Подарить' },
+    { icon: 'information-outline', text: 'Подробнее' },
+    { icon: 'information-outline', text: 'Еще' },
   ];
 
   return (

@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const isSmallScreen = width < 360; // Условие для определения маленьких экранов
 
 const styles = StyleSheet.create({
@@ -17,21 +17,20 @@ const styles = StyleSheet.create({
     padding: isSmallScreen ? 16 : 20, // Адаптивное значение отступов
     marginBottom: 16,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 4 }, // Более выраженная тень
+    shadowOpacity: 0.2, // Прозрачность тени увеличена
+    shadowRadius: 10, // Радиус размытия увеличен
+    elevation: 6, // Более заметное поднятие для Android
   },
-
   balanceText: {
     fontSize: isSmallScreen ? 28 : 36, // Адаптивный размер шрифта
     fontWeight: 'bold',
     color: '#FFFFFF',
     marginBottom: 8,
   },
-
   cardDetails: {
     fontSize: isSmallScreen ? 12 : 14,
+    fontWeight: '400', // Дополнено для соответствия Material Design
     color: '#E0E0E0',
   },
 
@@ -41,39 +40,46 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 24,
   },
-
   actionButton: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF', // Белый фон кнопки
     borderRadius: 16, // Закруглённые углы
-    paddingVertical: isSmallScreen ? 10 : 12, // Адаптивные отступы
-    marginHorizontal: 8, // Горизонтальные отступы между кнопками
-    shadowColor: '#000', // Чёрный цвет для тени
-    shadowOffset: { width: 0, height: 2 }, // Смещение тени вниз
-    shadowOpacity: 0.1, // Прозрачность тени
-    shadowRadius: 4, // Радиус размытия тени
-    elevation: 3, // Поднятие кнопки (объём)
+    paddingVertical: isSmallScreen ? 8 : 10, // Уменьшенные отступы
+    marginHorizontal: 4, // Сокращенные отступы для размещения 4 кнопок
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 }, // Более выраженная тень
+    shadowOpacity: 0.2, // Прозрачность тени увеличена
+    shadowRadius: 6, // Радиус размытия увеличен
+    elevation: 5, // Более заметное поднятие для Android
   },
-
   actionIcon: {
     fontSize: isSmallScreen ? 24 : 28, // Размер иконки
     color: '#0D161D', // Цвет иконки
     marginBottom: 8,
   },
-
   actionText: {
-    fontSize: isSmallScreen ? 12 : 14, // Размер текста
-    fontWeight: '600',
+    fontSize: isSmallScreen ? 10 : 12, // Адаптивный размер шрифта
+    fontWeight: '500',
     color: '#0D161D',
+    textAlign: 'center', // Центровка текста
+    flexWrap: 'wrap', // Перенос текста при нехватке места
+    maxWidth: '80%', // Ограничение ширины текста
+  },
+
+  // Стили для заголовков разделов
+  sectionHeader: {
+    fontSize: isSmallScreen ? 20 : 22, // Адаптивный размер шрифта
+    fontWeight: 'bold', // Жирность заголовка
+    color: '#0D161D',
+    marginBottom: 12,
   },
 
   // Стили для истории транзакций
   transactionList: {
     flex: 1,
   },
-
   transactionItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -81,27 +87,40 @@ const styles = StyleSheet.create({
     paddingVertical: isSmallScreen ? 10 : 12,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
+    backgroundColor: '#FFFFFF', // Белый фон для карточки транзакции
+    borderRadius: 8, // Закругленные углы для карточек
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 }, // Более выраженная тень
+    shadowOpacity: 0.15, // Прозрачность тени увеличена
+    shadowRadius: 6, // Радиус размытия увеличен
+    elevation: 4, // Поднятие для Android
+    marginBottom: 8, // Отступ между карточками
+    paddingHorizontal: 12, // Горизонтальные отступы внутри карточки
   },
-
   transactionDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
+    flex: 1,
+    marginLeft: 16,
   },
-
-  transactionIcon: {
-    fontSize: isSmallScreen ? 20 : 24, // Размер иконки
-    color: '#3D54DA',
-    marginRight: 16,
-  },
-
   transactionText: {
     fontSize: isSmallScreen ? 14 : 16, // Размер текста
-    color: '#000000',
+    fontWeight: '500', // Жирность текста
+    color: '#0D161D',
   },
-
+  transactionSubtitle: {
+    fontSize: isSmallScreen ? 12 : 14, // Размер подзаголовка
+    fontWeight: '400', // Жирность подзаголовка
+    color: '#9E9E9E',
+  },
   transactionAmount: {
     fontSize: isSmallScreen ? 14 : 16, // Размер суммы
-    fontWeight: 'bold',
+    fontWeight: '600',
+    color: '#3D54DA',
+  },
+
+  // Стили для иконок транзакций
+  transactionIcon: {
+    fontSize: isSmallScreen ? 20 : 24, // Размер иконки
     color: '#3D54DA',
   },
 });
