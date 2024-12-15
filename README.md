@@ -17,6 +17,9 @@
 
 ## Что такое Medkort?
 
+![Medkort AI](https://cdn.leonardo.ai/users/af13a399-7d3c-474e-a05a-0fa56893b1a1/generations/dfb97a45-17d4-4f54-a346-6a388ef285ce/Leonardo_Phoenix_Futuristic_hand_with_chat_window_The_foregrou_3.jpg?w=512)
+
+
 Medkort — это не просто приложение. Это платформа, которая помогает пациентам лечиться, а врачам и клиникам — эффективно взаимодействовать. 
 
 ### Как это работает:
