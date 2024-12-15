@@ -1,6 +1,6 @@
 # Medkort
 
-![Medkort Robot Doctor](https://cdn.leonardo.ai/users/af13a399-7d3c-474e-a05a-0fa56893b1a1/generations/dfb97a45-17d4-4f54-a346-6a388ef285ce/Leonardo_Phoenix_Futuristic_hand_with_chat_window_The_foregrou_3.jpg?w=1200)
+![Medkort Robot Doctor](https://cdn.leonardo.ai/users/af13a399-7d3c-474e-a05a-0fa56893b1a1/generations/bb08c08f-cf73-4699-bb6b-effcf683219d/Leonardo_Kino_XL_Act_like_a_professional_AI_artist_specializin_2.jpg?w=512)
 
 ---
 
@@ -14,7 +14,7 @@
 **Похоже на сказку? Давайте разбираться...**
 
 ---
-
+![About](https://cdn.leonardo.ai/users/af13a399-7d3c-474e-a05a-0fa56893b1a1/generations/dfb97a45-17d4-4f54-a346-6a388ef285ce/Leonardo_Phoenix_Futuristic_hand_with_chat_window_The_foregrou_3.jpg?w=1200)
 ## Что такое Medkort?
 
 Традиционная медицина сталкивается с рядом проблем: нехватка координации между участниками, сложные процессы записи, долгие ожидания, а также отсутствие прозрачности в оказании услуг. 
