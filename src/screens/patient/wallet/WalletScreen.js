@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import BalanceCard from './BalanceCard';
 import ActionButtons from './ActionButtons';
-import SectionHeader from './SectionHeader';
 import TransactionList from './TransactionList';
 import styles from './styles';
 
@@ -51,9 +50,7 @@ export default function WalletScreen() {
       {/* Кнопки действий */}
       <ActionButtons />
 
-      {/* Заголовок для раздела транзакций */}
-      <SectionHeader title="Бонусные операции" />
-
+    
       {/* Список транзакций */}
       <TransactionList transactions={transactions} />
     </View>
