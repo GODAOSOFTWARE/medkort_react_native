@@ -1,81 +1,62 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TextInput, Button, Text } from 'react-native-paper';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import mockUsers from './mockUsers';
 
-export default function LoginScreen() {
-  const [email, setEmail] = useState('');
+export default function AuthScreen({ navigation }) {
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
-  const handleLogin = () => {
-    // Простая валидация
-    if (!email || !password) {
-      setError('Все поля обязательны для заполнения');
+  const handleLogin = async () => {
+    const user = mockUsers.find(
+      (u) => u.login === login && u.password === password
+    );
+
+    if (user) {
+      try {
+        // Сохраняем токен и роль
+        await AsyncStorage.setItem('authToken', user.token);
+        await AsyncStorage.setItem('userRole', user.role);
+
+        // Перенаправляем на соответствующий навигатор
+        navigation.replace(user.role === 'patient' ? 'PatientNavigator' : 'OtherNavigator');
+      } catch (error) {
+        Alert.alert('Ошибка', 'Не удалось сохранить данные авторизации');
+      }
     } else {
-      setError('');
-      // Обработка логина
-      console.log('Войти:', { email, password });
+      Alert.alert('Ошибка', 'Неверный логин или пароль');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Вход</Text>
-
+    <View style={{ flex: 1, justifyContent: 'center', padding: 20 }}>
+      <Text style={{ fontSize: 24, marginBottom: 20 }}>Авторизация</Text>
       <TextInput
-        label="Электронная почта"
-        value={email}
-        onChangeText={setEmail}
-        mode="outlined"
-        style={styles.input}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        autoComplete="email"
+        placeholder="Логин"
+        value={login}
+        onChangeText={setLogin}
+        style={{
+          borderWidth: 1,
+          borderColor: 'gray',
+          marginBottom: 20,
+          padding: 10,
+          borderRadius: 5,
+        }}
       />
-
       <TextInput
-        label="Пароль"
+        placeholder="Пароль"
         value={password}
         onChangeText={setPassword}
-        mode="outlined"
-        style={styles.input}
         secureTextEntry
-        autoCapitalize="none"
+        style={{
+          borderWidth: 1,
+          borderColor: 'gray',
+          marginBottom: 20,
+          padding: 10,
+          borderRadius: 5,
+        }}
       />
-
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-      <Button mode="contained" onPress={handleLogin} style={styles.button}>
-        Войти
-      </Button>
+      <Button title="Войти" onPress={handleLogin} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 16,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  input: {
-    marginBottom: 16,
-  },
-  button: {
-    marginTop: 16,
-    paddingVertical: 8,
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 14,
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-});
