@@ -12,8 +12,8 @@ export default function App() {
   const systemTheme = useColorScheme();
   const [currentTheme] = useState(systemTheme === 'dark' ? darkTheme : lightTheme);
   const [index, setIndex] = useState(0);
-  const [headerTitle, setHeaderTitle] = useState('Наши продукты');
-  const [currentUrl, setCurrentUrl] = useState('https://github.com/GODAOSOFTWARE/medkort_react_native/blob/main/README.md');
+  const [headerTitle, setHeaderTitle] = useState('Добро пожаловать');
+  const [currentUrl, setCurrentUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const routes = [
