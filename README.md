@@ -1,5 +1,5 @@
 # Medkort
-![Medkort Robot Doctor](https://cdn.leonardo.ai/users/af13a399-7d3c-474e-a05a-0fa56893b1a1/generations/14ed182e-271d-4386-a216-86e7bea7a29e/users/af13a399-7d3c-474e-a05a-0fa56893b1a1/generations/14ed182e-271d-4386-a216-86e7bea7a29e/_3.jpg?w=512)
+![Medkort Robot Doctor](https://cdn.leonardo.ai/users/af13a399-7d3c-474e-a05a-0fa56893b1a1/generations/bb08c08f-cf73-4699-bb6b-effcf683219d/Leonardo_Kino_XL_Act_like_a_professional_AI_artist_specializin_2.jpg?w=512)
 
 
 ## Введение
