@@ -5,7 +5,14 @@
  */
 
 export class Doctor {
-  constructor(id, firstName, lastName, specialization, login, password) {
+  constructor(
+    id, 
+    firstName, 
+    lastName, 
+    specialization,
+    login, 
+    password
+  ) {
     this.id = id; // Уникальный идентификатор врача
     this.firstName = firstName; // Имя врача
     this.lastName = lastName; // Фамилия врача
