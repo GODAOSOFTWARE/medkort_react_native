@@ -21,6 +21,4 @@ build/
 *.swp
 
 # Исключение репозиториев локальной базы данных
-src/db/repository/repo/doctorsRepository.js
-src/db/repository/repo/partnersRepository.js
-src/db/repository/repo/patientRepository.js
+
