@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { responsiveSizes, SCREEN_SIZES } from './responsiveSizes';
-import { themeStyles } from './themeStyles'; // Тема приложения
+import { responsiveSizes, SCREEN_SIZES } from './styles.responsive';
+import { themeStyles } from './styles.theme';
 
 const { width } = Dimensions.get('window');
 
@@ -17,15 +17,14 @@ const getScreenSize = () => {
 // Получаем текущую букву для экрана
 const currentSize = getScreenSize();
 
-// Стили для шапки и нижнего меню
 export const layoutStyles = StyleSheet.create({
   // Шапка (Header)
   header: {
-    height: responsiveSizes.header[currentSize], // Адаптивная высота шапки
+    height: responsiveSizes.header.height, // Адаптивная высота шапки
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: responsiveSizes.padding[currentSize], // Адаптивные отступы
-    backgroundColor: themeStyles.colors.primary, // Цвет шапки из темы
+    backgroundColor: themeStyles.colors.primary,
   },
 
   // Нижнее меню (BottomTabs)
@@ -34,7 +33,7 @@ export const layoutStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingHorizontal: responsiveSizes.padding[currentSize], // Адаптивные отступы
-    backgroundColor: themeStyles.colors.background, // Цвет фона из темы
+    paddingHorizontal: responsiveSizes.padding[currentSize],
+    backgroundColor: themeStyles.colors.background,
   },
 });
