@@ -1,55 +1,43 @@
 /**
- * Этот файл определяет компонент `BottomTabs`, который отвечает за:
- * - Отображение нижней панели навигации.
- * - Обработку переходов между вкладками.
- * - Рендеринг контента в зависимости от выбранной вкладки: 
- *   - Экран кошелька для вкладки "wallet".
- *   - WebView для остальных вкладок.
+ * BottomTabs.js
+ * Компонент нижнего меню приложения.
+ * Адаптивное отображение кнопок для ролей (пациент/врач).
  */
 
 import React from 'react';
-import { BottomNavigation } from 'react-native-paper';
-import { View } from 'react-native';
-import { WebView } from 'react-native-webview';
-import WalletScreen from '../screens/patient/wallet/WalletScreen'; // Импортируем экран кошелька
+import { View, TouchableOpacity, Text } from 'react-native';
+import { layoutStyles } from '../styles/styles.layout';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Иконки Material Design
 
-export default function BottomTabs({ routes, index, onIndexChange, currentUrl, setCurrentUrl, setIsLoading, theme }) {
-  // Определяет, какой контент рендерить в зависимости от выбранной вкладки
-  const renderScene = () => {
-    const routeKey = routes[index].key;
-
-    if (routeKey === 'wallet') {
-      // Рендерим экран кошелька
-      return (
-        <View style={{ flex: 1 }}>
-          <WalletScreen />
-        </View>
-      );
-    } else {
-      // Рендерим WebView для остальных вкладок
-      return (
-        <View style={{ flex: 1 }}>
-          <WebView
-            source={{ uri: currentUrl }}
-            style={{ flex: 1 }}
-            onLoadStart={() => setIsLoading(true)} // Включаем индикатор загрузки
-            onLoadEnd={() => setIsLoading(false)} // Отключаем индикатор загрузки
-          />
-        </View>
-      );
-    }
-  };
-
-  // Отображает нижнюю панель навигации
+const BottomTabs = ({ tabs, activeTab, onTabChange }) => {
   return (
-    <BottomNavigation
-      navigationState={{ index, routes }} // Состояние навигации
-      onIndexChange={onIndexChange} // Обработчик переключения вкладок
-      renderScene={renderScene} // Рендеринг контента для текущей вкладки
-      barStyle={{ backgroundColor: theme.colors.background }} // Цвет нижней панели
-      activeColor={theme.colors.primary} // Цвет активных иконок
-      inactiveColor={theme.colors.text} // Цвет неактивных иконок
-      labeled={false} // Убираем подписи у иконок
-    />
+    <View style={layoutStyles.bottomTabs}>
+      {tabs.map((tab, index) => (
+        <TouchableOpacity
+          key={index}
+          style={layoutStyles.tabButton}
+          onPress={() => onTabChange(tab)}
+        >
+          <Icon
+            name={tab.icon}
+            size={layoutStyles.tabIconSize}
+            style={[
+              layoutStyles.tabIcon,
+              activeTab === tab && layoutStyles.activeTabIcon,
+            ]}
+          />
+          <Text
+            style={[
+              layoutStyles.tabText,
+              activeTab === tab && layoutStyles.activeTabText,
+            ]}
+          >
+            {tab.title}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
   );
-}
+};
+
+export default BottomTabs;

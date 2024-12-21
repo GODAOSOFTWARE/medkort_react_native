@@ -1,30 +1,40 @@
 /**
- * Этот файл определяет компонент `Header`, который отвечает за:
- * - Отображение заголовка приложения.
- * - Отображение двух кнопок в шапке: 
- *   - Кнопка профиля слева.
- *   - Кнопка настроек справа.
+ * Header.js
+ * Компонент шапки приложения.
+ * Отображает кнопки на основе маршрутов для ролей (пациент/врач).
  */
 
 import React from 'react';
-import { Appbar } from 'react-native-paper';
-import { Text, TouchableOpacity } from 'react-native';
-import { globalStyles } from '../styles/globalStyles';
+import { View, TouchableOpacity, Text } from 'react-native';
+import { layoutStyles } from '../styles/styles.layout';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Иконки Material Design
 
-export default function Header({ title, theme }) {
+const Header = ({ routes }) => {
   return (
-    // Шапка приложения с заголовком и двумя кнопками
-    <Appbar.Header style={[globalStyles.header, { backgroundColor: theme.colors.background }]}>
-      {/* Кнопка профиля */}
-      <Appbar.Action icon="account-circle" color={theme.colors.text} size={30} />
-
-      {/* Заголовок */}
-      <Text style={[globalStyles.title, { color: theme.colors.text }]}>{title}</Text>
-
-      {/* Кнопка настроек */}
-      <TouchableOpacity>
-        <Appbar.Action icon="cog" color={theme.colors.text} size={30} />
-      </TouchableOpacity>
-    </Appbar.Header>
+    <View style={layoutStyles.header}>
+      {routes.map((route, index) => (
+        <TouchableOpacity
+          key={index}
+          style={layoutStyles.headerButton}
+          onPress={() => {
+            if (route.url) {
+              // Обработка перехода по URL
+              window.location.href = route.url;
+            }
+          }}
+        >
+          {route.icon && (
+            <Icon
+              name={route.icon}
+              size={layoutStyles.headerIconSize}
+              style={layoutStyles.headerIcon}
+            />
+          )}
+          <Text style={layoutStyles.headerButtonText}>{route.title}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
   );
-}
+};
+
+export default Header;
