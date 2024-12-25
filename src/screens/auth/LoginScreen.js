@@ -1,83 +1,153 @@
-import React, { useState } from 'react'; // Импортируем React и хук useState для управления состоянием.
-import { View, StyleSheet } from 'react-native'; // Импортируем базовые компоненты React Native для создания контейнера и стилей.
-import { TextInput, Button, Text, Avatar } from 'react-native-paper'; // Импортируем компоненты из react-native-paper для Material Design.
+import React, { useState } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
+import { TextInput, Button, Text, Avatar } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen() {
-  // Хуки для управления состоянием логина и пароля.
-  const [login, setLogin] = useState(''); // Стейт для хранения логина.
-  const [password, setPassword] = useState(''); // Стейт для хранения пароля.
+  const [email, setEmail] = useState(''); // Состояние для email
+  const [password, setPassword] = useState(''); // Состояние для пароля
+  const [isLoading, setIsLoading] = useState(false); // Состояние для загрузки
+  const [showPassword, setShowPassword] = useState(false); // Состояние для отображения пароля
 
-  // Функция, которая вызывается при нажатии на кнопку "Войти".
-  const handleLogin = () => {
-    console.log('Логин:', login); // Вывод логина в консоль (для отладки).
-    console.log('Пароль:', password); // Вывод пароля в консоль (для отладки).
-    alert('Форма авторизации готова'); // Всплывающее сообщение, подтверждающее работу формы.
+  const handleLogin = async () => {
+    const url = 'https://medkort.ru/api/login'; // URL для запроса
+
+    // Проверка полей
+    if (!email.trim()) {
+      Alert.alert('Ошибка', 'Поле "Email" не может быть пустым.');
+      return;
+    }
+    if (!email.includes('@')) {
+      Alert.alert('Ошибка', 'Формат "Email" должен содержать символ "@" и быть корректным.');
+      return;
+    }
+    if (!password.trim()) {
+      Alert.alert('Ошибка', 'Поле "Пароль" не может быть пустым.');
+      return;
+    }
+
+    const requestBody = {
+      email: email.trim(),
+      password: password.trim(),
+    };
+
+    console.log('Отправляем запрос:', JSON.stringify(requestBody)); // Логируем данные
+
+    try {
+      setIsLoading(true); // Включаем индикатор загрузки
+
+      // Отправка POST-запроса
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      // Получаем ответ
+      const responseData = await response.json();
+      console.log('Ответ от сервера:', responseData); // Логируем ответ
+
+      if (response.ok) {
+        const { access_token } = responseData; // Извлекаем токен из ответа
+
+        // Сохраняем токен в AsyncStorage
+        await AsyncStorage.setItem('authToken', access_token);
+
+        // Логируем, что токен успешно записан
+        console.log(`Токен "${access_token}" записан в локальное хранилище.`);
+
+        // Уведомляем об успешной авторизации
+        Alert.alert('Добро пожаловать в альфа тест', `Токен "${access_token}" записан в локальное хранилище.`);
+      } else {
+        // Если ошибка авторизации
+        Alert.alert('Ошибка', 'Неверный логин или пароль.');
+      }
+    } catch (error) {
+      console.error('Ошибка запроса:', error); // Логируем ошибки
+      Alert.alert('Ошибка', 'Произошла ошибка при отправке запроса.');
+    } finally {
+      setIsLoading(false); // Выключаем индикатор загрузки
+    }
   };
 
   return (
-    // Основной контейнер для всего содержимого экрана.
     <View style={styles.container}>
-      {/* Логотип, отображаемый с помощью Avatar.Icon из react-native-paper */}
+      {/* Логотип */}
       <Avatar.Icon size={100} icon="account-circle" style={styles.logo} />
 
-      {/* Заголовок страницы авторизации */}
+      {/* Заголовок */}
       <Text variant="headlineMedium" style={styles.title}>
         Вход в аккаунт
       </Text>
 
-      {/* Поле для ввода логина */}
+      {/* Поле для ввода email */}
       <TextInput
-        label="Логин" // Метка (Label) для поля.
-        value={login} // Значение поля привязано к состоянию login.
-        onChangeText={setLogin} // Обновление состояния login при вводе текста.
-        mode="outlined" // Стиль поля в виде рамки (Material Design).
-        style={styles.input} // Стили для поля.
+        label="Email"
+        value={email}
+        onChangeText={setEmail}
+        mode="outlined"
+        style={styles.input}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
 
       {/* Поле для ввода пароля */}
       <TextInput
-        label="Пароль" // Метка для поля.
-        value={password} // Значение поля привязано к состоянию password.
-        onChangeText={setPassword} // Обновление состояния password при вводе текста.
-        secureTextEntry // Скрытие текста (звёздочки) для ввода пароля.
-        mode="outlined" // Стиль поля в виде рамки (Material Design).
-        style={styles.input} // Стили для поля.
+        label="Пароль"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry={!showPassword} // Скрываем или показываем пароль
+        mode="outlined"
+        style={styles.input}
+        right={
+          <TextInput.Icon
+            icon={showPassword ? 'eye-off' : 'eye'} // Иконка глаза
+            onPress={() => setShowPassword(!showPassword)} // Переключение отображения пароля
+          />
+        }
       />
 
-      {/* Кнопка входа */}
-      <Button mode="contained" onPress={handleLogin} style={styles.button}>
+      {/* Кнопка "Войти" */}
+      <Button
+        mode="contained"
+        onPress={handleLogin}
+        style={styles.button}
+        loading={isLoading}
+        disabled={isLoading}
+      >
         Войти
       </Button>
     </View>
   );
 }
 
-// Стили для элементов экрана.
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Контейнер занимает весь экран.
-    justifyContent: 'center', // Содержимое выравнивается по центру вертикально.
-    alignItems: 'center', // Содержимое выравнивается по центру горизонтально.
-    padding: 20, // Отступы внутри контейнера.
-    backgroundColor: '#f5f5f5', // Светло-серый фон.
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f5f5f5',
   },
   logo: {
-    backgroundColor: '#6200ea', // Цвет фона иконки (основной акцентный цвет).
-    marginBottom: 20, // Отступ снизу от логотипа.
+    backgroundColor: '#6200ea',
+    marginBottom: 20,
   },
   title: {
-    fontSize: 24, // Размер шрифта заголовка.
-    fontWeight: 'bold', // Жирный шрифт для акцента.
-    marginBottom: 20, // Отступ снизу от заголовка.
-    color: '#333', // Тёмный текст.
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#333',
   },
   input: {
-    width: '100%', // Поле занимает всю ширину контейнера.
-    marginBottom: 20, // Отступ между полями ввода.
+    width: '100%',
+    marginBottom: 20,
   },
   button: {
-    marginTop: 10, // Отступ сверху от последнего поля ввода.
-    width: '100%', // Кнопка занимает всю ширину контейнера.
-    padding: 10, // Внутренние отступы кнопки.
+    marginTop: 10,
+    width: '100%',
+    padding: 10,
   },
 });
