@@ -31,7 +31,6 @@ export default function PinSetupScreen({ navigation }) {
         Установите PIN-код
       </Text>
 
-      {/* Индикаторы PIN-кода */}
       <View style={styles.pinContainer}>
         {[0, 1, 2, 3].map((_, index) => (
           <View
@@ -44,7 +43,6 @@ export default function PinSetupScreen({ navigation }) {
         ))}
       </View>
 
-      {/* Клавиатура */}
       <View style={styles.keyboard}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '←'].map((key, index) => (
           <Button
@@ -73,7 +71,7 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 20,
     fontWeight: 'bold',
-    color: '#6200ea', // Цвет, соответствующий Material Design
+    color: '#6200ea',
   },
   pinContainer: {
     flexDirection: 'row',
@@ -84,11 +82,11 @@ const styles = StyleSheet.create({
     height: 15,
     borderRadius: 15,
     borderWidth: 2,
-    borderColor: '#6200ea', // Основной цвет
+    borderColor: '#6200ea',
     margin: 5,
   },
   pinDotFilled: {
-    backgroundColor: '#6200ea', // Основной цвет для заполненных точек
+    backgroundColor: '#6200ea',
   },
   keyboard: {
     width: '100%',

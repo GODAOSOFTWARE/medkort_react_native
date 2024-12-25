@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Text, Button } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PinConfirmScreen({ route, navigation }) {
   const [confirmPin, setConfirmPin] = useState('');
   const { pin } = route.params;
 
-  const handlePress = (digit) => {
+  const handlePress = async (digit) => {
     if (confirmPin.length < 4) {
       const newPin = confirmPin + digit;
       setConfirmPin(newPin);
@@ -16,8 +17,24 @@ export default function PinConfirmScreen({ route, navigation }) {
       if (newPin.length === 4) {
         if (newPin === pin) {
           console.log('PIN успешно подтвержден:', newPin); // Успешное подтверждение
-          Alert.alert('Успешно', 'PIN-код успешно установлен.');
-          navigation.navigate('Home'); // Замените на нужный экран
+          try {
+            // Сохраняем PIN в AsyncStorage
+            await AsyncStorage.setItem('userPin', newPin);
+
+            // Получаем текущий токен и PIN из AsyncStorage
+            const token = await AsyncStorage.getItem('authToken');
+            const storedPin = await AsyncStorage.getItem('userPin');
+
+            Alert.alert(
+              'Успешно',
+              `Токен: ${token}\nPIN-код: ${storedPin}`
+            );
+
+            navigation.navigate('Home'); // Замените на нужный экран
+          } catch (error) {
+            console.error('Ошибка сохранения PIN-кода:', error);
+            Alert.alert('Ошибка', 'Не удалось сохранить PIN-код.');
+          }
         } else {
           console.log('PIN не совпадает:', newPin); // Ошибка подтверждения
           Alert.alert('Ошибка', 'PIN-коды не совпадают. Повторите ввод.');
@@ -39,7 +56,6 @@ export default function PinConfirmScreen({ route, navigation }) {
         Подтвердите PIN-код
       </Text>
 
-      {/* Индикаторы PIN-кода */}
       <View style={styles.pinContainer}>
         {[0, 1, 2, 3].map((_, index) => (
           <View
@@ -52,7 +68,6 @@ export default function PinConfirmScreen({ route, navigation }) {
         ))}
       </View>
 
-      {/* Клавиатура */}
       <View style={styles.keyboard}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '←'].map((key, index) => (
           <Button
@@ -81,7 +96,7 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 20,
     fontWeight: 'bold',
-    color: '#6200ea', // Цвет Material Design
+    color: '#6200ea',
   },
   pinContainer: {
     flexDirection: 'row',
