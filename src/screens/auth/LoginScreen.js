@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, Text, Avatar } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AuthService from '../../services/authService'; // Импорт AuthService
+import StorageService from '../../services/storageService'; // Импорт StorageService
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState(''); // Состояние для email
@@ -10,8 +11,6 @@ export default function LoginScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false); // Состояние для отображения пароля
 
   const handleLogin = async () => {
-    const url = 'https://medkort.ru/api/login'; // URL для запроса
-
     // Проверка полей
     if (!email.trim()) {
       Alert.alert('Ошибка', 'Поле "Email" не может быть пустым.');
@@ -26,56 +25,29 @@ export default function LoginScreen({ navigation }) {
       return;
     }
 
-    const requestBody = {
-      email: email.trim(),
-      password: password.trim(),
-    };
-
-    console.log('Отправляем запрос:', JSON.stringify(requestBody)); // Логируем данные
-
     try {
       setIsLoading(true); // Включаем индикатор загрузки
 
-      // Отправка POST-запроса
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
+      // Вызов метода авторизации из AuthService
+      const token = await AuthService.login(email.trim(), password.trim());
 
-      // Получаем ответ
-      const responseData = await response.json();
-      console.log('Ответ от сервера:', responseData); // Логируем ответ
+      // Сохранение токена в локальное хранилище через StorageService
+      await StorageService.setItem('authToken', token);
 
-      if (response.ok) {
-        const { access_token } = responseData; // Извлекаем токен из ответа
-
-        // Сохраняем токен в AsyncStorage
-        await AsyncStorage.setItem('authToken', access_token);
-
-        // Логируем, что токен успешно записан
-        console.log(`Токен "${access_token}" записан в локальное хранилище.`);
-
-        // Уведомляем об успешной авторизации
-        Alert.alert(
-          'Добро пожаловать в альфа тест',
-          `Токен "${access_token}" записан в локальное хранилище.`,
-          [
-            {
-              text: 'ОК',
-              onPress: () => navigation.navigate('PinSetup'), // Переход на экран установки PIN
-            },
-          ]
-        );
-      } else {
-        // Если ошибка авторизации
-        Alert.alert('Ошибка', 'Неверный логин или пароль.');
-      }
+      // Уведомляем об успешной авторизации
+      Alert.alert(
+        'Добро пожаловать в альфа тест',
+        `Вы успешно авторизовались.`,
+        [
+          {
+            text: 'ОК',
+            onPress: () => navigation.navigate('PinSetup'), // Переход на экран установки PIN
+          },
+        ]
+      );
     } catch (error) {
-      console.error('Ошибка запроса:', error); // Логируем ошибки
-      Alert.alert('Ошибка', 'Произошла ошибка при отправке запроса.');
+      console.error('Ошибка авторизации:', error); // Логируем ошибки
+      Alert.alert('Ошибка', 'Неверный логин или пароль.');
     } finally {
       setIsLoading(false); // Выключаем индикатор загрузки
     }
