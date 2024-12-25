@@ -3,7 +3,7 @@ import { View, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, Text, Avatar } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState(''); // Состояние для email
   const [password, setPassword] = useState(''); // Состояние для пароля
   const [isLoading, setIsLoading] = useState(false); // Состояние для загрузки
@@ -59,7 +59,16 @@ export default function LoginScreen() {
         console.log(`Токен "${access_token}" записан в локальное хранилище.`);
 
         // Уведомляем об успешной авторизации
-        Alert.alert('Добро пожаловать в альфа тест', `Токен "${access_token}" записан в локальное хранилище.`);
+        Alert.alert(
+          'Добро пожаловать в альфа тест',
+          `Токен "${access_token}" записан в локальное хранилище.`,
+          [
+            {
+              text: 'ОК',
+              onPress: () => navigation.navigate('PinSetup'), // Переход на экран установки PIN
+            },
+          ]
+        );
       } else {
         // Если ошибка авторизации
         Alert.alert('Ошибка', 'Неверный логин или пароль.');

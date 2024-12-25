@@ -10,14 +10,19 @@ export default function PinSetupScreen({ navigation }) {
       const newPin = pin + digit;
       setPin(newPin);
 
+      console.log('Введенный PIN:', newPin); // Логируем PIN
+
       if (newPin.length === 4) {
+        console.log('Переход на экран подтверждения с PIN:', newPin); // Логируем переход
         navigation.navigate('PinConfirm', { pin: newPin });
       }
     }
   };
 
   const handleDelete = () => {
-    setPin(pin.slice(0, -1));
+    const updatedPin = pin.slice(0, -1);
+    setPin(updatedPin);
+    console.log('Удаление символа, текущий PIN:', updatedPin); // Логируем удаление
   };
 
   return (
@@ -26,7 +31,7 @@ export default function PinSetupScreen({ navigation }) {
         Установите PIN-код
       </Text>
 
-      {/* PIN-код индикаторы */}
+      {/* Индикаторы PIN-кода */}
       <View style={styles.pinContainer}>
         {[0, 1, 2, 3].map((_, index) => (
           <View
@@ -41,9 +46,9 @@ export default function PinSetupScreen({ navigation }) {
 
       {/* Клавиатура */}
       <View style={styles.keyboard}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '←'].map((key) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '←'].map((key, index) => (
           <Button
-            key={key}
+            key={index}
             mode="outlined"
             style={styles.key}
             onPress={() => (key === '←' ? handleDelete() : handlePress(key))}
@@ -67,6 +72,8 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 20,
+    fontWeight: 'bold',
+    color: '#6200ea', // Цвет, соответствующий Material Design
   },
   pinContainer: {
     flexDirection: 'row',
@@ -76,15 +83,15 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     borderRadius: 15,
-    borderWidth: 1,
-    borderColor: '#333',
+    borderWidth: 2,
+    borderColor: '#6200ea', // Основной цвет
     margin: 5,
   },
   pinDotFilled: {
-    backgroundColor: '#333',
+    backgroundColor: '#6200ea', // Основной цвет для заполненных точек
   },
   keyboard: {
-    width: '80%',
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
