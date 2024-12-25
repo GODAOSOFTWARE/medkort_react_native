@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Text, Button, Alert } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PinConfirmScreen({ route, navigation }) {
-  const { pin: originalPin } = route.params; // Получаем PIN-код из предыдущего экрана
+  const { pin: originalPin } = route.params;
   const [confirmPin, setConfirmPin] = useState('');
 
   const handlePress = (digit) => {
@@ -13,27 +14,24 @@ export default function PinConfirmScreen({ route, navigation }) {
 
       if (newPin.length === 4) {
         if (newPin === originalPin) {
-          // PIN-коды совпадают
           savePin(newPin);
         } else {
-          // PIN-коды не совпадают
           Alert.alert('Ошибка', 'PIN-коды не совпадают. Попробуйте снова.');
-          setConfirmPin(''); // Сброс ввода
+          setConfirmPin('');
         }
       }
     }
   };
 
   const handleDelete = () => {
-    setConfirmPin(confirmPin.slice(0, -1)); // Удаление последней цифры
+    setConfirmPin(confirmPin.slice(0, -1));
   };
 
   const savePin = async (pin) => {
     try {
-      await AsyncStorage.setItem('userPin', pin); // Сохранение PIN-кода
-      Alert.alert('Успех', `PIN-код "${pin}" сохранён.`, [
-        { text: 'OK', onPress: () => navigation.navigate('Login') }, // Возвращаемся на экран логина
-      ]);
+      await AsyncStorage.setItem('userPin', pin);
+      Alert.alert('Успех', `PIN-код "${pin}" сохранён.`);
+      navigation.navigate('Login');
     } catch (error) {
       console.error('Ошибка сохранения PIN-кода:', error);
       Alert.alert('Ошибка', 'Не удалось сохранить PIN-код.');
@@ -42,7 +40,11 @@ export default function PinConfirmScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Подтвердите PIN-код</Text>
+      <Text variant="headlineMedium" style={styles.title}>
+        Подтвердите PIN-код
+      </Text>
+
+      {/* PIN-код индикаторы */}
       <View style={styles.pinContainer}>
         {[0, 1, 2, 3].map((_, index) => (
           <View
@@ -54,16 +56,19 @@ export default function PinConfirmScreen({ route, navigation }) {
           />
         ))}
       </View>
+
+      {/* Клавиатура */}
       <View style={styles.keyboard}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '←'].map((key) => (
-          <TouchableOpacity
+          <Button
             key={key}
+            mode="outlined"
             style={styles.key}
             onPress={() => (key === '←' ? handleDelete() : handlePress(key))}
             disabled={key === ''}
           >
-            <Text style={styles.keyText}>{key}</Text>
-          </TouchableOpacity>
+            {key}
+          </Button>
         ))}
       </View>
     </View>
@@ -75,11 +80,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
     backgroundColor: '#f5f5f5',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 20,
   },
   pinContainer: {
@@ -104,16 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   key: {
-    width: '30%',
-    aspectRatio: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     margin: 5,
-    backgroundColor: '#ddd',
-    borderRadius: 10,
-  },
-  keyText: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    width: '25%',
   },
 });
