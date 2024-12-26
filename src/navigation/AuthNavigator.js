@@ -15,7 +15,7 @@ export default function AuthNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
      
-     {/* Экран авторизации */}
+     {/* главный экран */}
      <Stack.Screen name="Welcome" component={Welcome} />
      
       {/* Экран авторизации */}

@@ -22,7 +22,7 @@ export default function RoleSelectionScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       {/* Заголовок экрана */}
-      <Text style={styles.title}>Выберите вашу роль</Text>
+      <Text style={styles.title}>Вход в личный кабинет</Text>
       {/* Генерация кнопок на основе переданных опций */}
       {options.map((option) => (
         <TouchableOpacity
