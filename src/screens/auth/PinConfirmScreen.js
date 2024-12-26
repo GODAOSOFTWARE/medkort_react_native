@@ -21,14 +21,7 @@ export default function PinConfirmScreen({ route, navigation }) {
             // Сохраняем PIN в AsyncStorage
             await AsyncStorage.setItem('userPin', newPin);
 
-            // Получаем текущий токен и PIN из AsyncStorage
-            const token = await AsyncStorage.getItem('authToken');
-            const storedPin = await AsyncStorage.getItem('userPin');
-
-            Alert.alert(
-              'Успешно',
-              `Токен: ${token}\nPIN-код: ${storedPin}`
-            );
+            
 
             navigation.navigate('WelcomeScreen'); // Замените на нужный экран
           } catch (error) {
