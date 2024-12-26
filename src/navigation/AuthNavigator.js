@@ -9,6 +9,7 @@ import RoleSelectionScreen from '../screens/onboarding/RoleSelectionScreen'; // 
 import Welcome from '../screens/onboarding/WelcomeScreen'
 import PatinetProfile from '../screens/patient/profile/ProfileScreen';
 import AdminProfile from '../screens/admin/AdminDashboard';
+import DoctorProfile from '../screens/doctor/DoctorDashboard'
 
 // Создаём стек навигации
 const Stack = createStackNavigator();
@@ -18,8 +19,7 @@ export default function AuthNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
      
-     {/* Главный экран */}
-     <Stack.Screen name="Welcome" component={Welcome} />
+    
      
       {/* Экран авторизации */}
       <Stack.Screen name="Login" component={LoginScreen} />
@@ -41,6 +41,10 @@ export default function AuthNavigator() {
 
       {/* Переход в кабинет Админа */}
       <Stack.Screen name="AdminProfile" component={AdminProfile} />
+
+      {/* Переход в кабинет Админа */}
+      <Stack.Screen name="DoctorProfile" component={DoctorProfile} />
+
 
 
 
