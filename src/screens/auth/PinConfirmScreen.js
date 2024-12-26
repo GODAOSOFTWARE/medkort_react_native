@@ -30,7 +30,7 @@ export default function PinConfirmScreen({ route, navigation }) {
               `Токен: ${token}\nPIN-код: ${storedPin}`
             );
 
-            navigation.navigate('Home'); // Замените на нужный экран
+            navigation.navigate('WelcomeScreen'); // Замените на нужный экран
           } catch (error) {
             console.error('Ошибка сохранения PIN-кода:', error);
             Alert.alert('Ошибка', 'Не удалось сохранить PIN-код.');
