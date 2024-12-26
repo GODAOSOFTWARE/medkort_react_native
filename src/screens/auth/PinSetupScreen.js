@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 20,
     fontWeight: 'bold',
-    color: '#6200ea',
+    color: '#000000',
   },
   pinContainer: {
     flexDirection: 'row',
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   pinDotFilled: {
-    backgroundColor: '#6200ea',
+    backgroundColor: '#3D54DA',
   },
   keyboard: {
     width: '100%',

@@ -6,7 +6,7 @@ import PinSetupScreen from '../screens/auth/PinSetupScreen'; // Экран ус�
 import PinConfirmScreen from '../screens/auth/PinConfirmScreen'; // Экран подтверждения PIN-кода
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen'; // Экран приветствия
 import RoleSelectionScreen from '../screens/onboarding/RoleSelectionScreen'; // Экран выбора роли
-
+import Welcome from '../screens/onboarding/WelcomeScreen'
 // Создаём стек навигации
 const Stack = createStackNavigator();
 
@@ -14,6 +14,10 @@ const Stack = createStackNavigator();
 export default function AuthNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+     
+     {/* Экран авторизации */}
+     <Stack.Screen name="Welcome" component={Welcome} />
+     
       {/* Экран авторизации */}
       <Stack.Screen name="Login" component={LoginScreen} />
       

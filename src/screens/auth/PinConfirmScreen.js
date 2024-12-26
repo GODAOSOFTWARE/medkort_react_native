@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 20,
     fontWeight: 'bold',
-    color: '#6200ea',
+    color: '#000000',
   },
   pinContainer: {
     flexDirection: 'row',
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     height: 15,
     borderRadius: 15,
     borderWidth: 2,
-    borderColor: '#6200ea',
+    borderColor: '#3D54DA',
     margin: 5,
   },
   pinDotFilled: {
