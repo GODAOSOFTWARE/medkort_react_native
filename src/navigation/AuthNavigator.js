@@ -7,6 +7,7 @@ import PinConfirmScreen from '../screens/auth/PinConfirmScreen'; // Экран �
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen'; // Экран приветствия
 import RoleSelectionScreen from '../screens/onboarding/RoleSelectionScreen'; // Экран выбора роли
 import Welcome from '../screens/onboarding/WelcomeScreen'
+
 // Создаём стек навигации
 const Stack = createStackNavigator();
 
@@ -32,6 +33,8 @@ export default function AuthNavigator() {
       
       {/* Экран выбора роли */}
       <Stack.Screen name="RoleSelectionScreen" component={RoleSelectionScreen} />
+
+      
     </Stack.Navigator>
   );
 }

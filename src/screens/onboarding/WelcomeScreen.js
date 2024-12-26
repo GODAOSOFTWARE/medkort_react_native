@@ -75,7 +75,7 @@ export default function WelcomeScreen() {
               navigation.replace('RoleSelectionScreen', {
                 options: [
                   { key: 'patient', label: 'Пациент' },
-                  { key: 'superAdmin', label: 'Врач' },
+                  { key: 'superAdmin', label: 'Администратор' },
                 ],
               });
               break;
@@ -83,7 +83,7 @@ export default function WelcomeScreen() {
               navigation.replace('RoleSelectionScreen', {
                 options: [
                   { key: 'patient', label: 'Пациент' },
-                  { key: 'admin', label: 'Врач' },
+                  { key: 'admin', label: 'Администратор' },
                 ],
               });
               break;
