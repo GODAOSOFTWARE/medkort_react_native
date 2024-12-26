@@ -1,77 +1,64 @@
-/**
- * Путь: ./src/navigation/RootNavigator.js
- * 
- * Этот файл является точкой входа для навигации.
- * - Проверяет состояние авторизации пользователя.
- * - Определяет роль пользователя.
- * - Перенаправляет пользователя на соответствующий экран.
- */
-
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Локальное хранилище
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import StorageService from '../services/storageService';
+import userService from '../services/userService';
+import RoleSelectionScreen from '../screens/welcome/RoleSelectionScreen';
+import ProductsScreen from '../screens/patient/ProductsScreen';
+import AuthNavigator from './AuthNavigator';
 
-import { Routes } from './routes'; // Импорт маршрутов из routes.js
-import AppNavigator from './AppNavigator'; // Универсальный навигатор
-import AuthScreen from '../screens/auth/AuthScreen'; // Экран авторизации
+const Stack = createStackNavigator();
 
-const Stack = createStackNavigator(); // Создание Stack Navigator
-
-// RootNavigator — корневой компонент навигации
 export default function RootNavigator() {
-  // Состояния компонента
-  const [isLoading, setIsLoading] = useState(true); // Состояние загрузки
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Авторизован ли пользователь
-  const [userRole, setUserRole] = useState(null); // Роль пользователя: patient/doctor
+  const [routes, setRoutes] = useState(null);
 
-  // Проверка токена и роли пользователя
   useEffect(() => {
-    const checkToken = async () => {
+    const checkRole = async () => {
+      console.log('RootNavigator: Начало проверки роли'); // Логирование
       try {
-        const token = await AsyncStorage.getItem('authToken'); // Читаем токен из AsyncStorage
-        const role = await AsyncStorage.getItem('userRole'); // Читаем роль пользователя
-        if (token && role) {
-          setIsAuthenticated(true); // Устанавливаем авторизацию
-          setUserRole(role); // Устанавливаем роль пользователя
+        // Получаем токен из локального хранилища
+        const token = await StorageService.getItem('authToken');
+        console.log('RootNavigator: Токен из хранилища:', token);
+
+        if (!token) {
+          console.log('RootNavigator: Токен отсутствует, переход на AuthNavigator');
+          setRoutes('AuthNavigator');
+          return;
+        }
+
+        // Делаем запрос через userService
+        const userData = await userService.getUser(token);
+        console.log('RootNavigator: Данные пользователя из API:', userData);
+
+        const roleId = userData?.data?.role?.id;
+
+        if (roleId === 0) {
+          console.log('RootNavigator: Пользователь - пациент');
+          setRoutes('Routes.patient');
+        } else if (roleId === 5) {
+          console.log('RootNavigator: Пользователь - врач, переход на RoleSelectionScreen');
+          setRoutes('RoleSelectionScreen');
         } else {
-          setIsAuthenticated(false); // Если нет токена или роли — не авторизован
+          console.log('RootNavigator: Неизвестная роль, переход на AuthNavigator');
+          setRoutes('AuthNavigator');
         }
       } catch (error) {
-        console.error('Ошибка при проверке токена:', error); // Логируем ошибку
-      } finally {
-        setIsLoading(false); // Завершаем состояние загрузки
+        console.error('RootNavigator: Ошибка при проверке роли:', error);
+        setRoutes('AuthNavigator');
       }
     };
 
-    checkToken();
-  }, []); // Пустой массив зависимостей — хук срабатывает один раз при монтировании
-
-  // Показ индикатора загрузки, пока идет проверка токена
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
+    checkRole();
+  }, []);
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {isAuthenticated ? (
-          // Если пользователь авторизован
-          <Stack.Screen
-            name="AppNavigator"
-            component={() =>
-              <AppNavigator routes={userRole === 'patient' ? Routes.patient : Routes.doctor} />
-            }
-          />
-        ) : (
-          // Если пользователь не авторизован
-          <Stack.Screen name="AuthScreen" component={AuthScreen} />
+        {routes === 'Routes.patient' && <Stack.Screen name="Products" component={ProductsScreen} />}
+        {routes === 'RoleSelectionScreen' && (
+          <Stack.Screen name="RoleSelection" component={RoleSelectionScreen} />
         )}
+        {routes === 'AuthNavigator' && <Stack.Screen name="Auth" component={AuthNavigator} />}
       </Stack.Navigator>
     </NavigationContainer>
   );
