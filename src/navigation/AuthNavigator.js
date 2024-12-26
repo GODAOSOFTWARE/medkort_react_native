@@ -7,6 +7,8 @@ import PinConfirmScreen from '../screens/auth/PinConfirmScreen'; // Экран �
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen'; // Экран приветствия
 import RoleSelectionScreen from '../screens/onboarding/RoleSelectionScreen'; // Экран выбора роли
 import Welcome from '../screens/onboarding/WelcomeScreen'
+import PatinetProfile from '../screens/patient/profile/ProfileScreen';
+import AdminProfile from '../screens/admin/AdminDashboard';
 
 // Создаём стек навигации
 const Stack = createStackNavigator();
@@ -33,6 +35,14 @@ export default function AuthNavigator() {
       
       {/* Экран выбора роли */}
       <Stack.Screen name="RoleSelectionScreen" component={RoleSelectionScreen} />
+
+      {/* Переход в кабинет пациента */}
+      <Stack.Screen name="PatinetProfile" component={PatinetProfile} />
+
+      {/* Переход в кабинет Админа */}
+      <Stack.Screen name="AdminProfile" component={AdminProfile} />
+
+
 
       
     </Stack.Navigator>

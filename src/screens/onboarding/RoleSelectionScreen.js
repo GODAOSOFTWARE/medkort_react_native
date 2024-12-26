@@ -12,10 +12,10 @@ export default function RoleSelectionScreen({ route, navigation }) {
   const handleRoleSelect = (roleKey) => {
     console.log(`RoleSelectionScreen: Выбрана роль - ${roleKey}`);
     if (roleKey === 'patient') {
-      navigation.replace('ProductsScreen'); // Переход в кабинет пациента
-    } else if (roleKey === 'doctor' || roleKey === 'admin') {
+      navigation.replace('PatinetProfile'); // Переход в кабинет пациента
+    } else if (roleKey === 'admin') {
       // "Администратор" временно считается как "Врач"
-      navigation.replace('DoctorDashboard'); // Переход в кабинет врача
+      navigation.replace('AdminProfile'); // Переход в кабинет врача
     }
   };
 

@@ -46,11 +46,8 @@ export default function WalletScreen() {
     <View style={styles.container}>
       {/* Карточка баланса */}
       <BalanceCard />
-
       {/* Кнопки действий */}
       <ActionButtons />
-
-    
       {/* Список транзакций */}
       <TransactionList transactions={transactions} />
     </View>
