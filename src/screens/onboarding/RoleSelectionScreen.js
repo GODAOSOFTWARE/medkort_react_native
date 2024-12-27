@@ -1,86 +1,103 @@
-// Импорт необходимых модулей
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient'; // Импорт градиента для кнопок
+import { LinearGradient } from 'expo-linear-gradient'; // Градиент для кнопок
+import StorageService from '../../services/storageService'; // Импорт StorageService
 
-// Экран выбора роли
 export default function RoleSelectionScreen({ route, navigation }) {
-  // Получаем параметры, переданные при переходе на экран
   const { options } = route.params;
 
   // Обработчик выбора роли
   const handleRoleSelect = (roleKey) => {
-    console.log(`RoleSelectionScreen: Выбрана роль - ${roleKey}`);
     if (roleKey === 'patient') {
-      navigation.replace('PatinetProfile'); // Переход в кабинет пациента
+      navigation.replace('PatientProfile');
     } else if (roleKey === 'admin') {
-      // "Администратор" временно считается как "Врач"
-      navigation.replace('AdminProfile'); // Переход в кабинет врача
+      navigation.replace('AdminProfile');
+    }
+  };
+
+  // Сброс токена, пин-кода и переход на WelcomeScreen
+  const handleReset = async () => {
+    try {
+      await StorageService.removeItem('authToken'); // Удаляем токен
+      await StorageService.removeItem('pinCode'); // Удаляем пин-код
+      console.log('Токен и пин-код успешно сброшены');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'WelcomeScreen' }], // Переадресация на WelcomeScreen
+      });
+    } catch (error) {
+      console.error('Ошибка при сбросе токена и пин-кода:', error);
     }
   };
 
   return (
     <View style={styles.container}>
-      {/* Заголовок экрана */}
-      <Text style={styles.title}>Вход в личный кабинет</Text>
-      {/* Генерация кнопок на основе переданных опций */}
+      <Text style={styles.title}>Выберите роль</Text>
       {options.map((option) => (
         <TouchableOpacity
           key={option.key}
           style={styles.buttonContainer}
           onPress={() => handleRoleSelect(option.key)}
         >
-          {/* Используем градиент для кнопки */}
           <LinearGradient
-            colors={['#187bcd', '#4e9af1']} // Цвета градиента
-            start={[0, 0]} // Начало градиента
-            end={[1, 1]} // Конец градиента
+            colors={['#187bcd', '#4e9af1']}
+            start={[0, 0]}
+            end={[1, 1]}
             style={styles.button}
           >
-            {/* Текст кнопки */}
             <Text style={styles.buttonText}>{option.label}</Text>
           </LinearGradient>
         </TouchableOpacity>
       ))}
+      {/* Кнопка сброса токена и пин-кода */}
+      <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+        <Text style={styles.resetButtonText}>Сбросить токен и пин-код</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
-// Стили для компонентов
 const styles = StyleSheet.create({
-  // Стиль контейнера экрана
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
   },
-  // Стиль заголовка
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#333',
   },
-  // Контейнер для кнопки (обрезка краев)
   buttonContainer: {
     width: '80%',
     marginVertical: 10,
     borderRadius: 10,
-    overflow: 'hidden', // Обрезаем все элементы за пределами кнопки
+    overflow: 'hidden',
   },
-  // Основной стиль кнопки
   button: {
     width: '100%',
-    paddingVertical: 15, // Высота кнопки
+    paddingVertical: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10, // Скругленные углы
+    borderRadius: 10,
   },
-  // Стиль текста на кнопке
   buttonText: {
     fontSize: 18,
-    color: '#fff', // Белый текст
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  resetButton: {
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#ff5c5c',
+    borderRadius: 10,
+  },
+  resetButtonText: {
+    fontSize: 16,
+    color: '#fff',
     fontWeight: 'bold',
   },
 });

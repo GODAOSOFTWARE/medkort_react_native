@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, Text, Avatar } from 'react-native-paper';
-import AuthService from '../../services/authService'; // Импорт AuthService
-import StorageService from '../../services/storageService'; // Импорт StorageService
+import AuthService from '../../../services/authService'; // Импорт AuthService
+import StorageService from '../../../services/storageService'; // Импорт StorageService
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState(''); // Состояние для email
