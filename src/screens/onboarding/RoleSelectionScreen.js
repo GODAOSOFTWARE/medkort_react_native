@@ -1,92 +1,76 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Для иконок
-import StorageService from '../../services/storageService';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function RoleSelectionScreen({ navigation }) {
+export default function RoleSelectionScreen({ route, navigation }) {
+  const { options } = route.params;
+
+  // Обработчик выбора роли
   const handleRoleSelect = (roleKey) => {
-    if (roleKey === 'patient') {
-      navigation.replace('PatientProfile');
-    } else if (roleKey === 'admin') {
-      navigation.replace('AdminProfile');
-    }
+    console.log(`Выбрано: ${roleKey}`);
+    navigation.navigate('RoleBasedScreen', { roleKey });
   };
 
-  const handleReset = async () => {
+  // Сброс токена и переход на WelcomeScreen
+  const handleDisconnect = async () => {
     try {
-      await StorageService.removeItem('authToken');
-      await StorageService.removeItem('pinCode');
+      console.log("Disconnecting and resetting navigation...");
       navigation.reset({
         index: 0,
         routes: [{ name: 'WelcomeScreen' }],
       });
     } catch (error) {
-      console.error('Ошибка сброса токена:', error);
+      console.error('Ошибка при отключении:', error);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Выберите роль</Text>
-      <Text style={styles.subtitle}>Подберите подходящий интерфейс</Text>
+      {/* Заголовок */}
+      <Text style={styles.title}>ВЫБЕРИТЕ ЛИЧНЫЙ КАБИНЕТ</Text>
+
       
-      {/* Карточка 1 */}
-      <TouchableOpacity
-        style={styles.cardContainer}
-        onPress={() => handleRoleSelect('patient')}
-      >
-        <LinearGradient
-          colors={['#6A85E5', '#3D54DA']}
-          style={styles.cardGradient}
+      {/* Основной текст */}
+      <Text style={styles.mainText}>и нужные Вам функции</Text>
+
+      {/* Карточки ролей */}
+      {options.map((option) => (
+        <TouchableOpacity
+          key={option.key}
+          style={[styles.cardContainer, { backgroundColor: '#FFFFFF' }]}
+          onPress={() => handleRoleSelect(option.key)}
         >
-          <Text style={styles.cardText}>Пациент</Text>
+          <Text style={styles.cardText}>{option.label}</Text>
           <MaterialCommunityIcons
-            name="account-heart"
-            size={24}
-            color="#fff"
+            name={option.icon || 'account-circle'} // Иконка из параметра или стандартная
+            size={28}
+            color={option.color || '#3D54DA'} // Цвет иконки из параметра или стандартный
             style={styles.icon}
           />
-        </LinearGradient>
+        </TouchableOpacity>
+      ))}
+
+      {/* Кнопка Disconnect */}
+      <TouchableOpacity
+        style={[styles.cardContainer, { backgroundColor: '#FFEBEE' }]}
+        onPress={handleDisconnect}
+      >
+        <Text style={[styles.cardText, { color: '#D32F2F' }]}>Назад</Text>
+        <MaterialCommunityIcons
+          name="logout"
+          size={28}
+          color="#D32F2F"
+          style={styles.icon}
+        />
       </TouchableOpacity>
 
-      {/* Карточка 2 */}
-      <TouchableOpacity
-        style={styles.cardContainer}
-        onPress={() => handleRoleSelect('admin')}
-      >
-        <LinearGradient
-          colors={['#6A85E5', '#3D54DA']}
-          style={styles.cardGradient}
-        >
-          <Text style={styles.cardText}>Врач</Text>
-          <MaterialCommunityIcons
-            name="stethoscope"
-            size={24}
-            color="#fff"
-            style={styles.icon}
-          />
-        </LinearGradient>
-      </TouchableOpacity>
-
-      {/* Карточка 3 */}
-      <TouchableOpacity
-        style={styles.cardContainer}
-        onPress={handleReset}
-      >
-        <LinearGradient
-          colors={['#FF5C5C', '#FF8787']}
-          style={styles.cardGradient}
-        >
-          <Text style={styles.cardText}>Выйти</Text>
-          <MaterialCommunityIcons
-            name="logout"
-            size={24}
-            color="#fff"
-            style={styles.icon}
-          />
-        </LinearGradient>
-      </TouchableOpacity>
+      {/* Сноска */}
+      <Text style={styles.footer}>
+        By continuing I agree with{' '}
+        <Text style={styles.link}>Terms & conditions</Text>,{' '}
+        <Text style={styles.link}>Privacy policy</Text>,{' '}
+        <Text style={styles.link}>Cookie policy</Text>
+      </Text>
     </View>
   );
 }
@@ -94,42 +78,60 @@ export default function RoleSelectionScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
-    backgroundColor: '#f9fbfc',
-    alignItems: 'center',
+    paddingTop: 60,
+    paddingHorizontal: 20,
+    backgroundColor: '#FAFAFA', // Светлый фон
     justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#333333', // Тёмный текст
+    textAlign: 'center',
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#555',
+    fontSize: 18,
+    color: '#666666', // Светло-серый текст
+    textAlign: 'center',
     marginBottom: 20,
   },
-  cardContainer: {
-    width: '90%',
-    marginVertical: 10,
-    borderRadius: 10,
-    overflow: 'hidden',
+  mainText: {
+    fontSize: 20,
+    color: '#333333', // Тёмный текст
+    textAlign: 'center',
+    marginBottom: 30,
   },
-  cardGradient: {
+  cardContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 15,
     borderRadius: 10,
+    marginVertical: 10,
+    elevation: 3, // Material Design тень
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
   },
   cardText: {
     fontSize: 18,
-    color: '#fff',
     fontWeight: 'bold',
+    color: '#333333', // Тёмный текст
   },
   icon: {
     marginLeft: 10,
+  },
+  footer: {
+    fontSize: 12,
+    color: '#666666', // Светло-серый текст
+    textAlign: 'center',
+    marginTop: 30,
+  },
+  link: {
+    color: '#FFA726', // Оранжевый цвет ссылок
+    fontWeight: 'bold',
   },
 });
