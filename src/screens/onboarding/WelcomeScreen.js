@@ -12,25 +12,27 @@ export default function WelcomeScreen() {
   const [isLoaderFinished, setIsLoaderFinished] = useState(false); // Завершен ли лоадер
   const scaleValue = new Animated.Value(1); // Для анимации сердца
 
-  // Анимация сердца
+  // Анимация сердца (плавное пульсирование)
   useEffect(() => {
     const animateHeart = () => {
-      Animated.sequence([
-        Animated.timing(scaleValue, {
-          toValue: 1.15, // Увеличение сердца
-          duration: 400,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleValue, {
-          toValue: 1, // Уменьшение сердца
-          duration: 400,
-          useNativeDriver: true,
-        }),
-      ]).start(() => animateHeart()); // Циклический вызов анимации
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(scaleValue, {
+            toValue: 1.1, // Небольшое увеличение сердца
+            duration: 500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(scaleValue, {
+            toValue: 1, // Возврат к изначальному размеру
+            duration: 500,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
     };
 
     animateHeart();
-  }, [scaleValue]);
+  }, []);
 
   // Прогресс-бар
   useEffect(() => {
@@ -134,13 +136,13 @@ export default function WelcomeScreen() {
   }, [isLoaderFinished, navigation]);
 
   return (
-    <LinearGradient colors={['#187bcd', '#4e9af1']} style={styles.container}>
+    <LinearGradient colors={['#f5f5f5', '#e0e0e0']} style={styles.container}>
       <View style={styles.iconContainer}>
         <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
-          <MaterialCommunityIcons name="heart" size={100} color="red" />
+          <MaterialCommunityIcons name="heart-pulse" size={120} color="#ff5c5c" />
         </Animated.View>
         <Text style={styles.title}>Добро пожаловать</Text>
-        <Text style={styles.subtitle}>Идет загрузка приложения...</Text>
+        <Text style={styles.subtitle}>Подготовка приложения...</Text>
       </View>
       <View style={styles.loaderContainer}>
         <Text style={styles.loaderText}>{`${progress.toFixed(0)} %`}</Text>
@@ -162,13 +164,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: '#FFFFFF',
+    color: '#333',
     fontSize: 24,
     marginTop: 20,
     fontWeight: 'bold',
   },
   subtitle: {
-    color: '#FFFFFF',
+    color: '#555',
     fontSize: 16,
     marginTop: 10,
   },
@@ -177,19 +179,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loaderText: {
-    color: '#FFFFFF',
+    color: '#333',
     fontSize: 18,
     marginBottom: 10,
   },
   loader: {
     width: '80%',
     height: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#e0e0e0',
     borderRadius: 5,
     overflow: 'hidden',
   },
   loaderProgress: {
     height: '100%',
-    backgroundColor: 'red',
+    backgroundColor: '#ff5c5c',
   },
 });
