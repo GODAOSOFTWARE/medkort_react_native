@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TextInput, Checkbox } from 'react-native-paper';
+import { TextInput, Checkbox, Text } from 'react-native-paper';
 import { responsiveSizes } from '../../../styles/styles.responsive'; // Импорт адаптивных размеров
 
 export default function RegistrationForm() {

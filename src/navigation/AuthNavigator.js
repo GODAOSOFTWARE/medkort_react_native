@@ -6,10 +6,11 @@ import PinSetupScreen from '../screens/auth/PinSetupScreen'; // Экран ус�
 import PinConfirmScreen from '../screens/auth/PinConfirmScreen'; // Экран подтверждения PIN-кода
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen'; // Экран приветствия
 import RoleSelectionScreen from '../screens/onboarding/RoleSelectionScreen'; // Экран выбора роли
-import Welcome from '../screens/onboarding/WelcomeScreen'
 import PatinetProfile from '../screens/patient/profile/ProfileScreen';
 import AdminProfile from '../screens/admin/AdminDashboard';
 import DoctorProfile from '../screens/doctor/DoctorDashboard'
+import SignUpScreen from '../screens/auth/signUp/SignUpScreen';
+
 
 // Создаём стек навигации
 const Stack = createStackNavigator();
@@ -18,9 +19,12 @@ const Stack = createStackNavigator();
 export default function AuthNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-     
+
+
+    
+
      {/* Экран авторизации */}
-     <Stack.Screen name="Welcome" component={Welcome} />
+     <Stack.Screen name="Welcome" component={WelcomeScreen} />
      
       {/* Экран авторизации */}
       <Stack.Screen name="Login" component={LoginScreen} />
