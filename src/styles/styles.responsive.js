@@ -35,7 +35,7 @@ export const responsiveSizes = {
   },
   button: {
     height: scale(48), // высота кнопки
-    fontSize: scale(16), // размер текста кнопки
+    fontSize: scale(50), // размер текста кнопки
   },
   input: {
     height: scale(44), // высота поля ввода

@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient'; // Градиент для кнопок
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import StorageService from '../../services/storageService'; // Импорт StorageService
 
 export default function RoleSelectionScreen({ route, navigation }) {
   const { options } = route.params;
@@ -15,6 +17,8 @@ export default function RoleSelectionScreen({ route, navigation }) {
   const handleDisconnect = async () => {
     try {
       console.log("Disconnecting and resetting navigation...");
+      await StorageService.removeItem('authToken'); // Сбрасываем токен
+      await StorageService.removeItem('pinCode'); // Сбрасываем пин-код
       navigation.reset({
         index: 0,
         routes: [{ name: 'WelcomeScreen' }],
@@ -27,39 +31,42 @@ export default function RoleSelectionScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       {/* Заголовок */}
-      <Text style={styles.title}>ВЫБЕРИТЕ ЛИЧНЫЙ КАБИНЕТ</Text>
-
-      
-      {/* Основной текст */}
-      <Text style={styles.mainText}>и нужные Вам функции</Text>
+      <Text style={styles.title}>BOOST YOUR CAREER</Text>
+      <Text style={styles.subtitle}>Get personalized learning plan</Text>
+      <Text style={styles.mainText}>How advanced are your tech skills?</Text>
 
       {/* Карточки ролей */}
       {options.map((option) => (
         <TouchableOpacity
           key={option.key}
-          style={[styles.cardContainer, { backgroundColor: '#FFFFFF' }]}
+          style={styles.cardContainer}
           onPress={() => handleRoleSelect(option.key)}
         >
-          <Text style={styles.cardText}>{option.label}</Text>
-          <MaterialCommunityIcons
-            name={option.icon || 'account-circle'} // Иконка из параметра или стандартная
-            size={28}
-            color={option.color || '#3D54DA'} // Цвет иконки из параметра или стандартный
-            style={styles.icon}
-          />
+          <LinearGradient
+            colors={['#FFA726', '#FF7043']} // Оранжевый градиент для карточек
+            style={styles.gradient}
+          >
+            <Text style={styles.cardText}>{option.label}</Text>
+            <MaterialCommunityIcons
+              name={option.icon || 'account-circle'} // Иконка из параметра или стандартная
+              size={28}
+              color="#FFFFFF" // Белые значки
+              style={styles.icon}
+            />
+          </LinearGradient>
         </TouchableOpacity>
       ))}
 
       {/* Кнопка Disconnect */}
       <TouchableOpacity
-        style={[styles.cardContainer, { backgroundColor: '#FFEBEE' }]}
+        style={styles.disconnectContainer}
         onPress={handleDisconnect}
       >
-        <Text style={[styles.cardText, { color: '#D32F2F' }]}>Назад</Text>
+        <Text style={[styles.cardText, { color: '#FFFFFF' }]}>Назад</Text>
         <MaterialCommunityIcons
           name="logout"
           size={28}
-          color="#D32F2F"
+          color="#FFFFFF" // Белый значок для красной кнопки
           style={styles.icon}
         />
       </TouchableOpacity>
@@ -80,29 +87,55 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 60,
     paddingHorizontal: 20,
-    backgroundColor: '#FAFAFA', // Светлый фон
+    backgroundColor: '#121212', // Темный фон
     justifyContent: 'center',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#333333', // Тёмный текст
+    color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 18,
-    color: '#666666', // Светло-серый текст
+    color: '#AAAAAA',
     textAlign: 'center',
     marginBottom: 20,
   },
   mainText: {
     fontSize: 20,
-    color: '#333333', // Тёмный текст
+    color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: 30,
   },
   cardContainer: {
+    marginVertical: 10,
+    borderRadius: 10,
+    overflow: 'hidden',
+    elevation: 3, // Material Design тень
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+  },
+  gradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 20,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+  },
+  cardText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFFFFF', // Белый текст
+  },
+  icon: {
+    marginLeft: 10,
+  },
+  disconnectContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -110,23 +143,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 10,
     marginVertical: 10,
-    elevation: 3, // Material Design тень
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-  },
-  cardText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333333', // Тёмный текст
-  },
-  icon: {
-    marginLeft: 10,
+    backgroundColor: '#D32F2F', // Красная кнопка
   },
   footer: {
     fontSize: 12,
-    color: '#666666', // Светло-серый текст
+    color: '#AAAAAA',
     textAlign: 'center',
     marginTop: 30,
   },
@@ -135,3 +156,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+

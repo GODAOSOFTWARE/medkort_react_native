@@ -11,11 +11,7 @@ export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isChecked, setIsChecked] = useState(false);
-  const [focusedField, setFocusedField] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleFocus = (field) => setFocusedField(field);
-  const handleBlur = () => setFocusedField(null);
 
   const handleLogin = async () => {
     if (!email.trim()) {
@@ -48,7 +44,7 @@ export default function SignInScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#3D54DA', '#6A85E5']} style={styles.header}>
+      <LinearGradient colors={['#1E3C72', '#2A5298']} style={styles.header}>
         <Text style={styles.headerTitle}>Медкорт</Text>
         <Text style={styles.headerSubtitle}>Врач всегда рядом</Text>
         <View style={styles.iconRow}>
@@ -71,39 +67,29 @@ export default function SignInScreen({ navigation }) {
           value={email}
           onChangeText={setEmail}
           mode="outlined"
-          style={[
-            styles.input,
-            focusedField === 'email' && styles.inputFocused,
-          ]}
-          onFocus={() => handleFocus('email')}
-          onBlur={handleBlur}
-          theme={{ colors: { text: '#333', placeholder: '#aaa', primary: '#3D54DA' } }}
+          style={styles.input}
+          theme={{ colors: { text: '#333', placeholder: '#aaa', primary: '#1E3C72' } }}
         />
         <TextInput
           label="Пароль"
           value={password}
           onChangeText={setPassword}
           mode="outlined"
-          style={[
-            styles.input,
-            focusedField === 'password' && styles.inputFocused,
-          ]}
-          onFocus={() => handleFocus('password')}
-          onBlur={handleBlur}
+          style={styles.input}
           secureTextEntry
-          theme={{ colors: { text: '#333', placeholder: '#aaa', primary: '#3D54DA' } }}
+          theme={{ colors: { text: '#333', placeholder: '#aaa', primary: '#1E3C72' } }}
         />
         <View style={styles.checkboxRow}>
           <Checkbox
             status={isChecked ? 'checked' : 'unchecked'}
             onPress={() => setIsChecked(!isChecked)}
-            color="#3D54DA"
+            color="#1E3C72"
           />
           <Text style={styles.checkboxText}>Запомнить меня</Text>
         </View>
         <TouchableOpacity onPress={handleLogin} disabled={isLoading}>
           <LinearGradient
-            colors={['#3D54DA', '#6A85E5']}
+            colors={['#1E3C72', '#2A5298']}
             style={styles.signInButton}
           >
             <Text style={styles.signInButtonText}>Войти</Text>
@@ -172,10 +158,6 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: responsiveSizes.margin.medium,
     backgroundColor: '#fff',
-  },
-  inputFocused: {
-    borderColor: '#3D54DA',
-    borderWidth: 1.5,
   },
   checkboxRow: {
     flexDirection: 'row',
