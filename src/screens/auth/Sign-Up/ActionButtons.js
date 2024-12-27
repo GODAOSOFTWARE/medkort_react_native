@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
-import { buttonStyles } from '../../styles/styles.buttons';
+import { buttonStyles } from '../../../styles/styles.buttons'; // Импорт стилей кнопок
 
 export default function ActionButtons() {
   return (
@@ -18,7 +18,7 @@ export default function ActionButtons() {
         onPress={() => console.log('Sign In')}
         style={buttonStyles.secondary}
       >
-        Sign In
+        Already have an account? Sign In
       </Button>
     </View>
   );

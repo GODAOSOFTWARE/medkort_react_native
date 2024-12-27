@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { buttonStyles } from '../../styles/styles.buttons';
+import { buttonStyles } from '../../../styles/styles.buttons'; // Импорт стилей кнопок
 
 export default function SocialButtons() {
   return (

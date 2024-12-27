@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Checkbox } from 'react-native-paper';
-import { responsiveSizes } from '../../styles/styles.responsive';
+import { responsiveSizes } from '../../../styles/styles.responsive'; // Импорт адаптивных размеров
 
 export default function RegistrationForm() {
   const [name, setName] = useState('');
@@ -38,7 +38,7 @@ export default function RegistrationForm() {
           status={isChecked ? 'checked' : 'unchecked'}
           onPress={() => setIsChecked(!isChecked)}
         />
-        <Text style={styles.checkboxLabel}>I agree with the Terms and Conditions</Text>
+        <Text style={styles.checkboxLabel}>I agree to the Terms and Conditions</Text>
       </View>
     </View>
   );
