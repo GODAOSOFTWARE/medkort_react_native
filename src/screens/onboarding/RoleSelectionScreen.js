@@ -1,58 +1,38 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient'; // Градиент для кнопок
-import StorageService from '../../services/storageService'; // Импорт StorageService
+import { LinearGradient } from 'expo-linear-gradient';
 
-export default function RoleSelectionScreen({ route, navigation }) {
-  const { options } = route.params;
-
-  // Обработчик выбора роли
+export default function RoleSelectionScreen({ navigation }) {
   const handleRoleSelect = (roleKey) => {
     if (roleKey === 'patient') {
       navigation.replace('PatientProfile');
-    } else if (roleKey === 'admin') {
-      navigation.replace('AdminProfile');
-    }
-  };
-
-  // Сброс токена, пин-кода и переход на WelcomeScreen
-  const handleReset = async () => {
-    try {
-      await StorageService.removeItem('authToken'); // Удаляем токен
-      await StorageService.removeItem('pinCode'); // Удаляем пин-код
-      console.log('Токен и пин-код успешно сброшены');
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'WelcomeScreen' }], // Переадресация на WelcomeScreen
-      });
-    } catch (error) {
-      console.error('Ошибка при сбросе токена и пин-кода:', error);
+    } else if (roleKey === 'doctor') {
+      navigation.replace('DoctorProfile');
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Выберите роль</Text>
-      {options.map((option) => (
-        <TouchableOpacity
-          key={option.key}
-          style={styles.buttonContainer}
-          onPress={() => handleRoleSelect(option.key)}
-        >
-          <LinearGradient
-            colors={['#3D54DA', '#3D54DA']}
-            start={[0, 0]}
-            end={[1, 1]}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>{option.label}</Text>
+      <Text style={styles.subtitle}>Подберите подходящий интерфейс</Text>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={() => handleRoleSelect('patient')} style={styles.roleButton}>
+          <LinearGradient colors={['#6A85E5', '#3D54DA']} style={styles.roleButtonGradient}>
+            <Text style={styles.roleButtonText}>Пациент</Text>
           </LinearGradient>
         </TouchableOpacity>
-      ))}
-      {/* Кнопка сброса токена и пин-кода */}
-      <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
-        <Text style={styles.resetButtonText}>Сбросить токен и пин-код</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleRoleSelect('doctor')} style={styles.roleButton}>
+          <LinearGradient colors={['#6A85E5', '#3D54DA']} style={styles.roleButtonGradient}>
+            <Text style={styles.roleButtonText}>Врач</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.agreementText}>
+        Нажимая на кнопку, вы соглашаетесь с{' '}
+        <Text style={styles.link}>Условиями использования</Text>,{' '}
+        <Text style={styles.link}>Политикой конфиденциальности</Text> и{' '}
+        <Text style={styles.link}>Политикой использования файлов cookie</Text>.
+      </Text>
     </View>
   );
 }
@@ -60,44 +40,51 @@ export default function RoleSelectionScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    paddingTop: 40, // Отступ для шапки
+    backgroundColor: '#f9fbfc', // Светлый фон
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
     color: '#333',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   buttonContainer: {
-    width: '80%',
-    marginVertical: 10,
+    width: '100%',
+    marginVertical: 20,
+  },
+  roleButton: {
+    marginBottom: 15,
     borderRadius: 10,
     overflow: 'hidden',
   },
-  button: {
-    width: '100%',
+  roleButtonGradient: {
     paddingVertical: 15,
-    justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
   },
-  buttonText: {
+  roleButtonText: {
     fontSize: 18,
-    color: '#fff',
     fontWeight: 'bold',
-  },
-  resetButton: {
-    marginTop: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#ff5c5c',
-    borderRadius: 10,
-  },
-  resetButtonText: {
-    fontSize: 16,
     color: '#fff',
-    fontWeight: 'bold',
+  },
+  agreementText: {
+    fontSize: 14,
+    color: '#555',
+    textAlign: 'center',
+    marginTop: 30,
+  },
+  link: {
+    color: '#3D54DA',
+    textDecorationLine: 'underline',
   },
 });
