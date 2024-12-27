@@ -40,7 +40,7 @@ export default function RoleSelectionScreen({ route, navigation }) {
           onPress={() => handleRoleSelect(option.key)}
         >
           <LinearGradient
-            colors={['#187bcd', '#4e9af1']}
+            colors={['#3D54DA', '#3D54DA']}
             start={[0, 0]}
             end={[1, 1]}
             style={styles.button}

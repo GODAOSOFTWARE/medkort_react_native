@@ -1,19 +1,19 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const screenWidth = Dimensions.get('window').width; // Получаем ширину экрана
+const elementWidth = screenWidth * 0.9; // Общая ширина для кнопки и полей (90% экрана)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
     backgroundColor: '#f5f5f5',
   },
-  logoContainer: {
-    marginBottom: 30,
-    alignItems: 'center',
-  },
   logo: {
-    width: 100,
-    height: 100,
+    backgroundColor: '#3D54DA',
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
@@ -21,29 +21,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#333',
   },
-  inputContainer: {
-    width: '80%',
-    marginBottom: 20,
-  },
   input: {
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 10,
+    width: elementWidth, // Поля ввода шириной с кнопкой
+    marginBottom: 20,
+    alignSelf: 'center', // Центровка на экране
   },
   button: {
-    backgroundColor: '#187bcd',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    marginTop: 10,
+    width: elementWidth, // Кнопка задаёт ширину
+    alignSelf: 'center', // Центровка на экране
+    paddingVertical: 10,
     borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    backgroundColor: '#3D54DA', // Синий цвет кнопки
   },
 });
 

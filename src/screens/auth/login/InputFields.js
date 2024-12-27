@@ -1,22 +1,33 @@
 import React from 'react';
-import { View, TextInput } from 'react-native';
+import { View } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import styles from './styles';
 
-export default function InputFields({ email, password, onEmailChange, onPasswordChange }) {
+export default function InputFields({ email, setEmail, password, setPassword, showPassword, setShowPassword }) {
   return (
-    <View style={styles.inputContainer}>
+    <View>
       <TextInput
-        placeholder="Введите email"
+        label="Email"
         value={email}
-        onChangeText={onEmailChange}
+        onChangeText={setEmail}
+        mode="outlined"
         style={styles.input}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
       <TextInput
-        placeholder="Введите пароль"
-        secureTextEntry
+        label="Пароль"
         value={password}
-        onChangeText={onPasswordChange}
+        onChangeText={setPassword}
+        secureTextEntry={!showPassword}
+        mode="outlined"
         style={styles.input}
+        right={
+          <TextInput.Icon
+            icon={showPassword ? 'eye-off' : 'eye'}
+            onPress={() => setShowPassword(!showPassword)}
+          />
+        }
       />
     </View>
   );

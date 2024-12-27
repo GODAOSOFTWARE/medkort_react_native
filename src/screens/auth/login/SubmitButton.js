@@ -1,15 +1,17 @@
 import React from 'react';
-import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { Button } from 'react-native-paper';
 import styles from './styles';
 
-export default function SubmitButton({ onPress, isLoading }) {
+export default function SubmitButton({ handleLogin, isLoading }) {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress} disabled={isLoading}>
-      {isLoading ? (
-        <ActivityIndicator color="#fff" />
-      ) : (
-        <Text style={styles.buttonText}>Войти</Text>
-      )}
-    </TouchableOpacity>
+    <Button
+      mode="contained"
+      onPress={handleLogin}
+      style={styles.button}
+      loading={isLoading}
+      disabled={isLoading}
+    >
+      Войти
+    </Button>
   );
 }

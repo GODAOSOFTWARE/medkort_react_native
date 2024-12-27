@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     height: 15,
     borderRadius: 15,
     borderWidth: 2,
-    borderColor: '#6200ea',
+    borderColor: '#3D54DA',
     margin: 5,
   },
   pinDotFilled: {

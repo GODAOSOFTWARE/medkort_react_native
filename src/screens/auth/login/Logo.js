@@ -1,15 +1,7 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { Avatar } from 'react-native-paper';
 import styles from './styles';
 
 export default function Logo() {
-  return (
-    <View style={styles.logoContainer}>
-      <Image
-        source={require('../../../assets/logo.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-    </View>
-  );
+  return <Avatar.Icon size={100} icon="account-circle" style={styles.logo} />;
 }
