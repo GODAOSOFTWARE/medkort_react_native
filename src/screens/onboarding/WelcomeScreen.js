@@ -100,8 +100,8 @@ export default function WelcomeScreen() {
         <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
           <MaterialCommunityIcons name="hospital-box" size={120} color="#FFFFFF" />
         </Animated.View>
-        <Text style={styles.title}>Добро пожаловать</Text>
-        <Text style={styles.subtitle}>Подготовка приложения...</Text>
+        <Text style={styles.title}>Приложение загружается</Text>
+        <Text style={styles.subtitle}>Проверяем наличие учетной записи...</Text>
       </View>
       <View style={styles.loaderContainer}>
         <Text style={styles.loaderText}>{`${progress.toFixed(0)} %`}</Text>

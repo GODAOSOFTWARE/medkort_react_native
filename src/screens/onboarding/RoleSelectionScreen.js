@@ -29,11 +29,11 @@ export default function RoleSelectionScreen({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={['#1E3C72', '#2A5298']} style={styles.container}>
       {/* Заголовок */}
-      <Text style={styles.title}>BOOST YOUR CAREER</Text>
-      <Text style={styles.subtitle}>Get personalized learning plan</Text>
-      <Text style={styles.mainText}>How advanced are your tech skills?</Text>
+      <Text style={styles.title}>ВЫБЕРИТЕ РОЛЬ</Text>
+      <Text style={styles.subtitle}>Используйте возможности Медкорт</Text>
+    
 
       {/* Карточки ролей */}
       {options.map((option) => (
@@ -43,14 +43,20 @@ export default function RoleSelectionScreen({ route, navigation }) {
           onPress={() => handleRoleSelect(option.key)}
         >
           <LinearGradient
-            colors={['#FFA726', '#FF7043']} // Оранжевый градиент для карточек
+            colors={['rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.7)']} // Градиент карточек
             style={styles.gradient}
           >
             <Text style={styles.cardText}>{option.label}</Text>
             <MaterialCommunityIcons
               name={option.icon || 'account-circle'} // Иконка из параметра или стандартная
               size={28}
-              color="#FFFFFF" // Белые значки
+              color={
+                option.key === 'patient'
+                  ? '#34A853'
+                  : option.key === 'admin'
+                  ? '#FBBC05'
+                  : '#4285F4'
+              } // Цвет иконки
               style={styles.icon}
             />
           </LinearGradient>
@@ -58,10 +64,7 @@ export default function RoleSelectionScreen({ route, navigation }) {
       ))}
 
       {/* Кнопка Disconnect */}
-      <TouchableOpacity
-        style={styles.disconnectContainer}
-        onPress={handleDisconnect}
-      >
+      <TouchableOpacity style={styles.disconnectContainer} onPress={handleDisconnect}>
         <Text style={[styles.cardText, { color: '#FFFFFF' }]}>Назад</Text>
         <MaterialCommunityIcons
           name="logout"
@@ -78,7 +81,7 @@ export default function RoleSelectionScreen({ route, navigation }) {
         <Text style={styles.link}>Privacy policy</Text>,{' '}
         <Text style={styles.link}>Cookie policy</Text>
       </Text>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -87,7 +90,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 60,
     paddingHorizontal: 20,
-    backgroundColor: '#121212', // Темный фон
     justifyContent: 'center',
   },
   title: {
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
-    color: '#AAAAAA',
+    color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFFFFF', // Белый текст
+    color: '#333333',
   },
   icon: {
     marginLeft: 10,
@@ -156,4 +158,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
