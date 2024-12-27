@@ -1,7 +1,7 @@
 // Импорт необходимых модулей и компонентов
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from '../screens/auth/login/LoginScreen'; // Экран авторизации
+import LoginScreen from '../screens/auth/LoginScreen'; // Экран авторизации
 import PinSetupScreen from '../screens/auth/PinSetupScreen'; // Экран установки PIN-кода
 import PinConfirmScreen from '../screens/auth/PinConfirmScreen'; // Экран подтверждения PIN-кода
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen'; // Экран приветствия

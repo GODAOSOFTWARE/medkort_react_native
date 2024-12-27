@@ -17,13 +17,13 @@ export default function WelcomeScreen() {
     const animateHeart = () => {
       Animated.sequence([
         Animated.timing(scaleValue, {
-          toValue: 1.3, // Увеличение сердца
-          duration: 300,
+          toValue: 1.15, // Увеличение сердца
+          duration: 400,
           useNativeDriver: true,
         }),
         Animated.timing(scaleValue, {
           toValue: 1, // Уменьшение сердца
-          duration: 300,
+          duration: 400,
           useNativeDriver: true,
         }),
       ]).start(() => animateHeart()); // Циклический вызов анимации
@@ -41,9 +41,9 @@ export default function WelcomeScreen() {
           setIsLoaderFinished(true);
           return 100;
         }
-        return prev + 2; // Увеличение на 2%
+        return prev + 5; // Увеличение на 5%
       });
-    }, 100);
+    }, 125); // Ускоренная загрузка (100% за 2.5 секунды)
 
     return () => clearInterval(interval);
   }, []);

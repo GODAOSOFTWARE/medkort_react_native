@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
 import { TextInput, Button, Text, Avatar } from 'react-native-paper'; // Используем paper-компоненты
-import AuthService from '../../../services/authService'; // Импорт AuthService
-import StorageService from '../../../services/storageService'; // Импорт StorageService
-import styles from './styles'; // Импорт стилей
+import AuthService from '../../services/authService'; // Импорт AuthService
+import StorageService from '../../services/storageService'; // Импорт StorageService
+import styles from './login/styles'; // Импорт стилей
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
