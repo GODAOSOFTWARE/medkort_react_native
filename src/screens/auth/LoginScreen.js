@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { TextInput, Button, Checkbox } from 'react-native-paper';
+import { TextInput, Checkbox } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import responsiveSizes from '../../styles/styles.responsive';
@@ -101,15 +101,14 @@ export default function SignInScreen({ navigation }) {
           />
           <Text style={styles.checkboxText}>Запомнить меня</Text>
         </View>
-        <Button
-          mode="contained"
-          onPress={handleLogin}
-          style={styles.signInButton}
-          loading={isLoading}
-          disabled={isLoading}
-        >
-          Войти
-        </Button>
+        <TouchableOpacity onPress={handleLogin} disabled={isLoading}>
+          <LinearGradient
+            colors={['#3D54DA', '#6A85E5']}
+            style={styles.signInButton}
+          >
+            <Text style={styles.signInButtonText}>Войти</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -139,8 +138,9 @@ const styles = StyleSheet.create({
   },
   iconRow: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginHorizontal: responsiveSizes.margin.small,
+    justifyContent: 'space-between',
+    marginHorizontal: responsiveSizes.margin.large,
+    marginTop: responsiveSizes.margin.medium,
   },
   socialButton: {
     backgroundColor: '#fff',
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 6,
+    marginHorizontal: responsiveSizes.margin.medium,
   },
   form: {
     flex: 2,
@@ -186,8 +187,15 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   signInButton: {
-    backgroundColor: '#3D54DA',
-    paddingVertical: responsiveSizes.padding.small,
-    borderRadius: responsiveSizes.margin.small,
+    paddingVertical: responsiveSizes.padding.medium,
+    borderRadius: responsiveSizes.margin.large,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: responsiveSizes.margin.medium,
+  },
+  signInButtonText: {
+    color: '#fff',
+    fontSize: responsiveSizes.text.medium,
+    fontWeight: 'bold',
   },
 });
