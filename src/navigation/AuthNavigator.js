@@ -9,7 +9,7 @@ import RoleSelectionScreen from '../screens/onboarding/RoleSelectionScreen'; // 
 import PatinetProfile from '../screens/patient/profile/ProfileScreen';
 import AdminProfile from '../screens/admin/AdminDashboard';
 import DoctorProfile from '../screens/doctor/DoctorDashboard'
-import SignUpScreen from '../screens/auth/signUp/SignUpScreen';
+
 
 
 // Создаём стек навигации

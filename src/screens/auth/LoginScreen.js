@@ -1,40 +1,71 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { TextInput, Button, Checkbox } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import responsiveSizes from '../../styles/styles.responsive';
+import AuthService from '../../services/authService';
+import StorageService from '../../services/storageService';
 
-export default function SignInScreen() {
+export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFocus = (field) => setFocusedField(field);
   const handleBlur = () => setFocusedField(null);
 
+  const handleLogin = async () => {
+    if (!email.trim()) {
+      Alert.alert('Ошибка', 'Поле "Email" не может быть пустым.');
+      return;
+    }
+    if (!email.includes('@')) {
+      Alert.alert('Ошибка', 'Введите корректный "Email".');
+      return;
+    }
+    if (!password.trim()) {
+      Alert.alert('Ошибка', 'Поле "Пароль" не может быть пустым.');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const token = await AuthService.login(email.trim(), password.trim());
+      await StorageService.setItem('authToken', token);
+      Alert.alert('Успешно', 'Вы успешно авторизовались.', [
+        { text: 'ОК', onPress: () => navigation.navigate('PinSetup') },
+      ]);
+    } catch (error) {
+      console.error('Ошибка авторизации:', error);
+      Alert.alert('Ошибка', 'Неверный логин или пароль.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      {/* Gradient Header */}
       <LinearGradient colors={['#3D54DA', '#6A85E5']} style={styles.header}>
         <Text style={styles.headerTitle}>Медкорт</Text>
         <Text style={styles.headerSubtitle}>Врач всегда рядом</Text>
         <View style={styles.iconRow}>
           <TouchableOpacity style={styles.socialButton}>
-            <MaterialCommunityIcons name="facebook" size={24} color="#4267B2" />
+            <MaterialCommunityIcons name="facebook" size={responsiveSizes.icon.medium} color="#4267B2" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
-            <MaterialCommunityIcons name="apple" size={24} color="#000" />
+            <MaterialCommunityIcons name="apple" size={responsiveSizes.icon.medium} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
-            <MaterialCommunityIcons name="google" size={24} color="#DB4437" />
+            <MaterialCommunityIcons name="google" size={responsiveSizes.icon.medium} color="#DB4437" />
           </TouchableOpacity>
         </View>
       </LinearGradient>
 
-      {/* Form */}
       <View style={styles.form}>
-        <Text style={styles.formTitle}>Или войдите по адресу электронной почты</Text>
+        <Text style={styles.formTitle}>Войдите, чтобы начать</Text>
         <TextInput
           label="Email"
           value={email}
@@ -70,7 +101,13 @@ export default function SignInScreen() {
           />
           <Text style={styles.checkboxText}>Запомнить меня</Text>
         </View>
-        <Button mode="contained" onPress={() => {}} style={styles.signInButton}>
+        <Button
+          mode="contained"
+          onPress={handleLogin}
+          style={styles.signInButton}
+          loading={isLoading}
+          disabled={isLoading}
+        >
           Войти
         </Button>
       </View>
@@ -87,27 +124,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingVertical: responsiveSizes.padding.large,
   },
   headerTitle: {
-    fontSize: 28,
+    fontSize: responsiveSizes.text.large,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 8,
+    marginBottom: responsiveSizes.margin.medium,
   },
   headerSubtitle: {
-    fontSize: 16,
+    fontSize: responsiveSizes.text.medium,
     color: '#fff',
-    marginBottom: 20,
+    marginBottom: responsiveSizes.margin.large,
   },
   iconRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 15,
+    marginHorizontal: responsiveSizes.margin.small,
   },
   socialButton: {
     backgroundColor: '#fff',
-    padding: 12,
+    padding: responsiveSizes.padding.medium,
     borderRadius: 50,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -118,38 +155,39 @@ const styles = StyleSheet.create({
   form: {
     flex: 2,
     backgroundColor: '#fff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-    marginTop: -40,
+    borderTopLeftRadius: responsiveSizes.padding.large,
+    borderTopRightRadius: responsiveSizes.padding.large,
+    paddingHorizontal: responsiveSizes.padding.medium,
+    paddingVertical: responsiveSizes.padding.large,
+    marginTop: -responsiveSizes.margin.large,
   },
   formTitle: {
-    fontSize: 16,
+    fontSize: responsiveSizes.text.medium,
     color: '#333',
-    marginBottom: 20,
+    marginBottom: responsiveSizes.margin.large,
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   input: {
-    marginBottom: 15,
+    marginBottom: responsiveSizes.margin.medium,
     backgroundColor: '#fff',
   },
   inputFocused: {
-    borderColor: 'linear-gradient(90deg, #3D54DA, #6A85E5)',
+    borderColor: '#3D54DA',
     borderWidth: 1.5,
   },
   checkboxRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: responsiveSizes.margin.medium,
   },
   checkboxText: {
-    marginLeft: 8,
+    marginLeft: responsiveSizes.margin.small,
     color: '#333',
   },
   signInButton: {
     backgroundColor: '#3D54DA',
-    paddingVertical: 12,
-    borderRadius: 8,
+    paddingVertical: responsiveSizes.padding.small,
+    borderRadius: responsiveSizes.margin.small,
   },
 });
