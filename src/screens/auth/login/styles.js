@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     width: elementWidth, // Кнопка задаёт ширину
     alignSelf: 'center', // Центровка на экране
     paddingVertical: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     backgroundColor: '#3D54DA', // Синий цвет кнопки
   },
 });
