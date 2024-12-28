@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Text, Button } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AuthService from '../../services/authService'; // Импортируем AuthService для получения роли
+import StorageService from '../../services/storageService'; // Используем StorageService для работы с хранилищем
 
 export default function PinConfirmScreen({ route, navigation }) {
   const [confirmPin, setConfirmPin] = useState('');
@@ -13,23 +12,25 @@ export default function PinConfirmScreen({ route, navigation }) {
       const newPin = confirmPin + digit;
       setConfirmPin(newPin);
 
-      console.log('Ввод подтверждения PIN:', newPin); // Логируем подтверждение PIN
+      console.log('Ввод подтверждения PIN:', newPin); // Логируем ввод
 
       if (newPin.length === 4) {
         if (newPin === pin) {
           console.log('PIN успешно подтвержден:', newPin); // Успешное подтверждение
           try {
-            // Сохраняем PIN в AsyncStorage
-            await AsyncStorage.setItem('userPin', newPin);
+            // Сохраняем PIN в хранилище
+            await StorageService.setItem('userPin', newPin);
 
-            // Получаем роль пользователя
-            const authToken = await AsyncStorage.getItem('authToken');
-            const user = await AuthService.getUser(authToken); // Предполагается, что API вернет данные пользователя
-            console.log('Данные пользователя:', user);
+            // Получаем токен и роль пользователя
+            const authToken = await StorageService.getItem('authToken');
+            const userRole = await StorageService.getItem('userRole'); // Предполагается, что роль уже сохранена
 
-            if (user?.role === 0) {
-              // Если роль "пациент" (0), перенаправляем в дашборд пациента
-              navigation.navigate('PatinetProfile');
+            console.log(`authToken: ${authToken}, userRole: ${userRole}`);
+
+            // Переход в зависимости от роли пользователя
+            if (userRole === '0') {
+              // Если роль "пациент" (0), перенаправляем на дашборд пациента
+              navigation.navigate('PatientProfileScreen');
             } else {
               // Если роль не "пациент", перенаправляем на экран выбора роли
               navigation.navigate('RoleSelectionScreen');
@@ -59,6 +60,7 @@ export default function PinConfirmScreen({ route, navigation }) {
         Подтвердите PIN-код
       </Text>
 
+      {/* Индикатор для PIN */}
       <View style={styles.pinContainer}>
         {[0, 1, 2, 3].map((_, index) => (
           <View
@@ -71,6 +73,7 @@ export default function PinConfirmScreen({ route, navigation }) {
         ))}
       </View>
 
+      {/* Клавиатура для ввода PIN */}
       <View style={styles.keyboard}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '←'].map((key, index) => (
           <Button
