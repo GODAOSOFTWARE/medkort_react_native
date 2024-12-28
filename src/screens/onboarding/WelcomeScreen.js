@@ -143,15 +143,20 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   startButton: {
-    backgroundColor: '#FFA500',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     width: '100%',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 6,
   },
   startButtonText: {
-    color: '#FFFFFF',
+    color: '#333333',
     fontWeight: 'bold',
   },
   footerText: {
