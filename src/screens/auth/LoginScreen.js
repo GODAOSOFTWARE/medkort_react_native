@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   signInButton: {
-    paddingVertical: responsiveSizes.padding.medium,
+    paddingVertical: responsiveSizes.padding.large,
     borderRadius: responsiveSizes.margin.large,
     alignItems: 'center',
     justifyContent: 'center',
