@@ -46,6 +46,7 @@ const responsiveSizes = {
     medium: scale(48),
     large: scale(56),
     extraLarge: scale(78),
+    xxl: '100%', // Занимает всю ширину
   },
   input: {
     height: scale(44),
