@@ -2,48 +2,56 @@ import { Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
-// Базовая ширина экрана (например, iPhone X с шириной 375px)
-const BASE_WIDTH = 375;
+// Определяем базовые размеры для iPhone 14 Pro Max
+const LARGE_BASE_WIDTH = 430;
 
 // Функция масштабирования
-const scale = (size) => (width / BASE_WIDTH) * size;
+const scale = (size, baseWidth = LARGE_BASE_WIDTH) => (width / baseWidth) * size;
 
-// Экспортируем размеры для использования в стилях
-export const responsiveSizes = {
+// Определяем категории экранов
+const getSizeCategory = () => {
+  if (width <= 360) {
+    return 'small';
+  } else if (width > 360 && width <= 414) {
+    return 'medium';
+  } else {
+    return 'large';
+  }
+};
+
+// Экспортируем размеры для различных категорий
+const responsiveSizes = {
   padding: {
-    small: scale(8), // маленький отступ
-    medium: scale(12), // средний отступ
-    large: scale(16), // большой отступ
+    small: scale(8),
+    medium: scale(12),
+    large: scale(16),
   },
   text: {
-    small: scale(12), // маленький текст
-    medium: scale(16), // средний текст
-    large: scale(20), // большой текст
+    small: scale(12),
+    medium: scale(16),
+    large: scale(20),
   },
   icon: {
-    small: scale(16), // маленькая иконка
-    medium: scale(24), // средняя иконка
-    large: scale(32), // большая иконка
+    small: scale(16),
+    medium: scale(24),
+    large: scale(32),
   },
   margin: {
-    small: scale(8), // маленький отступ
-    medium: scale(12), // средний отступ
-    large: scale(16), // большой отступ
-  },
-  header: {
-    height: scale(64), // высота заголовка
+    small: scale(8),
+    medium: scale(12),
+    large: scale(16),
   },
   button: {
-    small: scale(40), // маленькая кнопка
-    medium: scale(48), // стандартная кнопка
-    large: scale(56), // большая кнопка
-    extraLarge: scale(78), // новая кнопка для крупных действий
+    small: scale(40),
+    medium: scale(48),
+    large: scale(56),
+    extraLarge: scale(78),
   },
   input: {
-    height: scale(44), // высота поля ввода
-    fontSize: scale(14), // размер текста в поле ввода
+    height: scale(44),
+    fontSize: scale(14),
   },
 };
 
-// Экспорт для использования в компоненте
-export default responsiveSizes;
+// Экспортируем все элементы
+export { responsiveSizes, getSizeCategory };

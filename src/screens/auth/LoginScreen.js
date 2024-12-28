@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { TextInput, Checkbox } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import responsiveSizes from '../../styles/styles.responsive';
+import { responsiveSizes, getSizeCategory } from '../../styles/styles.responsive';
 import AuthService from '../../services/authService';
 import StorageService from '../../services/storageService';
 
@@ -12,6 +12,8 @@ export default function SignInScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const sizeCategory = getSizeCategory(); // Получаем категорию экрана
 
   const handleLogin = async () => {
     if (!email.trim()) {
@@ -49,13 +51,13 @@ export default function SignInScreen({ navigation }) {
         <Text style={styles.headerSubtitle}>Врач всегда рядом</Text>
         <View style={styles.iconRow}>
           <TouchableOpacity style={styles.socialButton}>
-            <MaterialCommunityIcons name="facebook" size={responsiveSizes.icon.medium} color="#4267B2" />
+            <MaterialCommunityIcons name="facebook" size={responsiveSizes.icon[sizeCategory]} color="#4267B2" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
-            <MaterialCommunityIcons name="apple" size={responsiveSizes.icon.medium} color="#000" />
+            <MaterialCommunityIcons name="apple" size={responsiveSizes.icon[sizeCategory]} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
-            <MaterialCommunityIcons name="google" size={responsiveSizes.icon.medium} color="#DB4437" />
+            <MaterialCommunityIcons name="google" size={responsiveSizes.icon[sizeCategory]} color="#DB4437" />
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -142,8 +144,8 @@ const styles = StyleSheet.create({
   form: {
     flex: 2,
     backgroundColor: '#fff',
-    borderTopLeftRadius: responsiveSizes.padding.large,
-    borderTopRightRadius: responsiveSizes.padding.large,
+    borderTopLeftRadius: responsiveSizes.margin.large,
+    borderTopRightRadius: responsiveSizes.margin.large,
     paddingHorizontal: responsiveSizes.padding.medium,
     paddingVertical: responsiveSizes.padding.large,
     marginTop: -responsiveSizes.margin.large,
@@ -152,12 +154,14 @@ const styles = StyleSheet.create({
     fontSize: responsiveSizes.text.medium,
     color: '#333',
     marginBottom: responsiveSizes.margin.large,
-    textAlign: 'center',
-    fontWeight: 'bold',
   },
   input: {
-    marginBottom: responsiveSizes.margin.medium,
+    marginBottom: responsiveSizes.margin.large,
     backgroundColor: '#fff',
+    borderRadius: responsiveSizes.margin.large,
+    paddingHorizontal: responsiveSizes.padding.medium,
+    fontSize: responsiveSizes.input.fontSize,
+    height: responsiveSizes.input.height,
   },
   checkboxRow: {
     flexDirection: 'row',
@@ -169,17 +173,17 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   signInButton: {
-    height: responsiveSizes.button.extraLarge, // Используем новый размер кнопки
+    height: responsiveSizes.button.extraLarge,
     borderRadius: responsiveSizes.margin.large,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: responsiveSizes.margin.medium,
-    width: '100%', // Центрируем и увеличиваем ширину кнопки
+    width: '90%',
     alignSelf: 'center',
   },
   signInButtonText: {
     color: '#fff',
-    fontSize: responsiveSizes.text.large, // Увеличиваем текст кнопки
+    fontSize: responsiveSizes.text.large,
     fontWeight: 'bold',
   },
 });
