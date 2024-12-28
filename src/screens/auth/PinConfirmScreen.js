@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   pinDotFilled: {
-    backgroundColor: '#3D54DA',
+    backgroundColor: '#6200ea',
   },
   keyboard: {
     width: '100%',

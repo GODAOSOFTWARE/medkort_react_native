@@ -20,9 +20,6 @@ export default function AuthNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-
-    
-
      {/* Экран авторизации */}
      <Stack.Screen name="Welcome" component={WelcomeScreen} />
      
@@ -51,9 +48,6 @@ export default function AuthNavigator() {
       <Stack.Screen name="DoctorProfile" component={DoctorProfile} />
 
 
-
-
-      
     </Stack.Navigator>
   );
 }
