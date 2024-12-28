@@ -169,15 +169,17 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   signInButton: {
-    paddingVertical: responsiveSizes.padding.large,
+    height: responsiveSizes.button.extraLarge, // Используем новый размер кнопки
     borderRadius: responsiveSizes.margin.large,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: responsiveSizes.margin.medium,
+    width: '100%', // Центрируем и увеличиваем ширину кнопки
+    alignSelf: 'center',
   },
   signInButtonText: {
     color: '#fff',
-    fontSize: responsiveSizes.text.medium,
+    fontSize: responsiveSizes.text.large, // Увеличиваем текст кнопки
     fontWeight: 'bold',
   },
 });
