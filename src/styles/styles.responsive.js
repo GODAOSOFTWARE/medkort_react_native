@@ -44,7 +44,7 @@ const responsiveSizes = {
   button: {
     small: scale(40),
     medium: scale(48),
-    large: scale(56),
+    large: scale(30),
     extraLarge: scale(78),
     xxl: '100%', // Занимает всю ширину
   },

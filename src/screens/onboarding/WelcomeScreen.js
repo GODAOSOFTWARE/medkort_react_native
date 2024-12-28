@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { responsiveSizes } from '../../styles/styles.responsive';
+import { responsiveSizes, getSizeCategory } from '../../styles/styles.responsive';
 
 export default function WelcomeScreen({ navigation }) {
-  // Добавляем useEffect для логов при загрузке
+  const [sizeCategory, setSizeCategory] = useState('');
+
   useEffect(() => {
+    const { width, height } = Dimensions.get('window');
+    const category = getSizeCategory();
+
+    setSizeCategory(category);
+
     console.log(`Экран: WelcomeScreen`);
-    console.log(`Стиль экрана: ${responsiveSizes.padding.large}px`);
+    console.log(`Размер экрана: ширина - ${width}px, высота - ${height}px`);
+    console.log(`Определена категория экрана: ${category}`);
+    console.log(`Присвоенный символ: ${category === 'small' ? '📱' : category === 'medium' ? '📲' : '💻'}`);
   }, []);
 
   const handleStart = () => {
-    // Действие при нажатии на кнопку
     navigation.navigate('NextScreen'); // Замените 'NextScreen' на реальное имя следующего экрана
   };
 
@@ -21,16 +28,20 @@ export default function WelcomeScreen({ navigation }) {
       {/* Верхняя часть */}
       <View style={styles.iconContainer}>
         <MaterialCommunityIcons name="hospital-box" size={120} color="#FFFFFF" />
-        <Text style={styles.title}>Welcome to Codefinity</Text>
-        <Text style={styles.subtitle}>
+        <Text style={[styles.title, { fontSize: responsiveSizes.text[sizeCategory] }]}>
+          Welcome to Codefinity
+        </Text>
+        <Text style={[styles.subtitle, { fontSize: responsiveSizes.text[sizeCategory] }]}>
           Just a few quick questions so we create the learning track for you
         </Text>
       </View>
 
       {/* Нижняя часть */}
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.startButton} onPress={handleStart}>
-          <Text style={styles.startButtonText}>Start</Text>
+        <TouchableOpacity style={[styles.startButton, { paddingVertical: responsiveSizes.button[sizeCategory] }]} onPress={handleStart}>
+          <Text style={[styles.startButtonText, { fontSize: responsiveSizes.text[sizeCategory] }]}>
+            Start
+          </Text>
         </TouchableOpacity>
         <Text style={styles.footerText}>
           By continuing I agree with{' '}
@@ -59,14 +70,12 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#FFFFFF',
-    fontSize: responsiveSizes.text.large,
     marginTop: responsiveSizes.margin.medium,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   subtitle: {
     color: '#E0E0E0',
-    fontSize: responsiveSizes.text.medium,
     marginTop: responsiveSizes.margin.small,
     textAlign: 'center',
   },
@@ -78,7 +87,6 @@ const styles = StyleSheet.create({
   startButton: {
     backgroundColor: '#FFA500',
     width: '100%',
-    paddingVertical: responsiveSizes.padding.medium,
     borderRadius: responsiveSizes.margin.small,
     alignItems: 'center',
     justifyContent: 'center',
@@ -86,7 +94,6 @@ const styles = StyleSheet.create({
   },
   startButtonText: {
     color: '#FFFFFF',
-    fontSize: responsiveSizes.text.medium,
     fontWeight: 'bold',
   },
   footerText: {
