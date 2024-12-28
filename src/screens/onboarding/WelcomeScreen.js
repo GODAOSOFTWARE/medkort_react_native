@@ -1,89 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { responsiveSizes, getSizeCategory } from '../../styles/styles.responsive';
-import StorageService from '../../services/storageService'; // Работа с AsyncStorage
-import AuthService from '../../services/authService'; // Работа с API
+import StorageService from '../../services/storageService';
+import UserService from '../../services/userService';
 
 export default function WelcomeScreen({ navigation }) {
-  const [sizeCategory, setSizeCategory] = useState('');
-
-  useEffect(() => {
-    const { width, height } = Dimensions.get('window');
-    const category = getSizeCategory();
-    setSizeCategory(category);
-    console.log(`Экран: WelcomeScreen, Категория экрана: ${category}`);
-  }, []);
-
   const handleStart = async () => {
     try {
-      const authToken = await StorageService.getItem('authToken'); // Получаем токен
-      const pinCode = await StorageService.getItem('pinCode'); // Получаем PIN-код
+      // Получение токена из хранилища
+      const authToken = await StorageService.getItem('authToken');
+      console.log(`authToken: ${authToken}`);
 
-      console.log(`authToken: ${authToken}, pinCode: ${pinCode}`);
-
+      // Если токен отсутствует, перенаправляем на экран логина
       if (!authToken) {
-        // Перенаправление на экран авторизации
-        navigation.navigate('Login');
+        navigation.navigate('LoginScreen');
         return;
       }
 
-      if (!pinCode) {
-        // Перенаправление на экран установки PIN-кода
-        navigation.navigate('PinSetup');
-        return;
+      // Получение роли из хранилища
+      let userRole = await StorageService.getItem('userRole');
+      console.log(`userRole from storage: ${userRole}`);
+
+      // Если роли нет, запрашиваем данные пользователя через UserService
+      if (!userRole) {
+        const userData = await UserService.getUser(authToken);
+        userRole = userData?.data?.role?.value;
+        console.log(`userRole from API: ${userRole}`);
+
+        if (userRole) {
+          await StorageService.setItem('userRole', userRole);
+        } else {
+          throw new Error('Роль пользователя не определена.');
+        }
       }
 
-      // Получение данных пользователя по токену
-      const user = await AuthService.getUser(authToken);
-      console.log(`User data: ${JSON.stringify(user)}`);
-
-      if (user?.role === 'admin') {
-        navigation.navigate('AdminProfile');
-      } else if (user?.role === 'doctor') {
-        navigation.navigate('DoctorProfile');
-      } else if (user?.role === 'patient') {
-        navigation.navigate('PatientProfile');
-      } else {
-        navigation.navigate('RoleSelection');
+      // Переход в зависимости от роли
+      switch (userRole) {
+        case 'PATIENT':
+          navigation.navigate('PatientProfileScreen');
+          break;
+        default:
+          const userData = await UserService.getUser(authToken);
+          const options = [
+            { key: 'PATIENT', label: 'Пациент', icon: 'account' },
+            { key: userRole, label: userData.data.role.name, icon: 'shield-account' },
+          ];
+          navigation.navigate('RoleSelectionScreen', { options });
+          break;
       }
     } catch (error) {
       console.error('Ошибка обработки кнопки Start:', error);
+      Alert.alert('Ошибка', 'Не удалось обработать запрос. Попробуйте снова.');
     }
   };
-
-  if (!sizeCategory) {
-    return null; // Показываем пустой экран, пока не определена категория
-  }
 
   return (
     <LinearGradient colors={['#1E3C72', '#2A5298']} style={styles.container}>
       <View style={styles.iconContainer}>
-        <MaterialCommunityIcons name="hospital-box" size={120} color="#FFFFFF" />
-        <Text style={[styles.title, { fontSize: responsiveSizes.text[sizeCategory] }]}>
-          Welcome to Codefinity
-        </Text>
-        <Text style={[styles.subtitle, { fontSize: responsiveSizes.text[sizeCategory] }]}>
-          Just a few quick questions so we create the learning track for you
-        </Text>
+        <Text style={styles.title}>Добро пожаловать в Медкорт</Text>
+        <Text style={styles.subtitle}>Начните работу, выбрав подходящий вариант</Text>
       </View>
-      <View style={styles.footer}>
-        <TouchableOpacity
-          style={[styles.startButton, { paddingVertical: responsiveSizes.button[sizeCategory] }]}
-          onPress={handleStart}
-        >
-          <Text style={[styles.startButtonText, { fontSize: responsiveSizes.text[sizeCategory] }]}>
-            Start
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.footerText}>
-          By continuing I agree with{' '}
-          <Text style={styles.link}>Terms & conditions</Text>,{' '}
-          <Text style={styles.link}>Privacy policy</Text>,{' '}
-          <Text style={styles.link}>Cookie policy</Text>
-        </Text>
-      </View>
+      <TouchableOpacity style={styles.startButton} onPress={handleStart}>
+        <Text style={styles.startButtonText}>Старт</Text>
+      </TouchableOpacity>
     </LinearGradient>
   );
 }
@@ -91,50 +70,33 @@ export default function WelcomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   iconContainer: {
-    flex: 3,
-    justifyContent: 'center',
     alignItems: 'center',
-  },
-  title: {
-    color: '#FFFFFF',
-    marginTop: 10,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  subtitle: {
-    color: '#E0E0E0',
-    marginTop: 5,
-    textAlign: 'center',
-  },
-  footer: {
-    width: '100%',
-    alignItems: 'center',
-    paddingVertical: 20,
-  },
-  startButton: {
-    backgroundColor: '#FFA500',
-    width: '100%',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
     marginBottom: 20,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#FFFFFF',
+  },
+  startButton: {
+    marginTop: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    backgroundColor: '#FFA500',
+    borderRadius: 10,
+  },
   startButtonText: {
+    fontSize: 18,
     color: '#FFFFFF',
     fontWeight: 'bold',
-  },
-  footerText: {
-    color: '#E0E0E0',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  link: {
-    color: '#FFA500',
-    textDecorationLine: 'underline',
   },
 });
