@@ -3,70 +3,77 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-nati
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { responsiveSizes, getSizeCategory } from '../../styles/styles.responsive';
+import StorageService from '../../services/storageService'; // Работа с AsyncStorage
+import AuthService from '../../services/authService'; // Работа с API
 
 export default function WelcomeScreen({ navigation }) {
   const [sizeCategory, setSizeCategory] = useState('');
 
   useEffect(() => {
-    // Получаем размеры устройства
     const { width, height } = Dimensions.get('window');
-    const category = getSizeCategory(); // Определяем категорию экрана
-
-    setSizeCategory(category); // Устанавливаем категорию в стейт
-
-    console.log(`Экран: WelcomeScreen`);
-    console.log(`Размер экрана: ширина - ${width}px, высота - ${height}px`);
-    console.log(`Определена категория экрана: ${category}`);
-    console.log(`Присвоенный символ: ${category === 'small' ? '📱' : category === 'medium' ? '📲' : '💻'}`);
+    const category = getSizeCategory();
+    setSizeCategory(category);
+    console.log(`Экран: WelcomeScreen, Категория экрана: ${category}`);
   }, []);
 
-  const handleStart = () => {
-    navigation.navigate('NextScreen'); // Замените 'NextScreen' на реальное имя следующего экрана
+  const handleStart = async () => {
+    try {
+      const authToken = await StorageService.getItem('authToken'); // Получаем токен
+      const pinCode = await StorageService.getItem('pinCode'); // Получаем PIN-код
+
+      console.log(`authToken: ${authToken}, pinCode: ${pinCode}`);
+
+      if (!authToken) {
+        // Перенаправление на экран авторизации
+        navigation.navigate('Login');
+        return;
+      }
+
+      if (!pinCode) {
+        // Перенаправление на экран установки PIN-кода
+        navigation.navigate('PinSetup');
+        return;
+      }
+
+      // Получение данных пользователя по токену
+      const user = await AuthService.getUser(authToken);
+      console.log(`User data: ${JSON.stringify(user)}`);
+
+      if (user?.role === 'admin') {
+        navigation.navigate('AdminProfile');
+      } else if (user?.role === 'doctor') {
+        navigation.navigate('DoctorProfile');
+      } else if (user?.role === 'patient') {
+        navigation.navigate('PatientProfile');
+      } else {
+        navigation.navigate('RoleSelection');
+      }
+    } catch (error) {
+      console.error('Ошибка обработки кнопки Start:', error);
+    }
   };
 
   if (!sizeCategory) {
-    // Пока категория экрана не определена, ничего не рендерим
-    return null;
+    return null; // Показываем пустой экран, пока не определена категория
   }
 
   return (
     <LinearGradient colors={['#1E3C72', '#2A5298']} style={styles.container}>
-      {/* Верхняя часть */}
       <View style={styles.iconContainer}>
         <MaterialCommunityIcons name="hospital-box" size={120} color="#FFFFFF" />
-        <Text
-          style={[
-            styles.title,
-            { fontSize: responsiveSizes.text[sizeCategory] || responsiveSizes.text.large },
-          ]}
-        >
+        <Text style={[styles.title, { fontSize: responsiveSizes.text[sizeCategory] }]}>
           Welcome to Codefinity
         </Text>
-        <Text
-          style={[
-            styles.subtitle,
-            { fontSize: responsiveSizes.text[sizeCategory] || responsiveSizes.text.medium },
-          ]}
-        >
+        <Text style={[styles.subtitle, { fontSize: responsiveSizes.text[sizeCategory] }]}>
           Just a few quick questions so we create the learning track for you
         </Text>
       </View>
-
-      {/* Нижняя часть */}
       <View style={styles.footer}>
         <TouchableOpacity
-          style={[
-            styles.startButton,
-            { paddingVertical: responsiveSizes.button[sizeCategory] || responsiveSizes.button.large },
-          ]}
+          style={[styles.startButton, { paddingVertical: responsiveSizes.button[sizeCategory] }]}
           onPress={handleStart}
         >
-          <Text
-            style={[
-              styles.startButtonText,
-              { fontSize: responsiveSizes.text[sizeCategory] || responsiveSizes.text.large },
-            ]}
-          >
+          <Text style={[styles.startButtonText, { fontSize: responsiveSizes.text[sizeCategory] }]}>
             Start
           </Text>
         </TouchableOpacity>
@@ -86,8 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: responsiveSizes.padding.large,
-    paddingVertical: responsiveSizes.padding.medium,
+    paddingHorizontal: 20,
   },
   iconContainer: {
     flex: 3,
@@ -96,27 +102,27 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#FFFFFF',
-    marginTop: responsiveSizes.margin.medium,
+    marginTop: 10,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   subtitle: {
     color: '#E0E0E0',
-    marginTop: responsiveSizes.margin.small,
+    marginTop: 5,
     textAlign: 'center',
   },
   footer: {
     width: '100%',
     alignItems: 'center',
-    paddingVertical: responsiveSizes.padding.medium,
+    paddingVertical: 20,
   },
   startButton: {
     backgroundColor: '#FFA500',
     width: '100%',
-    borderRadius: responsiveSizes.margin.small,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: responsiveSizes.margin.medium,
+    marginBottom: 20,
   },
   startButtonText: {
     color: '#FFFFFF',
@@ -124,7 +130,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     color: '#E0E0E0',
-    fontSize: responsiveSizes.text.small,
+    fontSize: 12,
     textAlign: 'center',
   },
   link: {

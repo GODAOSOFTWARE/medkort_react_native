@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AuthService from '../../services/authService'; // Импортируем AuthService для получения роли
 
 export default function PinConfirmScreen({ route, navigation }) {
   const [confirmPin, setConfirmPin] = useState('');
@@ -21,12 +22,21 @@ export default function PinConfirmScreen({ route, navigation }) {
             // Сохраняем PIN в AsyncStorage
             await AsyncStorage.setItem('userPin', newPin);
 
-            
+            // Получаем роль пользователя
+            const authToken = await AsyncStorage.getItem('authToken');
+            const user = await AuthService.getUser(authToken); // Предполагается, что API вернет данные пользователя
+            console.log('Данные пользователя:', user);
 
-            navigation.navigate('WelcomeScreen'); // Замените на нужный экран
+            if (user?.role === 0) {
+              // Если роль "пациент" (0), перенаправляем в дашборд пациента
+              navigation.navigate('PatinetProfile');
+            } else {
+              // Если роль не "пациент", перенаправляем на экран выбора роли
+              navigation.navigate('RoleSelectionScreen');
+            }
           } catch (error) {
-            console.error('Ошибка сохранения PIN-кода:', error);
-            Alert.alert('Ошибка', 'Не удалось сохранить PIN-код.');
+            console.error('Ошибка обработки PIN-кода:', error);
+            Alert.alert('Ошибка', 'Не удалось обработать PIN-код.');
           }
         } else {
           console.log('PIN не совпадает:', newPin); // Ошибка подтверждения
