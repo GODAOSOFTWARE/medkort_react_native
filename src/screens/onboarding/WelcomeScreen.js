@@ -8,10 +8,11 @@ export default function WelcomeScreen({ navigation }) {
   const [sizeCategory, setSizeCategory] = useState('');
 
   useEffect(() => {
+    // Получаем размеры устройства
     const { width, height } = Dimensions.get('window');
-    const category = getSizeCategory();
+    const category = getSizeCategory(); // Определяем категорию экрана
 
-    setSizeCategory(category);
+    setSizeCategory(category); // Устанавливаем категорию в стейт
 
     console.log(`Экран: WelcomeScreen`);
     console.log(`Размер экрана: ширина - ${width}px, высота - ${height}px`);
@@ -23,23 +24,49 @@ export default function WelcomeScreen({ navigation }) {
     navigation.navigate('NextScreen'); // Замените 'NextScreen' на реальное имя следующего экрана
   };
 
+  if (!sizeCategory) {
+    // Пока категория экрана не определена, ничего не рендерим
+    return null;
+  }
+
   return (
     <LinearGradient colors={['#1E3C72', '#2A5298']} style={styles.container}>
       {/* Верхняя часть */}
       <View style={styles.iconContainer}>
         <MaterialCommunityIcons name="hospital-box" size={120} color="#FFFFFF" />
-        <Text style={[styles.title, { fontSize: responsiveSizes.text[sizeCategory] }]}>
+        <Text
+          style={[
+            styles.title,
+            { fontSize: responsiveSizes.text[sizeCategory] || responsiveSizes.text.large },
+          ]}
+        >
           Welcome to Codefinity
         </Text>
-        <Text style={[styles.subtitle, { fontSize: responsiveSizes.text[sizeCategory] }]}>
+        <Text
+          style={[
+            styles.subtitle,
+            { fontSize: responsiveSizes.text[sizeCategory] || responsiveSizes.text.medium },
+          ]}
+        >
           Just a few quick questions so we create the learning track for you
         </Text>
       </View>
 
       {/* Нижняя часть */}
       <View style={styles.footer}>
-        <TouchableOpacity style={[styles.startButton, { paddingVertical: responsiveSizes.button[sizeCategory] }]} onPress={handleStart}>
-          <Text style={[styles.startButtonText, { fontSize: responsiveSizes.text[sizeCategory] }]}>
+        <TouchableOpacity
+          style={[
+            styles.startButton,
+            { paddingVertical: responsiveSizes.button[sizeCategory] || responsiveSizes.button.large },
+          ]}
+          onPress={handleStart}
+        >
+          <Text
+            style={[
+              styles.startButtonText,
+              { fontSize: responsiveSizes.text[sizeCategory] || responsiveSizes.text.large },
+            ]}
+          >
             Start
           </Text>
         </TouchableOpacity>
@@ -59,7 +86,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#1E3C72',
     paddingHorizontal: responsiveSizes.padding.large,
     paddingVertical: responsiveSizes.padding.medium,
   },
