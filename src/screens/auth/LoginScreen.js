@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Platform, Dimensions } from 'react-native';
 import { TextInput, Checkbox } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { responsiveSizes, getSizeCategory } from '../../styles/styles.responsive';
 import AuthService from '../../services/authService';
 import StorageService from '../../services/storageService';
+
+const { width, height } = Dimensions.get('window'); // Получаем текущие размеры экрана
 
 export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -22,12 +24,17 @@ export default function SignInScreen({ navigation }) {
   }[sizeCategory]; // Символ в зависимости от категории экрана
 
   useEffect(() => {
+    const libraryName = 'Platform'; // Название библиотеки, которая определила устройство
+
     // Логи при загрузке экрана
     console.log(`Определено устройство: ${deviceBrand}`);
+    console.log(`Библиотека определения устройства: ${libraryName}`);
+    console.log(`Размер экрана: ширина - ${width}px, высота - ${height}px`);
     console.log(`Определена категория экрана: ${sizeCategory}_Screen`);
     console.log(`Определен символ: ${sizeSymbol}`);
     console.log(`Стили отрисованы в соответствии с категорией: ${sizeSymbol}`);
-  }, []);
+}, []);
+
 
   const handleLogin = async () => {
     if (!email.trim()) {
