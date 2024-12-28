@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Button } from 'react-native-paper';
+import { Text, TouchableRipple } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function PinSetupScreen({ navigation }) {
   const [pin, setPin] = useState('');
@@ -25,8 +26,12 @@ export default function PinSetupScreen({ navigation }) {
     console.log('Удаление символа, текущий PIN:', updatedPin); // Логируем удаление
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={['#1E3C72', '#2A5298']} style={styles.container}>
       <Text variant="headlineMedium" style={styles.title}>
         Установите PIN-код
       </Text>
@@ -44,19 +49,36 @@ export default function PinSetupScreen({ navigation }) {
       </View>
 
       <View style={styles.keyboard}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '←'].map((key, index) => (
-          <Button
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, '0', '❌', '←'].map((key, index) => (
+          <TouchableRipple
             key={index}
-            mode="outlined"
-            style={styles.key}
-            onPress={() => (key === '←' ? handleDelete() : handlePress(key))}
-            disabled={key === ''}
+            onPress={() =>
+              key === '❌'
+                ? pin.length > 0 && handleDelete()
+                : key === '←'
+                ? handleBack()
+                : handlePress(key)
+            }
+            disabled={key === '❌' && pin.length === 0}
+            style={[
+              styles.key,
+              key === '❌' && styles.deleteKey, // Желтая кнопка удаления
+              key === '←' && styles.backKey, // Красная кнопка назад
+            ]}
           >
-            {key}
-          </Button>
+            <Text
+              style={[
+                styles.keyText,
+                key === '❌' && styles.deleteKeyText,
+                key === '←' && styles.backKeyText,
+              ]}
+            >
+              {key}
+            </Text>
+          </TouchableRipple>
         ))}
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -66,27 +88,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f5f5f5',
   },
   title: {
-    marginBottom: 20,
+    marginBottom: 40,
     fontWeight: 'bold',
-    color: '#000000',
+    color: '#FFFFFF',
+    fontSize: 22,
+    textAlign: 'center',
   },
   pinContainer: {
     flexDirection: 'row',
-    marginBottom: 20,
+    marginBottom: 40,
   },
   pinDot: {
-    width: 15,
-    height: 15,
-    borderRadius: 15,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#3D54DA',
-    margin: 5,
+    borderColor: '#FFFFFF',
+    margin: 8,
   },
   pinDotFilled: {
-    backgroundColor: '#3D54DA',
+    backgroundColor: '#FFFFFF',
   },
   keyboard: {
     width: '100%',
@@ -95,7 +118,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   key: {
-    margin: 5,
-    width: '25%',
+    backgroundColor: '#FFFFFF',
+    width: 75,
+    height: 75,
+    borderRadius: 75 / 2,
+    margin: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  deleteKey: {
+    backgroundColor: '#FFD700', // Желтый цвет для кнопки удаления
+  },
+  deleteKeyText: {
+    color: '#000000', // Черный текст для желтой кнопки
+  },
+  backKey: {
+    backgroundColor: '#FF6347', // Красный цвет для кнопки назад
+  },
+  backKeyText: {
+    color: '#FFFFFF', // Белый текст для красной кнопки
+  },
+  keyText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#000',
   },
 });
