@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Text, Button } from 'react-native-paper';
-import StorageService from '../../services/storageService'; // Используем StorageService для работы с хранилищем
+import StorageService from '../../services/storageService'; // Импорт StorageService
+import UserService from '../../services/userService'; // Импорт UserService
 
 export default function PinConfirmScreen({ route, navigation }) {
   const [confirmPin, setConfirmPin] = useState('');
@@ -12,46 +13,70 @@ export default function PinConfirmScreen({ route, navigation }) {
       const newPin = confirmPin + digit;
       setConfirmPin(newPin);
 
-      console.log('Ввод подтверждения PIN:', newPin); // Логируем ввод
+      console.log('Ввод подтверждения PIN:', newPin);
 
       if (newPin.length === 4) {
         if (newPin === pin) {
-          console.log('PIN успешно подтвержден:', newPin); // Успешное подтверждение
+          console.log('PIN успешно подтвержден:', newPin);
           try {
-            // Сохраняем PIN в хранилище
-            await StorageService.setItem('userPin', newPin);
+            // Сохраняем PIN-код в хранилище
+            await StorageService.setItem('pinCode', newPin);
 
-            // Получаем токен и роль пользователя
+            // Получаем токен
             const authToken = await StorageService.getItem('authToken');
-            const userRole = await StorageService.getItem('userRole'); // Предполагается, что роль уже сохранена
+            console.log(`authToken: ${authToken}`);
 
-            console.log(`authToken: ${authToken}, userRole: ${userRole}`);
+            // Получаем данные пользователя через UserService
+            const userData = await UserService.getUser(authToken);
+            const userRole = userData?.data?.role?.value;
 
-            // Переход в зависимости от роли пользователя
-            if (userRole === '0') {
-              // Если роль "пациент" (0), перенаправляем на дашборд пациента
-              navigation.navigate('PatientProfileScreen');
-            } else {
-              // Если роль не "пациент", перенаправляем на экран выбора роли
-              navigation.navigate('RoleSelectionScreen');
+            console.log(`Полученная роль пользователя: ${userRole}`);
+
+            if (!userRole) {
+              throw new Error('Роль пользователя не определена.');
             }
+
+            // Сохраняем роль в хранилище
+            await StorageService.setItem('userRole', userRole);
+
+            // Выводим алерт с текущими данными из хранилища
+            const savedPin = await StorageService.getItem('pinCode');
+            const savedRole = await StorageService.getItem('userRole');
+
+            Alert.alert(
+              'Данные сохранены',
+              `Токен: ${authToken}\nPIN: ${savedPin}\nРоль: ${savedRole}`,
+              [{ text: 'OK', onPress: () => handleNavigation(userRole, userData) }]
+            );
           } catch (error) {
-            console.error('Ошибка обработки PIN-кода:', error);
-            Alert.alert('Ошибка', 'Не удалось обработать PIN-код.');
+            console.error('Ошибка при обработке PIN-кода или запроса API:', error);
+            Alert.alert('Ошибка', 'Не удалось обработать PIN-код или запрос данных.');
           }
         } else {
-          console.log('PIN не совпадает:', newPin); // Ошибка подтверждения
+          console.log('PIN не совпадает:', newPin);
           Alert.alert('Ошибка', 'PIN-коды не совпадают. Повторите ввод.');
-          setConfirmPin(''); // Сбрасываем введенный PIN
+          setConfirmPin('');
         }
       }
+    }
+  };
+
+  const handleNavigation = (userRole, userData) => {
+    if (userRole === 'PATIENT') {
+      navigation.navigate('PatientProfileScreen');
+    } else {
+      const options = [
+        { key: 'PATIENT', label: 'Пациент', icon: 'account' },
+        { key: userRole, label: userData.data.role.name, icon: 'shield-account' },
+      ];
+      navigation.navigate('RoleSelectionScreen', { options });
     }
   };
 
   const handleDelete = () => {
     const updatedPin = confirmPin.slice(0, -1);
     setConfirmPin(updatedPin);
-    console.log('Удаление символа подтверждения PIN:', updatedPin); // Логируем удаление
+    console.log('Удаление символа подтверждения PIN:', updatedPin);
   };
 
   return (
@@ -60,7 +85,6 @@ export default function PinConfirmScreen({ route, navigation }) {
         Подтвердите PIN-код
       </Text>
 
-      {/* Индикатор для PIN */}
       <View style={styles.pinContainer}>
         {[0, 1, 2, 3].map((_, index) => (
           <View
@@ -73,7 +97,6 @@ export default function PinConfirmScreen({ route, navigation }) {
         ))}
       </View>
 
-      {/* Клавиатура для ввода PIN */}
       <View style={styles.keyboard}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '←'].map((key, index) => (
           <Button

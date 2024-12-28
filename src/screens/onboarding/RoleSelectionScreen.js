@@ -1,24 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient'; // Градиент для кнопок
+import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import StorageService from '../../services/storageService'; // Импорт StorageService
 
 export default function RoleSelectionScreen({ route, navigation }) {
   const { options } = route.params;
 
-  // Обработчик выбора роли
   const handleRoleSelect = (roleKey) => {
     console.log(`Выбрано: ${roleKey}`);
     navigation.navigate('RoleBasedScreen', { roleKey });
   };
 
-  // Сброс токена и переход на WelcomeScreen
   const handleDisconnect = async () => {
     try {
-      console.log("Disconnecting and resetting navigation...");
-      await StorageService.removeItem('authToken'); // Сбрасываем токен
-      await StorageService.removeItem('pinCode'); // Сбрасываем пин-код
+      console.log('Отключение и сброс навигации...');
+      await StorageService.removeItem('authToken');
+      await StorageService.removeItem('pinCode');
       navigation.reset({
         index: 0,
         routes: [{ name: 'WelcomeScreen' }],
@@ -30,12 +28,9 @@ export default function RoleSelectionScreen({ route, navigation }) {
 
   return (
     <LinearGradient colors={['#1E3C72', '#2A5298']} style={styles.container}>
-      {/* Заголовок */}
       <Text style={styles.title}>ВЫБЕРИТЕ РОЛЬ</Text>
       <Text style={styles.subtitle}>Используйте возможности Медкорт</Text>
-    
 
-      {/* Карточки ролей */}
       {options.map((option) => (
         <TouchableOpacity
           key={option.key}
@@ -43,38 +38,36 @@ export default function RoleSelectionScreen({ route, navigation }) {
           onPress={() => handleRoleSelect(option.key)}
         >
           <LinearGradient
-            colors={['rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.7)']} // Градиент карточек
+            colors={['rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.7)']}
             style={styles.gradient}
           >
             <Text style={styles.cardText}>{option.label}</Text>
             <MaterialCommunityIcons
-              name={option.icon || 'account-circle'} // Иконка из параметра или стандартная
+              name={option.icon || 'account-circle'}
               size={28}
               color={
-                option.key === 'patient'
+                option.key === 'PATIENT'
                   ? '#34A853'
-                  : option.key === 'admin'
+                  : option.key === 'ADMIN'
                   ? '#FBBC05'
                   : '#4285F4'
-              } // Цвет иконки
+              }
               style={styles.icon}
             />
           </LinearGradient>
         </TouchableOpacity>
       ))}
 
-      {/* Кнопка Disconnect */}
       <TouchableOpacity style={styles.disconnectContainer} onPress={handleDisconnect}>
         <Text style={[styles.cardText, { color: '#FFFFFF' }]}>Назад</Text>
         <MaterialCommunityIcons
           name="logout"
           size={28}
-          color="#FFFFFF" // Белый значок для красной кнопки
+          color="#FFFFFF"
           style={styles.icon}
         />
       </TouchableOpacity>
 
-      {/* Сноска */}
       <Text style={styles.footer}>
         By continuing I agree with{' '}
         <Text style={styles.link}>Terms & conditions</Text>,{' '}
@@ -105,17 +98,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
-  mainText: {
-    fontSize: 20,
-    color: '#FFFFFF',
-    textAlign: 'center',
-    marginBottom: 30,
-  },
   cardContainer: {
     marginVertical: 10,
     borderRadius: 10,
     overflow: 'hidden',
-    elevation: 3, // Material Design тень
+    elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
@@ -145,7 +132,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 10,
     marginVertical: 10,
-    backgroundColor: '#D32F2F', // Красная кнопка
+    backgroundColor: '#D32F2F',
   },
   footer: {
     fontSize: 12,
@@ -154,7 +141,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   link: {
-    color: '#FFA726', // Оранжевый цвет ссылок
+    color: '#FFA726',
     fontWeight: 'bold',
   },
 });
