@@ -16,7 +16,7 @@ export default function AuthNavigator() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="PinSetup" component={PinSetupScreen} />
+      <Stack.Screen name="PinSetupScreen" component={PinSetupScreen} />
       <Stack.Screen name="PinConfirm" component={PinConfirmScreen} />
       <Stack.Screen name="RoleSelectionScreen" component={RoleSelectionScreen} />
       <Stack.Screen name="PatientProfile" component={PatientProfile} />

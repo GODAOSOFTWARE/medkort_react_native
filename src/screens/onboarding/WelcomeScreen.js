@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions } from 'rea
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import StorageService from '../../services/storageService';
-import AuthService from '../../services/authService';
 import { responsiveSizes, getSizeCategory } from '../../styles/styles.responsive';
 
 export default function WelcomeScreen({ navigation }) {
@@ -25,57 +24,36 @@ export default function WelcomeScreen({ navigation }) {
       console.log(`authToken: ${authToken}, pinCode: ${pinCode}, userRole: ${userRole}`);
 
       if (!authToken) {
-        navigation.navigate('LoginScreen');
+        console.log('Нет токена, переходим на экран авторизации.');
+        navigation.navigate('LoginScreen'); // Перенаправление на экран авторизации
         return;
       }
 
       if (!pinCode) {
-        navigation.navigate('PinSetupScreen');
+        console.log('Есть токен, но нет пинкода, переходим на экран установки пинкода.');
+        navigation.navigate('PinSetupScreen'); // Перенаправление на экран установки пинкода
         return;
       }
 
-      if (!userRole) {
-        // Если роли нет, делаем запрос к API
-        const userData = await AuthService.getUser(authToken);
-        const fetchedRole = userData?.data?.role?.value;
+      if (authToken && pinCode && !userRole) {
+        console.log('Есть токен и пинкод, но нет роли. Переходим к выбору роли.');
+        navigation.navigate('RoleSelectionScreen', {
+          options: [
+            { key: 'PATIENT', label: 'Пациент', icon: 'account' },
+            { key: 'DOCTOR', label: 'Доктор', icon: 'stethoscope' },
+            { key: 'ADMIN', label: 'Администратор', icon: 'account-tie' },
+          ],
+        });
+        return;
+      }
 
-        if (!fetchedRole) {
-          throw new Error('Роль пользователя не определена.');
-        }
-
-        await StorageService.setItem('userRole', fetchedRole);
-        redirectToScreen(fetchedRole, navigation, userData.data.role.name);
-      } else {
-        // Если роль есть в хранилище, перенаправляем
-        redirectToScreen(userRole, navigation);
+      if (authToken && pinCode && userRole) {
+        console.log('Все данные есть, переходим на RoleBasedScreen.');
+        navigation.navigate('RoleBasedScreen', { roleKey: userRole });
       }
     } catch (error) {
       console.error('Ошибка обработки кнопки Start:', error);
       Alert.alert('Ошибка', 'Не удалось обработать данные.');
-    }
-  };
-
-  const redirectToScreen = (role, navigation, roleName = '') => {
-    switch (role) {
-      case 'PATIENT':
-        navigation.navigate('PatientProfileScreen');
-        break;
-      case 'ADMIN_ROLE':
-      case 'SUPER_ADMIN_ROLE':
-      case 'MANAGER_ROLE':
-      case 'REGISTRATOR_ROLE':
-      case 'DOCTOR_ROLE':
-      case 'PARTNER_ROLE':
-        navigation.navigate('RoleSelectionScreen', {
-          options: [
-            { key: 'PATIENT', label: 'Пациент', icon: 'account' },
-            { key: role, label: roleName || 'Другая роль', icon: 'shield-account' },
-          ],
-        });
-        break;
-      default:
-        Alert.alert('Ошибка', 'Роль не распознана.');
-        navigation.navigate('LoginScreen');
     }
   };
 
@@ -88,10 +66,10 @@ export default function WelcomeScreen({ navigation }) {
       <View style={styles.iconContainer}>
         <MaterialCommunityIcons name="hospital-box" size={120} color="#FFFFFF" />
         <Text style={[styles.title, { fontSize: responsiveSizes.text[sizeCategory] }]}>
-          Welcome to Codefinity
+          Welcome to Medkort
         </Text>
         <Text style={[styles.subtitle, { fontSize: responsiveSizes.text[sizeCategory] }]}>
-          Just a few quick questions so we create the learning track for you
+          Just a few quick steps to get started
         </Text>
       </View>
       <View style={styles.footer}>

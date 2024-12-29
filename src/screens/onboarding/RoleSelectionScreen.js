@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import StorageService from '../../services/storageService'; // Импорт StorageService
@@ -7,22 +7,51 @@ import StorageService from '../../services/storageService'; // Импорт Stor
 export default function RoleSelectionScreen({ route, navigation }) {
   const { options } = route.params;
 
+  // Логика для выбора роли
   const handleRoleSelect = (roleKey) => {
     console.log(`Выбрано: ${roleKey}`);
     navigation.navigate('RoleBasedScreen', { roleKey });
   };
 
+  // Логика для обработки выхода (Назад)
   const handleDisconnect = async () => {
     try {
-      console.log('Отключение и сброс навигации...');
-      await StorageService.removeItem('authToken');
+      console.log('Начинаем процесс отключения...');
+      
+      // Удаляем PIN-код
       await StorageService.removeItem('pinCode');
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'WelcomeScreen' }],
-      });
+      console.log('PIN-код успешно удален');
+      
+      // Удаляем токен
+      await StorageService.removeItem('authToken');
+      console.log('Токен успешно удален');
+  
+      // Удаляем роль пользователя
+      await StorageService.removeItem('userRole');
+      console.log('Роль пользователя успешно удалена');
+      
+      // Проверяем, что данные успешно удалены
+      const pinCode = await StorageService.getItem('pinCode');
+      const authToken = await StorageService.getItem('authToken');
+      const userRole = await StorageService.getItem('userRole');
+      
+      if (!pinCode && !authToken && !userRole) {
+        console.log('Данные успешно удалены из хранилища. Переход на WelcomeScreen...');
+        // Навигация на WelcomeScreen
+        navigation.navigate('WelcomeScreen');
+      } else {
+        console.error('Данные не были полностью удалены:');
+        if (pinCode) console.error(`PIN-код еще существует: ${pinCode}`);
+        if (authToken) console.error(`Токен еще существует: ${authToken}`);
+        if (userRole) console.error(`Роль пользователя еще существует: ${userRole}`);
+        Alert.alert(
+          'Ошибка',
+          'Не удалось полностью удалить данные. Попробуйте еще раз.'
+        );
+      }
     } catch (error) {
-      console.error('Ошибка при отключении:', error);
+      console.error('Ошибка при выходе:', error);
+      Alert.alert('Ошибка', 'Произошла ошибка при завершении работы.');
     }
   };
 
