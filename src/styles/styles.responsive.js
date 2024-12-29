@@ -29,7 +29,7 @@ const responsiveSizes = {
   text: {
     small: scale(12),
     medium: scale(16),
-    large: scale(20),
+    large: scale(18),
   },
   icon: {
     small: scale(16),
@@ -45,8 +45,7 @@ const responsiveSizes = {
     small: scale(40),
     medium: scale(48),
     large: scale(30),
-    extraLarge: scale(78),
-    xxl: '100%', // Занимает всю ширину
+    
   },
   input: {
     height: scale(44),
