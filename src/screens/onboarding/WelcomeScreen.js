@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: '#FFFFFF',
+    color: 'rgba(255, 255, 255, 0.9)',
     marginTop: 10,
     fontWeight: 'bold',
     textAlign: 'center',
