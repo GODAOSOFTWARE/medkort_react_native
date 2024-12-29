@@ -51,7 +51,7 @@ export default function SignInScreen({ navigation }) {
       const token = await AuthService.login(email.trim(), password.trim());
       await StorageService.setItem('authToken', token);
       Alert.alert('Успешно', 'Вы успешно авторизовались.', [
-        { text: 'ОК', onPress: () => navigation.navigate('PinSetup') },
+        { text: 'ОК', onPress: () => navigation.navigate('PinSetupScreen') },
       ]);
     } catch (error) {
       console.error('Ошибка авторизации:', error);
