@@ -37,11 +37,11 @@ export default function SignInScreen({ navigation }) {
   return (
     <LinearGradient colors={['#1E3C72', '#2A5298']} style={styles.container}>
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>Sign In</Text>
-        <Text style={styles.subtitle}>Enter your email and password to sign in</Text>
+        <Text style={styles.title}>Авторизация</Text>
+        <Text style={styles.subtitle}>Введите данные для входа в кабинет</Text>
 
         <TextInput
-          label="Email"
+          label="Адрес электронной почты"
           value={email}
           onChangeText={setEmail}
           mode="outlined"
@@ -50,7 +50,7 @@ export default function SignInScreen({ navigation }) {
         />
 
         <TextInput
-          label="Password"
+          label="Пароль от личного кабинета"
           value={password}
           onChangeText={setPassword}
           mode="outlined"
@@ -73,7 +73,7 @@ export default function SignInScreen({ navigation }) {
           disabled={isLoading}
           style={styles.signInButton}
         >
-          <Text style={styles.signInButtonText}>SIGN IN</Text>
+          <Text style={styles.signInButtonText}>ВОЙТИ</Text>
         </TouchableOpacity>
 
         <Text style={styles.footerText}>
@@ -107,6 +107,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
+    height: 70, // добавлена возможность настройки высоты
+    borderRadius: 20,
     width: '100%',
     marginBottom: 15,
     backgroundColor: 'rgba(255, 255, 255, 0.9)',

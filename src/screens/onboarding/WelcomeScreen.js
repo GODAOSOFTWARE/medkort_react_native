@@ -52,10 +52,10 @@ export default function WelcomeScreen({ navigation }) {
       <View style={styles.iconContainer}>
         <MaterialCommunityIcons name="hospital-box" size={120} color="#FFFFFF" />
         <Text style={[styles.title, { fontSize: responsiveSizes.text[sizeCategory] }]}>
-          Welcome to Medkort
+          Добро пожаловать в медкорт
         </Text>
         <Text style={[styles.subtitle, { fontSize: responsiveSizes.text[sizeCategory] }]}>
-          Just a few quick steps to get started
+          Для начала работы нажмите кнопку
         </Text>
       </View>
       <View style={styles.footer}>
@@ -64,7 +64,7 @@ export default function WelcomeScreen({ navigation }) {
           onPress={handleStart}
         >
           <Text style={[styles.startButtonText, { fontSize: responsiveSizes.text[sizeCategory] }]}>
-            Start
+            НАЧАТЬ
           </Text>
         </TouchableOpacity>
         <Text style={styles.footerText}>
