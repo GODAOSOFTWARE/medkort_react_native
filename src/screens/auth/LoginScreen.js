@@ -7,6 +7,7 @@ import { responsiveSizes, getSizeCategory } from '../../styles/styles.responsive
 import AuthService from '../../services/authService';
 import StorageService from '../../services/storageService';
 
+
 const { width, height } = Dimensions.get('window'); // Получаем текущие размеры экрана
 
 export default function SignInScreen({ navigation }) {
@@ -191,7 +192,7 @@ const styles = (sizeCategory) =>
       color: '#333',
     },
     signInButton: {
-      height: responsiveSizes.button.extraLarge,
+      height: responsiveSizes.button.large,
       borderRadius: responsiveSizes.margin[sizeCategory],
       alignItems: 'center',
       justifyContent: 'center',
