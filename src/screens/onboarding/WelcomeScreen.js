@@ -23,34 +23,20 @@ export default function WelcomeScreen({ navigation }) {
 
       console.log(`authToken: ${authToken}, pinCode: ${pinCode}, userRole: ${userRole}`);
 
-      if (!authToken) {
-        console.log('Нет токена, переходим на экран авторизации.');
+      if (!authToken || !pinCode || !userRole) {
+        console.log('Токен, пин или роль отсутствуют. Переходим на экран авторизации.');
         navigation.navigate('LoginScreen'); // Перенаправление на экран авторизации
         return;
       }
 
-      if (!pinCode) {
-        console.log('Есть токен, но нет пинкода, переходим на экран установки пинкода.');
-        navigation.navigate('PinSetupScreen'); // Перенаправление на экран установки пинкода
+      if (userRole === 'PATIENT') {
+        console.log('Роль пациента, переходим на PatientProfileScreen.');
+        navigation.navigate('PatientProfile'); // Перенаправление на экран пациента
         return;
       }
 
-      if (authToken && pinCode && !userRole) {
-        console.log('Есть токен и пинкод, но нет роли. Переходим к выбору роли.');
-        navigation.navigate('RoleSelectionScreen', {
-          options: [
-            { key: 'PATIENT', label: 'Пациент', icon: 'account' },
-            { key: 'DOCTOR', label: 'Доктор', icon: 'stethoscope' },
-            { key: 'ADMIN', label: 'Администратор', icon: 'account-tie' },
-          ],
-        });
-        return;
-      }
-
-      if (authToken && pinCode && userRole) {
-        console.log('Все данные есть, переходим на RoleBasedScreen.');
-        navigation.navigate('RoleSelectionScreen', { roleKey: userRole });
-      }
+      console.log('Роль не пациент, переходим на RoleSelectionScreen.');
+      navigation.navigate('RoleSelectionScreen'); // Переход на экран выбора роли
     } catch (error) {
       console.error('Ошибка обработки кнопки Start:', error);
       Alert.alert('Ошибка', 'Не удалось обработать данные.');
