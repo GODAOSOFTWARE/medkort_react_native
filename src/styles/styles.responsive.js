@@ -36,22 +36,27 @@ const responsiveSizes = {
     medium: scale(24),
     large: scale(32),
   },
+  image: {
+    small: scale(120), // Адаптивная высота изображения для small экранов
+    medium: scale(180), // Для medium экранов
+    large: scale(240), // Для large экранов
+  },
   margin: {
     small: scale(8),
     medium: scale(12),
     large: scale(16),
   },
   button: {
-    small: scale(40),
-    medium: scale(48),
+    small: scale(18),
+    medium: scale(22),
     large: scale(30),
-    
   },
   input: {
     height: scale(44),
     fontSize: scale(14),
   },
 };
+
 
 // Экспортируем все элементы
 export { responsiveSizes, getSizeCategory };

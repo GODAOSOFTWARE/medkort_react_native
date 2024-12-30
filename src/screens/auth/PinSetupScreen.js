@@ -48,34 +48,44 @@ export default function PinSetupScreen({ navigation }) {
         ))}
       </View>
 
+      {/* Классическая клавиатура */}
       <View style={styles.keyboard}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, '0', '❌', '←'].map((key, index) => (
-          <TouchableRipple
-            key={index}
-            onPress={() =>
-              key === '❌'
-                ? pin.length > 0 && handleDelete()
-                : key === '←'
-                ? handleBack()
-                : handlePress(key)
-            }
-            disabled={key === '❌' && pin.length === 0}
-            style={[
-              styles.key,
-              key === '❌' && styles.deleteKey, // Желтая кнопка удаления
-              key === '←' && styles.backKey, // Красная кнопка назад
-            ]}
-          >
-            <Text
-              style={[
-                styles.keyText,
-                key === '❌' && styles.deleteKeyText,
-                key === '←' && styles.backKeyText,
-              ]}
-            >
-              {key}
-            </Text>
-          </TouchableRipple>
+        {[
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          ['❌', 0, '←'],
+        ].map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.row}>
+            {row.map((key, keyIndex) => (
+              <TouchableRipple
+                key={keyIndex}
+                onPress={() =>
+                  key === '❌'
+                    ? pin.length > 0 && handleDelete()
+                    : key === '←'
+                    ? handleBack()
+                    : handlePress(key)
+                }
+                disabled={key === '❌' && pin.length === 0}
+                style={[
+                  styles.key,
+                  key === '❌' && styles.deleteKey, // Желтая кнопка удаления
+                  key === '←' && styles.backKey, // Красная кнопка назад
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.keyText,
+                    key === '❌' && styles.deleteKeyText,
+                    key === '←' && styles.backKeyText,
+                  ]}
+                >
+                  {key}
+                </Text>
+              </TouchableRipple>
+            ))}
+          </View>
         ))}
       </View>
     </LinearGradient>
@@ -113,16 +123,18 @@ const styles = StyleSheet.create({
   },
   keyboard: {
     width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginBottom: 15,
   },
   key: {
     backgroundColor: '#FFFFFF',
     width: 75,
     height: 75,
     borderRadius: 75 / 2,
-    margin: 10,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -149,3 +161,4 @@ const styles = StyleSheet.create({
     color: '#000',
   },
 });
+
