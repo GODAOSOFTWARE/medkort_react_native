@@ -1,87 +1,45 @@
-import React from 'react';
-import { Modal, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useRef } from 'react';
+import { Animated, View, Text, TouchableOpacity } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const CustomAlert = ({ visible, onClose, icon, title, message, buttonText }) => {
+const CustomAlert = ({ visible, onClose, title, message, iconName, customStyles }) => {
+  const slideAnim = useRef(new Animated.Value(0)).current; // Начальная позиция: скрытый
+
+  useEffect(() => {
+    if (visible) {
+      Animated.timing(slideAnim, {
+        toValue: 1, // Показать
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(slideAnim, {
+        toValue: 0, // Скрыть
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [visible]);
+
+  if (!visible) return null;
+
   return (
-    <Modal
-      transparent={true}
-      visible={visible}
-      animationType="fade"
-      onRequestClose={onClose}
+    <Animated.View
+      style={[
+        customStyles.alertContainer,
+        { transform: [{ translateY: slideAnim.interpolate({ inputRange: [0, 1], outputRange: [100, 0] }) }] },
+      ]}
     >
-      <View style={styles.overlay}>
-        <View style={styles.alertContainer}>
-          {/* Иконка */}
-          {icon && <Image source={icon} style={styles.icon} />}
-
-          {/* Заголовок */}
-          <Text style={styles.title}>{title}</Text>
-
-          {/* Сообщение */}
-          <Text style={styles.message}>{message}</Text>
-
-          {/* Кнопка */}
-          <TouchableOpacity style={styles.buttonContainer} onPress={onClose}>
-            <LinearGradient
-              colors={['#1E3C72', '#2A5298']}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>{buttonText}</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
+      <View style={customStyles.iconContainer}>
+        <MaterialCommunityIcons name={iconName} size={50} color="#FFD700" />
       </View>
-    </Modal>
+      <Text style={customStyles.title}>{title}</Text>
+      <Text style={customStyles.message}>{message}</Text>
+      <TouchableOpacity onPress={onClose} style={customStyles.button}>
+        <Text style={customStyles.buttonText}>Закрыть</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Затемнение фона
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  alertContainer: {
-    width: '85%',
-    backgroundColor: '#1E1E1E',
-    borderRadius: 20,
-    padding: 20,
-    alignItems: 'center',
-  },
-  icon: {
-    width: 50,
-    height: 50,
-    marginBottom: 15,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  message: {
-    fontSize: 14,
-    color: '#CCCCCC',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  buttonContainer: {
-    width: '100%',
-    marginTop: 10,
-  },
-  button: {
-    paddingVertical: 12,
-    borderRadius: 25,
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-});
 
 export default CustomAlert;
