@@ -19,24 +19,26 @@ export default function WelcomeScreen({ navigation }) {
     try {
       const authToken = await StorageService.getItem('authToken');
       const pinCode = await StorageService.getItem('userPin');
-      const userRole = await StorageService.getItem('userRole');
 
-      console.log(`authToken: ${authToken}, pinCode: ${pinCode}, userRole: ${userRole}`);
+      console.log(`authToken: ${authToken}, pinCode: ${pinCode}`);
 
-      if (!authToken || !pinCode || !userRole) {
-        console.log('Токен, пин или роль отсутствуют. Переходим на экран авторизации.');
-        navigation.navigate('LoginScreen'); // Перенаправление на экран авторизации
+      // 1. Нет токена → отправляем на экран LoginScreen
+      if (!authToken) {
+        console.log('Нет токена. Переходим на экран авторизации.');
+        navigation.navigate('LoginScreen');
         return;
       }
 
-      if (userRole === 'PATIENT') {
-        console.log('Роль пациента, переходим на PatientProfileScreen.');
-        navigation.navigate('PatientProfile'); // Перенаправление на экран пациента
+      // 2. Есть токен, но нет пина → PinSetupScreen
+      if (!pinCode) {
+        console.log('Токен есть, но пин отсутствует. Переходим на экран установки пина.');
+        navigation.navigate('PinSetupScreen');
         return;
       }
 
-      console.log('Роль не пациент, переходим на RoleSelectionScreen.');
-      navigation.navigate('RoleSelectionScreen'); // Переход на экран выбора роли
+      // 3. Есть и токен, и пин → PinEnterScreen (ввод пина)
+      console.log('Токен и пин присутствуют. Переходим на экран ввода пина.');
+      navigation.navigate('PinEnterScreen');
     } catch (error) {
       console.error('Ошибка обработки кнопки Start:', error);
       Alert.alert('Ошибка', 'Не удалось обработать данные.');

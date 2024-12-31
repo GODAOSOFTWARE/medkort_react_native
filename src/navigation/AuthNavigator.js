@@ -8,6 +8,7 @@ import RoleSelectionScreen from '../screens/onboarding/RoleSelectionScreen'; // 
 import PatientProfile from '../screens/patient/profile/ProfileScreen'; // Кабинет пациента
 import AdminProfile from '../screens/admin/AdminDashboard'; // Кабинет администратора
 import DoctorProfile from '../screens/doctor/DoctorDashboard'; // Кабинет доктора
+import PinEnterScreen from '../screens/auth/PinEnterScreen';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ export default function AuthNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="PinEnterScreen" component={PinEnterScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="PinSetupScreen" component={PinSetupScreen} />
       <Stack.Screen name="PinConfirm" component={PinConfirmScreen} />
