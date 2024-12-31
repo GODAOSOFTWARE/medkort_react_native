@@ -43,9 +43,9 @@ export default function SignInScreen({ navigation }) {
   return (
     <LinearGradient colors={['#1E3C72', '#2A5298']} style={styles.container}>
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>Sign In</Text>
+        <Text style={styles.title}>Личный кабинет</Text>
         <Text style={styles.subtitle}>
-          Enter your email and password to sign in
+          Введите ваш email и пароль чтобы войти
         </Text>
 
         {/* Поле Email с плавающей меткой */}
@@ -55,14 +55,14 @@ export default function SignInScreen({ navigation }) {
           value={email}
           onChangeText={setEmail}
           style={styles.input}
-          outlineColor="#FFFFFF"          // Цвет обводки (не в фокусе)
+          outlineColor="#E0E0E0"          // Цвет обводки (не в фокусе)
           activeOutlineColor="#FFFFFF"     // Цвет обводки (в фокусе)
-          textColor="#FFFFFF"              // Цвет вводимого текста
+          textColor="#E0E0E0"              // Цвет вводимого текста
           placeholderTextColor="#FFFFFF"   // Цвет плейсхолдера (когда поле пустое)
           theme={{
             colors: {
-              placeholder: '#FFFFFF',      // Цвет лейбла, когда поле пустое
-              onSurfaceVariant: '#FFFFFF', // Цвет лейбла при фокусе (иногда нужно для Paper v5+)
+              placeholder: '#E0E0E0',      // Цвет лейбла, когда поле пустое
+              onSurfaceVariant: '#E0E0E0', // Цвет лейбла при фокусе
               background: 'transparent',   // Чтобы не было серого фона внутри
             },
             roundness: 8,                  // Скруглённые углы
@@ -77,9 +77,9 @@ export default function SignInScreen({ navigation }) {
           value={password}
           onChangeText={setPassword}
           style={styles.input}
-          outlineColor="#FFFFFF"
+          outlineColor="#E0E0E0"
           activeOutlineColor="#FFFFFF"
-          textColor="#FFFFFF"
+          textColor="#E0E0E0"
           placeholderTextColor="#FFFFFF"
           theme={{
             colors: {
@@ -98,7 +98,7 @@ export default function SignInScreen({ navigation }) {
             onValueChange={setRememberMe}
             color="#6C63FF"               // Цвет переключателя, когда он включён
           />
-          <Text style={styles.switchLabel}>Remember me</Text>
+          <Text style={styles.switchLabel}>Запомнить меня</Text>
         </View>
 
         {/* Кнопка Войти */}
@@ -141,10 +141,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
+  // Увеличиваем высоту полей примерно на 20%
   input: {
     width: '100%',
     marginBottom: 16,
-    backgroundColor: 'transparent', // убирает серый фон
+    backgroundColor: 'transparent',
+    height: 58, // примерно на 20% больше стандартных ~48 пикселей
   },
   switchContainer: {
     flexDirection: 'row',
@@ -157,9 +159,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
   },
+  // Увеличиваем кнопку в 2 раза: удваиваем paddingVertical
   signInButton: {
     backgroundColor: '#FFFFFF',
-    paddingVertical: 14,
+    paddingVertical: 28, // вместо 14
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',

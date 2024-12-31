@@ -20,7 +20,7 @@ export default function PinConfirmScreen({ route, navigation }) {
 
           try {
             // Сохраняем PIN-код
-            await StorageService.setItem('pinCode', newPin);
+            await StorageService.setItem('userPin', newPin);
 
             // Получаем токен
             const authToken = await StorageService.getItem('authToken');
