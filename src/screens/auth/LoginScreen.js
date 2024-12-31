@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import { TextInput, Switch } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import AuthService from '../../services/authService';
@@ -15,7 +21,7 @@ export default function SignInScreen({ navigation }) {
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
-      alert('Please fill in all fields.');
+      alert('Пожалуйста, заполните все поля.');
       return;
     }
 
@@ -28,7 +34,7 @@ export default function SignInScreen({ navigation }) {
       }
       navigation.navigate('PinSetupScreen');
     } catch (error) {
-      alert('Invalid email or password.');
+      alert('Неверный email или пароль.');
     } finally {
       setIsLoading(false);
     }
@@ -37,47 +43,76 @@ export default function SignInScreen({ navigation }) {
   return (
     <LinearGradient colors={['#1E3C72', '#2A5298']} style={styles.container}>
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>Авторизация</Text>
-        <Text style={styles.subtitle}>Введите данные для входа в кабинет</Text>
+        <Text style={styles.title}>Sign In</Text>
+        <Text style={styles.subtitle}>
+          Enter your email and password to sign in
+        </Text>
 
+        {/* Поле Email с плавающей меткой */}
         <TextInput
-          label="Адрес электронной почты"
+          label="Email"
+          mode="outlined"
           value={email}
           onChangeText={setEmail}
-          mode="outlined"
           style={styles.input}
-          theme={{ colors: { primary: '#FFFFFF', text: '#FFFFFF', placeholder: '#FFFFFF' } }}
+          outlineColor="#FFFFFF"          // Цвет обводки (не в фокусе)
+          activeOutlineColor="#FFFFFF"     // Цвет обводки (в фокусе)
+          textColor="#FFFFFF"              // Цвет вводимого текста
+          placeholderTextColor="#FFFFFF"   // Цвет плейсхолдера (когда поле пустое)
+          theme={{
+            colors: {
+              placeholder: '#FFFFFF',      // Цвет лейбла, когда поле пустое
+              onSurfaceVariant: '#FFFFFF', // Цвет лейбла при фокусе (иногда нужно для Paper v5+)
+              background: 'transparent',   // Чтобы не было серого фона внутри
+            },
+            roundness: 8,                  // Скруглённые углы
+          }}
         />
 
+        {/* Поле Password с плавающей меткой */}
         <TextInput
-          label="Пароль от личного кабинета"
-          value={password}
-          onChangeText={setPassword}
+          label="Password"
           mode="outlined"
           secureTextEntry
+          value={password}
+          onChangeText={setPassword}
           style={styles.input}
-          theme={{ colors: { primary: '#FFFFFF', text: '#FFFFFF', placeholder: '#FFFFFF' } }}
+          outlineColor="#FFFFFF"
+          activeOutlineColor="#FFFFFF"
+          textColor="#FFFFFF"
+          placeholderTextColor="#FFFFFF"
+          theme={{
+            colors: {
+              placeholder: '#FFFFFF',
+              onSurfaceVariant: '#FFFFFF',
+              background: 'transparent',
+            },
+            roundness: 8,
+          }}
         />
 
+        {/* Switch: Запомнить меня */}
         <View style={styles.switchContainer}>
           <Switch
             value={rememberMe}
             onValueChange={setRememberMe}
-            color="#6C63FF"
+            color="#6C63FF"               // Цвет переключателя, когда он включён
           />
           <Text style={styles.switchLabel}>Remember me</Text>
         </View>
 
+        {/* Кнопка Войти */}
         <TouchableOpacity
           onPress={handleLogin}
           disabled={isLoading}
           style={styles.signInButton}
         >
-          <Text style={styles.signInButtonText}>ВОЙТИ</Text>
+          <Text style={styles.signInButtonText}>SIGN IN</Text>
         </TouchableOpacity>
 
         <Text style={styles.footerText}>
-          Don’t have an account? <Text style={styles.signUpText}>Sign Up</Text>
+          Don’t have an account?{' '}
+          <Text style={styles.signUpText}>Sign Up</Text>
         </Text>
       </View>
     </LinearGradient>
@@ -107,25 +142,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
-    height: 70, // добавлена возможность настройки высоты
-    borderRadius: 20,
     width: '100%',
-    marginBottom: 15,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    marginBottom: 16,
+    backgroundColor: 'transparent', // убирает серый фон
   },
   switchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
     width: '100%',
   },
   switchLabel: {
     color: '#FFFFFF',
     marginLeft: 10,
+    fontSize: 16,
   },
   signInButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    paddingVertical: 30,
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 14,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -140,6 +174,7 @@ const styles = StyleSheet.create({
   footerText: {
     color: '#E0E0E0',
     textAlign: 'center',
+    fontSize: 16,
   },
   signUpText: {
     color: '#6C63FF',
